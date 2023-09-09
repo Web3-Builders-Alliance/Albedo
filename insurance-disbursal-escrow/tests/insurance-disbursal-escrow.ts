@@ -1,12 +1,12 @@
 import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
-import { Albedo } from "../target/types/albedo";
+import { InsuranceDisbursalEscrow } from "../target/types/insurance_disbursal_escrow";
 
-describe("albedo", () => {
+describe("insurance-disbursal-escrow", () => {
   // Configure the client to use the local cluster.
   anchor.setProvider(anchor.AnchorProvider.env());
 
-  const program = anchor.workspace.Albedo as Program<Albedo>;
+  const program = anchor.workspace.InsuranceDisbursalEscrow as Program<InsuranceDisbursalEscrow>;
 
   it("Is initialized!", async () => {
     // Add your test here.

@@ -2,7 +2,7 @@
 seeds = false
 skip-lint = false
 [programs.localnet]
-albedo = "8QyTSgBy2Msab5yXRLnPhvrto59MAxjtw2PPWbnui4Nx"
+insurance_pool_vault = "CrSyuUEDMHudgQXNCTnA1y7GgPrUdqFYRQ7knP13kjWp"
 
 [registry]
 url = "https://api.apr.dev"
