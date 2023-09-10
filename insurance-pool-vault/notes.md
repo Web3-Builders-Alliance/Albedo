@@ -1,1 +1,0 @@
-How insurance works ?
