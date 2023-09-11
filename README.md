@@ -54,3 +54,7 @@ Enhance sensor capabilities to capture more types of data, like pest activity or
 Generate heat maps to better manage large estates
 
 Enable targeted delivery of fertilizer, pesticides, & irrigation, and continuous monitoring of soil and crop health, and pest control
+
+## Development Guidelines
+
+For information on coding standards, git workflow, and other development practices, please see [DEVELOPMENT_GUIDELINES.md](Docs/DEVELOPMENT_GUIDELINES.md) in the `Docs` folder.
