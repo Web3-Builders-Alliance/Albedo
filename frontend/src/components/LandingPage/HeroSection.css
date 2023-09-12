@@ -1,0 +1,22 @@
+.hero-container {
+  background-color: var(--color-dark-bg);
+  color: var(--color-primary-light);
+  text-align: center;
+  padding: 4rem 0;
+}
+
+.hero-container h1 {
+  font-size: 6rem;
+  margin: 0rem;
+}
+
+.hero-container .btn-primary {
+  display: inline-block;
+  margin-top: 1rem;
+  color: var(--color-primary-light);
+  transition: background-color 0.3s ease;
+}
+
+.hero-container .btn-primary:hover {
+  background-color: var(--color-alternative-bg);
+}
