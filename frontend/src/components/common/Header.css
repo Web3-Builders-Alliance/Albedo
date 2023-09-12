@@ -26,7 +26,7 @@
 }
 
 .header .nav-item a.link:hover {
-  color: var(--color-alternative-bg);
+  color: var(--color-secondary);
 }
 
 .header .nav-item a.login-signup {
@@ -35,6 +35,6 @@
 }
 
 .header .nav-item a.login-signup:hover {
-  background-color: var(--color-alternative-bg);
+  background-color: var(--color-secondary);
   color: var(--color-primary-light);
 }

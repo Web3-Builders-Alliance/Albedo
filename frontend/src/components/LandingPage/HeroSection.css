@@ -18,5 +18,5 @@
 }
 
 .hero-container .btn-primary:hover {
-  background-color: var(--color-alternative-bg);
+  background-color: var(--color-secondary);
 }

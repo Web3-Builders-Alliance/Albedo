@@ -6,7 +6,7 @@
   --color-dark-bg: #393D3F;
   --color-primary-light: #FFFFFF;
   --color-primary-dark: #000000;
-  --color-alternative-bg: #62929E;
+  --color-secondary: #62929E;
 
   /* Typography */
   --font-family: 'Inter', sans-serif;
@@ -33,7 +33,7 @@ body a {
 
 img {
   display: block;
-  width: 100%;
+  max-width: 100%;
   height: auto;
 }
 
@@ -55,13 +55,14 @@ img {
 
 /* Alternative Background */
 .alt-bg {
-  background-color: var(--color-alternative-bg);
+  background-color: var(--color-secondary);
 }
 
 /* Buttons */
 .btn-primary {
   background-color: var(--color-primary-dark);
   border-radius: var(--button-border-radius);
+  color: var(--color-primary-light);
   padding: var(--button-padding);
   text-align: center;
 }
@@ -69,6 +70,7 @@ img {
 .btn-secondary {
   background-color: var(--color-primary-light);
   border-radius: var(--button-border-radius);
+  color: var(--color-primary-dark);
   padding: var(--button-padding);
   text-align: center;
 }
