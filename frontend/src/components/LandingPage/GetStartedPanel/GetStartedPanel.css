@@ -7,10 +7,7 @@
 .globe-image {
   max-width: 30%;
   margin: auto;
-}
-
-.globe-image img {
-  box-shadow: drop-shadow(4px 4px 4px black);
+  box-shadow: 4px 4px 4px var(--color-primary-dark);
 }
 
 .get-started .btn-primary {
