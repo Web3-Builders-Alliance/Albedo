@@ -1,0 +1,10 @@
+.content-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem;
+}
+
+.content-text, .content-img {
+  width: 50%;
+}

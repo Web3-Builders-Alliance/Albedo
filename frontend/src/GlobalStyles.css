@@ -27,6 +27,16 @@ body a {
   text-decoration: none;
 }
 
+.half {
+  width: 50%;
+}
+
+img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 /* Dark Background */
 .dark-bg {
   background-color: var(--color-dark-bg);
