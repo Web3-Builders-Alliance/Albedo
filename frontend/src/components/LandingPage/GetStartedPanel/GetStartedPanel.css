@@ -10,7 +10,7 @@
 }
 
 .globe-image img {
-  filter: drop-shadow(3px 3px 3px black);
+  box-shadow: drop-shadow(4px 4px 4px black);
 }
 
 .get-started .btn-primary {
