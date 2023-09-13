@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect, useRef } from 'react';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -7,8 +7,28 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import './FAQPanel.css';
 
 export default function BasicAccordion() {
+  const panelRef = useRef(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const rect = panelRef.current.getBoundingClientRect();
+      if (rect.top <= window.innerHeight && rect.bottom >= 0) {
+        panelRef.current.classList.add('visible');
+        panelRef.current.classList.remove('hidden');
+      } else {
+        panelRef.current.classList.add('hidden');
+        panelRef.current.classList.remove('visible');
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
-    <div className='faq-section'>
+    <div ref={panelRef} className='faq-section hidden'>
       <h2>FAQ</h2>
       <Accordion className='accordion'>
         <AccordionSummary

@@ -81,3 +81,18 @@ img {
   padding: var(--button-padding);
   text-align: center;
 }
+
+/* Animations */
+.hidden, .visible {
+  transition: all 0.5s ease;
+}
+
+.hidden {
+  opacity: 0;
+  transform: translateY(100px);
+}
+
+.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
