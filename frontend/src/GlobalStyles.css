@@ -35,6 +35,13 @@ img {
   display: block;
   max-width: 100%;
   height: auto;
+  margin: auto;
+}
+
+.main-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 2rem;
 }
 
 /* Dark Background */

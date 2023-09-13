@@ -8,7 +8,7 @@ import GetStartedPanel from './components/LandingPage/GetStartedPanel/GetStarted
 
 function App() {
   return (
-    <div className="App">
+    <div className="main-container">
       <Header />
       <HeroSection />
       <ContentSection />

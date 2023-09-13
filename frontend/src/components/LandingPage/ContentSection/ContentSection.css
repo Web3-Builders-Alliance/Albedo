@@ -3,8 +3,9 @@
   justify-content: space-between;
   align-items: center;
   padding: 2rem;
+  margin: 0 auto;
 }
 
-.content-text, .content-img {
-  width: 50%;
+.content-img img {
+  margin: auto;
 }
