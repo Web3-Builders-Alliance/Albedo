@@ -5,6 +5,7 @@ import HeroSection from './components/LandingPage/HeroSection';
 import ContentSection from './components/LandingPage/ContentSection/ContentSection';
 import GetStartedPanel from './components/LandingPage/GetStartedPanel/GetStartedPanel';
 import FeaturesPanel from './components/LandingPage/FeaturesPanel/FeaturesPanel';
+import FAQPanel from './components/LandingPage/FAQPanel/FAQPanel';
 // Import other components as needed
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
       <ContentSection />
       <GetStartedPanel />
       <FeaturesPanel />
+      <FAQPanel />
       {/* Add other components here */}
     </div>
   );

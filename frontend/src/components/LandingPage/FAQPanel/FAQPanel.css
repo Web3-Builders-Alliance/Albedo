@@ -1,0 +1,15 @@
+.faq-section {
+  padding: 4rem 0;
+}
+
+.faq-section h2 {
+  text-align: center;
+}
+
+.faq-section .title {
+  font-weight: 700;
+}
+
+.faq-section .accordion {
+  background: linear-gradient(45deg, #00576821, #00576899);
+}
