@@ -1,0 +1,24 @@
+.get-started {
+  text-align: center;
+  padding: 2rem;
+  
+}
+
+.globe-image {
+  max-width: 30%;
+  margin: auto;
+  box-shadow: 4px 4px 4px var(--color-primary-dark);
+}
+
+.get-started .btn-primary {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.get-started .btn-primary:hover {
+  background-color: var(--color-secondary);
+}

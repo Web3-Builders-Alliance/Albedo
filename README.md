@@ -1,56 +1,57 @@
 # Albedo
 By: Prakyath Reddy & Kellen James
 
-Automated Disbursal of Insurance claims and management of large Agricultural Estates using DePIN
+## A Decentralized Two-Sided Marketplace for Verified Sensor Data and Smart Contract-Based Escrow Services
 
-### **Target sector**: Agritech
+**Target Sector**: Cross-Industry
+**Key Technologies**: IoT, Blockchain, Oracles
 
-### Problem with the current system:
+---
 
-1. **Inefficient System of Insurance Processing**: Extreme weather events like droughts or storms can devastate crops. However, farmers often face bureaucratic hurdles and delays when filing insurance claims. 
-    
-    // note: Add a stat, find out how long it takes to claim insurance 
-    
-2. ************************Wastage of agricultural resources:************************ Farmers often relies on generic approaches to fertilizer application and irrigation, leading to suboptimal yields and resource waste. Also excess fertilizer would destroy soil health, and contaminate ground water.
-    
-    // add a stat again, find out how much wastage happens every year in the agriculture sector 
-    
+## Problem Statement
+### Limitations of Centralized Data Marketplaces
+Centralized data storage and verification methods raise concerns about data integrity and security.
 
-### Our Solution
+### Lack of Trustworthy Escrow Mechanisms
+Traditional escrow services are often costly, slow, and opaque, lacking real-time verifiability.
 
-1. **Automated disbursal of crop insurance:**
-    - Deploy IoT sensors to collect real-time weather data from farms, over the LoRaWAN network.
-    - Pooling of insurance premiums and disbursement of claims all managed by code (plan for a later time, for now, we would be working with traditional insurance companies).
-    - Use Solana escrow program to automatically release insurance payouts when predefined adverse conditions occur.
-    - Events that occur regularly on the site, will be aggregated, analyzed and an NFT will be generated as proof of occurance of event.
-2. ****Data-Driven Farm Management:****
-    - Utilize specialized soil sensors to measure variables like moisture and nutrients.
-    - Create heat maps for targeted fertilizer and water distribution based on real-time data.
-        
-        // may not be feasible, but keeping it in the pipeline for now
-        
+---
 
-### DePIN tools
+## Our Solution
+### Albedo: A Flexible, Decentralized Platform
 
-1. IoT sensors: To collect weather data real-time. Most likely DHT22 sensor. 
-2. Helium hotspots: Enables IoT sensors to transmit data through the LoRaWAN network.
-3. Switchboard V3: Oracle system that helps us use the data in our solana programs
+- **Verified Sensor Data**: Deploy IoT sensors across various sectors, transmitting data via secure channels to trusted oracles.
+  
+- **Smart Contract-based Escrow**: Utilize Solana's blockchain capabilities for automatic release of escrow funds based on verified real-time sensor data.
+  
+- **Transparency and Security**: Events are recorded, verified, and made transparent via Non-Fungible Tokens (NFTs), each containing metadata linking to off-chain data storage.
 
-### **Market Potential**
+### DePIN Tools
 
-- Two-sided aggregator connecting data providers (farmers, weather stations, IoT sensors) and data consumers (insurance firms, agronomists).
-- Applicable beyond agriculture, serving as a general infrastructure for IoT data trading.
+- **IoT Sensors**: Collect real-time data across diverse scenarios.
+- **Switchboard V3**: Oracle system for reliable and verified data.
+- **Solana Blockchain**: For smart contract execution and NFT management.
 
-### **Business Model**
+---
 
-- Transaction fees from automated insurance payouts.
-- Data monetization opportunities for users.
-- Subscription-based model for farmers to access advanced farm management tools.
+## Market Potential
+### Two-Sided Marketplace
+Albedo serves as a neutral platform connecting data providers (IoT sensors, individual contributors) with data consumers (insurance firms, supply chain companies, etc.)
 
-### Down the line, if all this goes as planned
+### Public Good
+Designed to be a robust, decentralized solution that is not confined to any single sector, Albedo aims to serve the greater public interest.
 
-Enhance sensor capabilities to capture more types of data, like pest activity or crop health.
+---
 
-Generate heat maps to better manage large estates
+## Business Model
 
-Enable targeted delivery of fertilizer, pesticides, & irrigation, and continuous monitoring of soil and crop health, and pest control
+- **Transaction Fees**: Minimal fees for escrow services and data transactions.
+- **Data Monetization**: Users can monetize their data by offering it to interested parties.
+
+---
+
+## Future Enhancements
+
+- Broaden sensor data types and capabilities.
+- Expand to other blockchain networks for enhanced interoperability.
+- Explore partnerships for more specialized use-cases.

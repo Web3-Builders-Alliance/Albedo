@@ -1,23 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import './GlobalStyles.css';
+import Header from './components/common/Header';
+import HeroSection from './components/LandingPage/HeroSection';
+import ContentSection from './components/LandingPage/ContentSection/ContentSection';
+import GetStartedPanel from './components/LandingPage/GetStartedPanel/GetStartedPanel';
+import FeaturesPanel from './components/LandingPage/FeaturesPanel/FeaturesPanel';
+// Import other components as needed
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="main-container">
+      <Header />
+      <HeroSection />
+      <ContentSection />
+      <GetStartedPanel />
+      <FeaturesPanel />
+      {/* Add other components here */}
     </div>
   );
 }
