@@ -6,6 +6,7 @@ import ContentSection from './components/LandingPage/ContentSection/ContentSecti
 import GetStartedPanel from './components/LandingPage/GetStartedPanel/GetStartedPanel';
 import FeaturesPanel from './components/LandingPage/FeaturesPanel/FeaturesPanel';
 import FAQPanel from './components/LandingPage/FAQPanel/FAQPanel';
+import Footer from './components/common/Footer';
 // Import other components as needed
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
       <GetStartedPanel />
       <FeaturesPanel />
       <FAQPanel />
+      <Footer />
       {/* Add other components here */}
     </div>
   );

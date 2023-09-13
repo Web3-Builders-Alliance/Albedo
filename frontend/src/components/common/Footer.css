@@ -1,0 +1,32 @@
+.footer {
+  background-color: var(--color-dark-bg);
+  padding: 2rem;
+  text-align: center;
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 1rem;
+}
+
+.social-icons img {
+  width: 5rem;
+}
+
+.social-icons img.linkedin {
+  width: 3rem;
+}
+
+.icon {
+  margin: 0 1rem;
+  font-size: 1.2rem;
+  width: 5rem;
+}
+
+.copyright {
+  font-size: 0.9rem;
+  color: var(--color-primary-light);
+}
