@@ -1,7 +1,7 @@
 import React from 'react';
 import './GlobalStyles.css';
 import Header from './components/common/Header';
-import HeroSection from './components/LandingPage/HeroSection';
+import HeroSection from './components/LandingPage/HeroSection/HeroSection';
 import ContentSection from './components/LandingPage/ContentSection/ContentSection';
 import GetStartedPanel from './components/LandingPage/GetStartedPanel/GetStartedPanel';
 import FeaturesPanel from './components/LandingPage/FeaturesPanel/FeaturesPanel';
