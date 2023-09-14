@@ -1,40 +1,38 @@
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem;
-  background-color: var(--color-primary-dark);
-  color: var(--color-primary-light);
-}
+.navbar {
+  // Customizing the navbar background and text color
+  background-color: $primary-dark;
+  color: $primary-light;
 
-.header .logo {
-  font-size: 1.5rem;
-  font-weight: var(--font-weight-bold);
-}
+  &-brand {
+    font-size: 1.5rem;
+    font-weight: $font-weight-bold;
+  }
 
-.header .nav-list {
-  list-style: none;
-  display: flex;
-  gap: 2rem;
-}
+  .nav-item {
+    a {
+      // Customize link appearance
+      color: $color-primary-light;
+      text-decoration: none;
+      font-weight: $font-weight-regular;
 
-.header .nav-item a {
-  color: var(--color-primary-light);
-  text-decoration: none;
-  font-weight: var(--font-weight-regular);
-  transition: color 0.3s ease;
-}
+      transition: color 0.3s ease;
 
-.header .nav-item a.link:hover {
-  color: var(--color-secondary);
-}
+      // Hover state for links
+      &:hover {
+        color: $color-secondary;
+      }
 
-.header .nav-item a.login-signup {
-  color: var(--color-primary-dark);
-  transition: background-color 0.3s ease;
-}
+      // Special styles for login/signup buttons
+      &.login-signup {
+        color: $color-primary-dark;
+        transition: background-color 0.3s ease;
 
-.header .nav-item a.login-signup:hover {
-  background-color: var(--color-secondary);
-  color: var(--color-primary-light);
+        // Hover state for login/signup buttons
+        &:hover {
+          background-color: $color-secondary;
+          color: $color-primary-light;
+        }
+      }
+    }
+  }
 }
