@@ -27,19 +27,27 @@ const FeaturesPanel = () => {
   }, []);
   
   return (
-    <div ref={panelRef} className="features-panel hidden">
-      <FeatureCard 
-        imageSrc={image1} 
-        description="Experience seamless IoT integration and unlock limitless opportunities for growth."
-      />
-      <FeatureCard 
-        imageSrc={image2} 
-        description="Blockchain security ensures your transactions are protected and transparent."
-      />
-      <FeatureCard 
-        imageSrc={image3} 
-        description="Harness the power of real-time data updates for smarter decision-making."
-      />
+    <div ref={panelRef} className="features-panel hidden container">
+      <div className="row justify-content-center">
+        <div className="col-md-4">
+          <FeatureCard 
+            imageSrc={image1} 
+            description="Experience seamless IoT integration and unlock limitless opportunities for growth."
+          />
+        </div>
+        <div className="col-md-4">
+          <FeatureCard 
+            imageSrc={image2} 
+            description="Blockchain security ensures your transactions are protected and transparent."
+          />
+        </div>
+        <div className="col-md-4">
+          <FeatureCard 
+            imageSrc={image3} 
+            description="Harness the power of real-time data updates for smarter decision-making."
+          />
+        </div>
+      </div>
     </div>
   );
 };
