@@ -1,22 +1,24 @@
-import React, { useEffect, useRef } from 'react';
-import FeatureCard from './FeatureCard';
+import React, { FC, useEffect, useRef } from 'react';
+import { FeatureCard } from './FeatureCard';
 import './FeaturesPanel.scss';
 import image1 from "../../../assets/images/landingPage/iot_integration.jpeg";
 import image2 from "../../../assets/images/landingPage/blockchain_security.jpeg";
 import image3 from "../../../assets/images/landingPage/real_time_data.jpeg";
 
-const FeaturesPanel = () => {
-  const panelRef = useRef(null);
+export const FeaturesPanel: FC = () => {
+  const panelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
-      const rect = panelRef.current.getBoundingClientRect();
-      if (rect.top <= window.innerHeight && rect.bottom >= 0) {
-        panelRef.current.classList.add('visible');
-        panelRef.current.classList.remove('hidden');
-      } else {
-        panelRef.current.classList.add('hidden');
-        panelRef.current.classList.remove('visible');
+      if (panelRef.current) {
+        const rect = panelRef.current.getBoundingClientRect();
+        if (rect.top <= window.innerHeight && rect.bottom >= 0) {
+          panelRef.current.classList.add('visible');
+          panelRef.current.classList.remove('hidden');
+        } else {
+          panelRef.current.classList.add('hidden');
+          panelRef.current.classList.remove('visible');
+        }
       }
     };
 
@@ -51,5 +53,3 @@ const FeaturesPanel = () => {
     </div>
   );
 };
-
-export default FeaturesPanel;

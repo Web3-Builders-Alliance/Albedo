@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { FC } from 'react';
 import './FeatureCard.scss';
 
-const FeatureCard = ( { imageSrc, description }) => {
+interface FeatureCardProps {
+  imageSrc: string,
+  description: string
+}
+
+export const FeatureCard: FC<FeatureCardProps> = ( { imageSrc, description }) => {
   return (
     <div className='card feature-card text-center'>
       <img src={imageSrc} alt='Feature' className='card-img-top feature-card-img' />
@@ -11,5 +16,3 @@ const FeatureCard = ( { imageSrc, description }) => {
     </div>
   );
 };
-
-export default FeatureCard;
