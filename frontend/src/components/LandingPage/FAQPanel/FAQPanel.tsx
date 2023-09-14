@@ -1,18 +1,20 @@
-import React, { useEffect, useRef } from 'react';
+import React, { FC, useEffect, useRef } from 'react';
 import './FAQPanel.scss';
 
-export default function BasicAccordion() {
-  const panelRef = useRef(null);
+export const FAQPanel: FC = () => {
+  const panelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
-      const rect = panelRef.current.getBoundingClientRect();
-      if (rect.top <= window.innerHeight && rect.bottom >= 0) {
-        panelRef.current.classList.add('visible');
-        panelRef.current.classList.remove('hidden');
-      } else {
-        panelRef.current.classList.add('hidden');
-        panelRef.current.classList.remove('visible');
+      if (panelRef.current) {
+        const rect = panelRef.current.getBoundingClientRect();
+        if (rect.top <= window.innerHeight && rect.bottom >= 0) {
+          panelRef.current.classList.add('visible');
+          panelRef.current.classList.remove('hidden');
+        } else {
+          panelRef.current.classList.add('hidden');
+          panelRef.current.classList.remove('visible');
+        }
       }
     };
 
@@ -97,4 +99,4 @@ export default function BasicAccordion() {
       </div>
     </div>
   );
-}
+};
