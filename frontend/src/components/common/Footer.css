@@ -1,10 +1,10 @@
 .footer {
   background-color: var(--color-dark-bg);
-  padding: 2rem;
+  padding: 1rem 2rem;
   text-align: center;
 }
 
-.social-icons {
+.footer .social-icons {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,21 +12,21 @@
   margin-bottom: 1rem;
 }
 
-.social-icons img {
-  width: 5rem;
-}
-
-.social-icons img.linkedin {
+.footer .social-icons img {
   width: 3rem;
 }
 
-.icon {
+.footer .social-icons img.linkedin {
+  width: 2rem;
+}
+
+.footer .icon {
   margin: 0 1rem;
   font-size: 1.2rem;
   width: 5rem;
 }
 
-.copyright {
+.footer .copyright {
   font-size: 0.9rem;
   color: var(--color-primary-light);
 }
