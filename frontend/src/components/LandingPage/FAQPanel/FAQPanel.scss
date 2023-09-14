@@ -1,15 +1,57 @@
-.faq-section {
-  padding: 4rem 0;
-}
-
-.faq-section h2 {
+.accordion {
+  // Parent styles
+  padding: 2rem;
+  background-color: $secondary;
+  color: $primary-light;
   text-align: center;
+  
+  h2 {
+    font-size: 2rem;
+    font-weight: $font-weight-bold;
+    margin-bottom: 1rem;
+  }
+  
+  &-item {
+    // Accordion item styles
+    border: none;
+    border-bottom: 1px solid lighten($primary-dark, 20%);
+    background-color: transparent;
+    
+    &:last-child {
+      border-bottom: none;
+    }
+    
+    &-header {
+      // Accordion header styles
+      button {
+        font-weight: $font-weight-bold;
+        
+        &:not(.collapsed) {
+          background-color: lighten($primary-dark, 10%);
+        }
+      }
+    }
+    
+    &-body {
+      // Accordion body styles
+      padding: 1rem;
+      background-color: lighten($primary-dark, 5%);
+      font-weight: $font-weight-regular;
+    }
+  }
 }
 
-.faq-section .title {
-  font-weight: 700;
+.hidden,
+.visible {
+  transition: all 0.5s ease;
 }
 
-.faq-section .accordion {
-  background-color: #00576821;
+.hidden {
+  opacity: 0;
+  transform: translateY(100px);
+}
+
+.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
