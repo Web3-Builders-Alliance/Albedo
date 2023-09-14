@@ -7,6 +7,7 @@ import GetStartedPanel from './components/LandingPage/GetStartedPanel/GetStarted
 import FeaturesPanel from './components/LandingPage/FeaturesPanel/FeaturesPanel';
 import FAQPanel from './components/LandingPage/FAQPanel/FAQPanel';
 import Footer from './components/common/Footer';
+import 'bootstrap/dist/css/bootstrap.min.css';
 // Import other components as needed
 
 function App() {
