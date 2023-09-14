@@ -1,32 +1,35 @@
+// Footer Component Styles
 .footer {
-  background-color: var(--color-dark-bg);
-  padding: 1rem 2rem;
+  background-color: $dark-bg;
+  padding: 2rem;
   text-align: center;
-}
 
-.footer .social-icons {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 2rem;
-  margin-bottom: 1rem;
-}
+  // Social Icons
+  .social-icons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 1rem;
 
-.footer .social-icons img {
-  width: 3rem;
-}
+    .icon {
+      margin: 0 1rem;
+      font-size: 1.2rem;
+      width: 5rem;
 
-.footer .social-icons img.linkedin {
-  width: 2rem;
-}
+      img {
+        width: 5rem;
 
-.footer .icon {
-  margin: 0 1rem;
-  font-size: 1.2rem;
-  width: 5rem;
-}
+        &.custom {
+          width: 3rem;
+        }
+      }
+    }
+  }
 
-.footer .copyright {
-  font-size: 0.9rem;
-  color: var(--color-primary-light);
+  // Copyright Information
+  .copyright {
+    font-size: 0.9rem;
+    color: $primary-light;
+  }
 }
