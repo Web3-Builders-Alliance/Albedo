@@ -1,5 +1,5 @@
 import React from 'react';
-import './GlobalStyles.css';
+import './GlobalStyles.scss';
 import Header from './components/common/Header';
 import HeroSection from './components/LandingPage/HeroSection/HeroSection';
 import ContentSection from './components/LandingPage/ContentSection/ContentSection';

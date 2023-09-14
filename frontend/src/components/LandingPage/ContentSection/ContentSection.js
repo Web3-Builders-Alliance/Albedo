@@ -1,5 +1,5 @@
 import React from 'react';
-import './ContentSection.css';
+import './ContentSection.scss';
 import contentImg from '../../../assets/images/landingPage/blockchain_tech.png'
 
 const ContentSection = () => {

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import FeatureCard from './FeatureCard';
-import './FeaturesPanel.css';
+import './FeaturesPanel.scss';
 import image1 from "../../../assets/images/landingPage/iot_integration.jpeg";
 import image2 from "../../../assets/images/landingPage/blockchain_security.jpeg";
 import image3 from "../../../assets/images/landingPage/real_time_data.jpeg";

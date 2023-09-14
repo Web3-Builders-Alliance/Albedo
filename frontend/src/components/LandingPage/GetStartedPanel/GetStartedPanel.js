@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import './GetStartedPanel.css';
+import './GetStartedPanel.scss';
 import globaImage from '../../../assets/images/landingPage/global_network.jpeg';
 
 const GetStartedPanel = () => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import './Footer.css';
+import './Footer.scss';
 import twitterIcon from '../../assets/images/landingPage/twitter_icon.png';
 import discordIcon from '../../assets/images/landingPage/discord_icon.png';
 import linkedIcon from '../../assets/images/landingPage/linkedin_icon.png';
