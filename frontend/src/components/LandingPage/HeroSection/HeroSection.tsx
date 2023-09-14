@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { FC } from 'react';
 import './HeroSection.scss';
 
-const HeroSection = () => {
+export const HeroSection: FC = () => {
   return (
     <div className="hero-container text-center py-5">
       <h1 className="display-1 fw-bold mb-3">Albedo</h1>
@@ -10,5 +10,3 @@ const HeroSection = () => {
     </div>
   );
 };
-
-export default HeroSection;
