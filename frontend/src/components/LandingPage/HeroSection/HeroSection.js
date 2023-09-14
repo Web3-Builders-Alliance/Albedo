@@ -3,10 +3,10 @@ import './HeroSection.scss';
 
 const HeroSection = () => {
   return (
-    <div className='hero-container'>
-      <h1>Albedo</h1>
-      <p>Unlocking the Future of Decentralized Sensor Data</p>
-      <a href="/login-signup" className='btn-primary'>Get Started</a>
+    <div className="hero-container text-center py-5">
+      <h1 className="display-1 fw-bold mb-3">Albedo</h1>
+      <p className="fs-3 fw-normal mb-4">Unlocking the Future of Decentralized Sensor Data</p>
+      <a href="/login-signup" className="btn btn-primary btn-lg">Get Started</a>
     </div>
   );
 };

@@ -1,22 +1,23 @@
+// Hero Section Styles
 .hero-container {
-  background-color: var(--color-dark-bg);
-  color: var(--color-primary-light);
   text-align: center;
   padding: 4rem 0;
-}
+  background-image: linear-gradient(to right, $secondary, lighten($secondary, 10%));
+  color: $primary-light;
 
-.hero-container h1 {
-  font-size: 6rem;
-  margin: 0rem;
-}
+  h1 {
+    font-size: 4rem;
+    font-weight: $font-weight-bold;
+    margin-bottom: 1rem;
+  }
 
-.hero-container .btn-primary {
-  display: inline-block;
-  margin-top: 1rem;
-  color: var(--color-primary-light);
-  transition: background-color 0.3s ease;
-}
+  p {
+    font-size: 1.5rem;
+    font-weight: $font-weight-regular;
+    margin-bottom: 2rem;
+  }
 
-.hero-container .btn-primary:hover {
-  background-color: var(--color-secondary);
+  a {
+    @extend .btn-primary;
+  }
 }
