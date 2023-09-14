@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { FC } from 'react';
 import './Header.scss';
 
-const Header = () => {
+export const Header: FC = () => {
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
       <div className="container-fluid">
@@ -26,5 +26,3 @@ const Header = () => {
     </nav>
   );
 };
-
-export default Header;

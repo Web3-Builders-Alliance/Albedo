@@ -4,7 +4,7 @@ import twitterIcon from '../../assets/images/landingPage/twitter_icon.png';
 import discordIcon from '../../assets/images/landingPage/discord_icon.png';
 import linkedIcon from '../../assets/images/landingPage/linkedin_icon.png';
 
-const Footer: FC = () => {
+export const Footer: FC = () => {
   return (
     <footer className="footer py-4">
       <div className='container'>
@@ -35,5 +35,3 @@ const Footer: FC = () => {
     </footer>
   );
 };
-
-export default Footer;
