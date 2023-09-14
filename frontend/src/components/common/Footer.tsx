@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { FC } from 'react';
 import './Footer.scss';
 import twitterIcon from '../../assets/images/landingPage/twitter_icon.png';
 import discordIcon from '../../assets/images/landingPage/discord_icon.png';
 import linkedIcon from '../../assets/images/landingPage/linkedin_icon.png';
 
-const Footer = () => {
+const Footer: FC = () => {
   return (
     <footer className="footer py-4">
       <div className='container'>
