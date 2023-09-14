@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { FC } from 'react';
 import './ContentSection.scss';
 import contentImg from '../../../assets/images/landingPage/blockchain_tech.png'
 
-const ContentSection = () => {
+export const ContentSection: FC = () => {
   return (
     <div className="content-container container">
       <div className="row">
@@ -31,5 +31,3 @@ const ContentSection = () => {
     </div>
   );
 };
-
-export default ContentSection;
