@@ -24,11 +24,17 @@ const GetStartedPanel = () => {
   }, []);
 
   return (
-    <div ref={panelRef} className="get-started hidden">
-      <img src={globaImage} alt="Globe" className="globe-image" />
-      <h2>Unleash the Potential</h2>
-      <p>Get started with Albedo, and experience the future of decentralized marketplaces today.</p>
-      <a href="/login-signup" className="btn-primary">Get Started</a>
+    <div ref={panelRef} className="get-started container hidden">
+      <div className="row align-items-center">
+        <div className="col-md-6">
+          <img src={globaImage} alt="Globe" className="img-fluid" />
+        </div>
+        <div className="col-md-6 text-center">
+          <h2>Unleash the Potential</h2>
+          <p>Get started with Albedo, and experience the future of decentralized marketplaces today.</p>
+          <a href="/login-signup" className="btn btn-primary">Get Started</a>
+        </div>
+      </div>
     </div>
   );
 };
