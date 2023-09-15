@@ -1,3 +1,4 @@
+@import '../../styles/GlobalStyles';
 @import '../../styles/variables';
 
 .navbar {
@@ -26,7 +27,7 @@
 
       // Special styles for login/signup buttons
       &.login-signup {
-        color: $primary-dark;
+        @extend .dark-bg;
         transition: background-color 0.3s ease;
 
         // Hover state for login/signup buttons

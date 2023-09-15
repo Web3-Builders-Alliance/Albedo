@@ -1,19 +1,24 @@
 .navbar {
   background-color: #000000;
   color: #FFFFFF; }
-  .navbar-brand {
-    font-size: 1.5rem;
-    font-weight: 700; }
-  .navbar .nav-item a {
-    color: #FFFFFF;
-    text-decoration: none;
-    font-weight: 400;
-    transition: color 0.3s ease; }
-    .navbar .nav-item a:hover {
-      color: #62929E; }
-    .navbar .nav-item a.login-signup {
-      color: #000000;
-      transition: background-color 0.3s ease; }
-      .navbar .nav-item a.login-signup:hover {
-        background-color: #62929E;
-        color: #FFFFFF; }
+
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: 700; }
+
+.navbar .nav-item a {
+  color: #FFFFFF;
+  text-decoration: none;
+  font-weight: 400;
+  transition: color 0.3s ease; }
+
+.navbar .nav-item a:hover {
+  color: #62929E; }
+
+.navbar .nav-item a.login-signup {
+  color: #000000;
+  transition: background-color 0.3s ease; }
+
+.navbar .nav-item a.login-signup:hover {
+  background-color: #62929E;
+  color: #FFFFFF; }

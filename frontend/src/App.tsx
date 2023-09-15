@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import '../src/styles/GlobalStyles.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 // Exported Modules
 import { Header } from './components/common/Header';

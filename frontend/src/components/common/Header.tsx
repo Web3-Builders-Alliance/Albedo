@@ -15,7 +15,7 @@ export const Header: FC = () => {
               <a className="nav-link active" aria-current="page" href="#how-it-works">How it Works</a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#features">Features</a>
+              <a className="nav-link active" href="#features">Features</a>
             </li>
             <li className="nav-item">
               <a className="nav-link btn-secondary login-signup" href="#login">Login/Sign-Up</a>
