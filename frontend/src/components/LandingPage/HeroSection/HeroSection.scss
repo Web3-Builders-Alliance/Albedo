@@ -2,7 +2,7 @@
 @import '../../../styles/variables';
 
 .hero-container {
-  background-image: linear-gradient(to right, $secondary, lighten($secondary, 10%));
+  background-image: linear-gradient(to right, #000000, #82a8b1);
   color: $primary-light;
   
   a {

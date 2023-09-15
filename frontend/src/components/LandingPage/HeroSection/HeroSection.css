@@ -59,7 +59,7 @@ body img {
   transform: translateY(0); }
 
 .hero-container {
-  background-image: linear-gradient(to right, #62929E, #82a8b1);
+  background-image: linear-gradient(to right, #000000, #82a8b1);
   color: #FFFFFF; }
 
 .hero-container a:hover {
