@@ -29,7 +29,8 @@ export const FeaturesPanel: FC = () => {
   }, []);
   
   return (
-    <div ref={panelRef} className="features-panel py-5 hidden container">
+    <div id='features' ref={panelRef} className="features-panel py-5 hidden container">
+      <h2 className='text-center mb-4'>Features</h2>
       <div className="row justify-content-center">
         <div className="col-md-4 mb-4">
           <FeatureCard 
