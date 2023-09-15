@@ -1,21 +1,16 @@
 .footer {
-  background-color: #393D3F;
-  padding: 2rem;
-  text-align: center; }
-  .footer .social-icons {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 2rem;
-    margin-bottom: 1rem; }
-    .footer .social-icons .icon {
-      margin: 0 1rem;
-      font-size: 1.2rem;
-      width: 5rem; }
-      .footer .social-icons .icon img {
-        width: 5rem; }
-        .footer .social-icons .icon img.custom {
-          width: 3rem; }
-  .footer .copyright {
-    font-size: 0.9rem;
-    color: #FFFFFF; }
+  background-color: #393D3F; }
+
+.footer .social-icons .icon {
+  margin: 0 1rem;
+  font-size: 1.2rem; }
+
+.footer .social-icons .icon img {
+  width: 4rem; }
+
+.footer .social-icons .icon img.custom {
+  width: 3rem; }
+
+.footer .copyright {
+  font-size: 0.9rem;
+  color: #FFFFFF; }

@@ -1,13 +1,15 @@
 body {
   font-size: 1rem;
   font-family: "Inter", sans-serif; }
-  body a {
-    text-decoration: none; }
-  body img {
-    display: block;
-    max-width: 100%;
-    height: auto;
-    margin: auto; }
+
+body a {
+  text-decoration: none; }
+
+body img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: auto; }
 
 .half {
   width: 50%; }
@@ -57,15 +59,11 @@ body {
   transform: translateY(0); }
 
 .hero-container {
-  text-align: center;
-  padding: 4rem 0;
   background-image: linear-gradient(to right, #62929E, #82a8b1);
   color: #FFFFFF; }
-  .hero-container h1 {
-    font-size: 4rem;
-    font-weight: 700;
-    margin-bottom: 1rem; }
-  .hero-container p {
-    font-size: 1.5rem;
-    font-weight: 400;
-    margin-bottom: 2rem; }
+
+.hero-container h1 {
+  font-weight: 700; }
+
+.hero-container p {
+  font-weight: 400; }

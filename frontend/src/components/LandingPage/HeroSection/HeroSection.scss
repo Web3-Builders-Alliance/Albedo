@@ -2,21 +2,15 @@
 @import '../../../styles/variables';
 
 .hero-container {
-  text-align: center;
-  padding: 4rem 0;
   background-image: linear-gradient(to right, $secondary, lighten($secondary, 10%));
   color: $primary-light;
 
   h1 {
-    font-size: 4rem;
     font-weight: $font-weight-bold;
-    margin-bottom: 1rem;
   }
 
   p {
-    font-size: 1.5rem;
     font-weight: $font-weight-regular;
-    margin-bottom: 2rem;
   }
 
   a {

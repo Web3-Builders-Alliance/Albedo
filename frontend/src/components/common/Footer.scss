@@ -2,25 +2,17 @@
 
 .footer {
   background-color: $dark-bg;
-  padding: 2rem;
-  text-align: center;
-
+  
   // Social Icons
   .social-icons {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 2rem;
-    margin-bottom: 1rem;
-
+    
     .icon {
       margin: 0 1rem;
       font-size: 1.2rem;
-      width: 5rem;
-
+      
       img {
-        width: 5rem;
-
+        width: 4rem;
+        
         &.custom {
           width: 3rem;
         }

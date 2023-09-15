@@ -2,16 +2,8 @@
 
 .accordion {
   // Parent styles
-  padding: 2rem;
   background-color: $secondary;
   color: $primary-light;
-  text-align: center;
-  
-  h2 {
-    font-size: 2rem;
-    font-weight: $font-weight-bold;
-    margin-bottom: 1rem;
-  }
   
   &-item {
     // Accordion item styles
@@ -26,7 +18,6 @@
     &-header {
       // Accordion header styles
       button {
-        font-weight: $font-weight-bold;
         
         &:not(.collapsed) {
           background-color: lighten($primary-dark, 10%);
@@ -36,7 +27,6 @@
     
     &-body {
       // Accordion body styles
-      padding: 1rem;
       background-color: lighten($primary-dark, 5%);
       font-weight: $font-weight-regular;
     }
