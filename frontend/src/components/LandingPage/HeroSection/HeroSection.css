@@ -62,8 +62,5 @@ body img {
   background-image: linear-gradient(to right, #62929E, #82a8b1);
   color: #FFFFFF; }
 
-.hero-container h1 {
-  font-weight: 700; }
-
-.hero-container p {
-  font-weight: 400; }
+.hero-container a:hover {
+  background-color: #393D3F; }

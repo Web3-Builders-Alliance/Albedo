@@ -7,7 +7,7 @@ export const ContentSection: FC = () => {
     <div className="content-container container py-5">
       <div className="row d-flex align-items-center">
         <div className="col-md-6 content-text">
-          <h2 className='fw-bold'>Welcome to Albedo: A Decentralized Marketplace for Data</h2>
+          <h2>Welcome to Albedo: A Decentralized Marketplace for Data</h2>
           <p>
             Albedo redefines data marketplaces by integrating cutting-edge IoT sensors 
             with Solana's high-performance blockchain. Elevate your real-time data 

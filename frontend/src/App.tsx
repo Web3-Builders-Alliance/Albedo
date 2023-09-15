@@ -7,6 +7,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { Header } from './components/common/Header';
 import { HeroSection } from './components/LandingPage/HeroSection/HeroSection';
 import { ContentSection } from './components/LandingPage/ContentSection/ContentSection';
+import { MarketOpportunityPanel } from './components/LandingPage/MarketOpportunityPanel/MarketOpportunityPanel';
 import { GetStartedPanel } from './components/LandingPage/GetStartedPanel/GetStartedPanel';
 import { FeaturesPanel } from './components/LandingPage/FeaturesPanel/FeaturesPanel';
 import { FAQPanel } from './components/LandingPage/FAQPanel/FAQPanel';
@@ -18,6 +19,7 @@ export const App: FC = () => {
       <Header />
       <HeroSection />
       <ContentSection />
+      <MarketOpportunityPanel / >
       <GetStartedPanel />
       <FeaturesPanel />
       <FAQPanel />

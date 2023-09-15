@@ -58,7 +58,8 @@ body img {
   opacity: 1;
   transform: translateY(0); }
 
-.get-started-img-fluid {
+.get-started .img-fluid {
+  width: 30rem;
   box-shadow: 4px 4px 4px #000000; }
 
 .get-started .btn-primary {

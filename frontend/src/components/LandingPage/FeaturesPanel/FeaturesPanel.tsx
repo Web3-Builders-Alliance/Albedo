@@ -31,19 +31,19 @@ export const FeaturesPanel: FC = () => {
   return (
     <div ref={panelRef} className="features-panel py-5 hidden container">
       <div className="row justify-content-center">
-        <div className="col-md-4">
+        <div className="col-md-4 mb-4">
           <FeatureCard 
             imageSrc={image1} 
             description="Experience seamless IoT integration and unlock limitless opportunities for growth."
           />
         </div>
-        <div className="col-md-4">
+        <div className="col-md-4 mb-4">
           <FeatureCard 
             imageSrc={image2} 
             description="Blockchain security ensures your transactions are protected and transparent."
           />
         </div>
-        <div className="col-md-4">
+        <div className="col-md-4 mb-4">
           <FeatureCard 
             imageSrc={image3} 
             description="Harness the power of real-time data updates for smarter decision-making."

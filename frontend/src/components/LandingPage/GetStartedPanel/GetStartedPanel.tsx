@@ -29,7 +29,7 @@ export const GetStartedPanel: FC = () => {
     <div ref={panelRef} className="get-started container hidden p-5">
       <div className="row align-items-center">
         <div className="col-md-6">
-          <img src={globaImage} alt="Globe" className="img-fluid" />
+          <img src={globaImage} alt="Globe" className="img-fluid mb-4" />
         </div>
         <div className="col-md-6 text-center">
           <h2>Unleash the Potential</h2>

@@ -10,7 +10,7 @@ export const Footer: FC = () => {
       <div className='container'>
         <div className='row d-flex flex-column'>
           <div className='col-md-12'>
-            <div className="social-icons d-flex align-items-center justify-content-center gap-5">
+            <div className="social-icons d-flex align-items-center justify-content-center gap-3">
               <a href="https://twitter.com/albedo_sdk/status/1702022047440977998?s=20" target="_blank" rel="noopener noreferrer">
                 <span className="icon"><img src={twitterIcon} alt="Twitter" /></span>
               </a>

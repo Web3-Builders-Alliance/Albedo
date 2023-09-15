@@ -12,7 +12,8 @@
     @extend .light-text;
   }
 
-  &-img-fluid {
+  .img-fluid {
+    width: 30rem;
     box-shadow: 4px 4px 4px $primary-dark;
   }
 
@@ -23,9 +24,8 @@
     border-radius: 0.25rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
-  }
-
-  .btn-primary:hover {
-    background-color: $secondary;
+    &:hover {
+      background-color: $secondary;
+    }
   }
 }

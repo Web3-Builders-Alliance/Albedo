@@ -4,16 +4,11 @@
 .hero-container {
   background-image: linear-gradient(to right, $secondary, lighten($secondary, 10%));
   color: $primary-light;
-
-  h1 {
-    font-weight: $font-weight-bold;
-  }
-
-  p {
-    font-weight: $font-weight-regular;
-  }
-
+  
   a {
     @extend .btn-primary;
+    &:hover {
+      background-color: $dark-bg;
+    }
   }
 }
