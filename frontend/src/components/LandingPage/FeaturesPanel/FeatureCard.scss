@@ -1,10 +1,13 @@
 @import '../../../styles/variables';
 
 .feature-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   padding: 1.1rem;
   text-align: center;
   border: 1px solid #e0e0e0; /* Light grey border */
-  padding: 20px;
+  padding: 1.1rem;
   text-align: center;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
   transition: all 0.3s ease; /* Smooth transition for hover state */

@@ -4,12 +4,9 @@
 .get-started {
   @extend .dark-bg;
   text-align: center;
-  padding: 4rem 0;
   
   h2 {
     @extend .light-text;
-    font-size: 2rem;
-    margin-bottom: 1rem;
   }
 
   p {
