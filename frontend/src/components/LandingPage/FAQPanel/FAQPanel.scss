@@ -1,3 +1,5 @@
+@import '../../../styles/variables';
+
 .accordion {
   // Parent styles
   padding: 2rem;
@@ -41,6 +43,7 @@
   }
 }
 
+// Animations
 .hidden,
 .visible {
   transition: all 0.5s ease;

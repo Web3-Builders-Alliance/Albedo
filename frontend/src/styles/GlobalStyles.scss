@@ -1,29 +1,8 @@
-// Base Variables
-$font-size-root: 18px;
-$font-family: 'Inter', sans-serif;
-$font-weight-regular: 400;
-$font-weight-bold: 700;
+// Importing variables
+@import 'variables';
+@import 'mixins';
 
-// Color Palette
-$dark-bg: #393D3F;
-$primary-light: #FFFFFF;
-$primary-dark: #000000;
-$secondary: #62929E;
-
-// Button Styles
-$button-border-radius: 0.3125rem;
-$button-padding: 0.5556rem 1.1111rem;
-
-// Mixins for Reusable Styles
-@mixin button-styles($bg-color, $text-color) {
-  background-color: $bg-color;
-  border-radius: $button-border-radius;
-  color: $text-color;
-  padding: $button-padding;
-  text-align: center;
-}
-
-// Global Styles
+// === Global Styles ===
 body {
   font-size: 1rem; // Equivalent to the root size
   font-family: $font-family;
@@ -40,7 +19,7 @@ body {
   }
 }
 
-// Utility Classes
+// === Utility Classes ===
 .half {
   width: 50%;
 }
@@ -51,7 +30,7 @@ body {
   padding: 0 2rem;
 }
 
-// Theming
+// === Theming ===
 .dark-bg {
   background-color: $dark-bg;
   color: $primary-light;
@@ -69,7 +48,7 @@ body {
   background-color: $secondary;
 }
 
-// Button Classes
+// === Button Classes ===
 .btn-primary {
   @include button-styles($primary-dark, $primary-light);
 }
@@ -78,7 +57,7 @@ body {
   @include button-styles($primary-light, $primary-dark);
 }
 
-// Animations
+// === Animations ===
 .hidden,
 .visible {
   transition: all 0.5s ease;

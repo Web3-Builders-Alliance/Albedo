@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import './GlobalStyles.scss';
+import '../src/styles/GlobalStyles.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 // Exported Modules

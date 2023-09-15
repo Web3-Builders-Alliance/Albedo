@@ -1,3 +1,5 @@
+@import '../../styles/variables';
+
 .navbar {
   // Customizing the navbar background and text color
   background-color: $primary-dark;
@@ -11,7 +13,7 @@
   .nav-item {
     a {
       // Customize link appearance
-      color: $color-primary-light;
+      color: $primary-light;
       text-decoration: none;
       font-weight: $font-weight-regular;
 
@@ -19,18 +21,18 @@
 
       // Hover state for links
       &:hover {
-        color: $color-secondary;
+        color: $secondary;
       }
 
       // Special styles for login/signup buttons
       &.login-signup {
-        color: $color-primary-dark;
+        color: $primary-dark;
         transition: background-color 0.3s ease;
 
         // Hover state for login/signup buttons
         &:hover {
-          background-color: $color-secondary;
-          color: $color-primary-light;
+          background-color: $secondary;
+          color: $primary-light;
         }
       }
     }

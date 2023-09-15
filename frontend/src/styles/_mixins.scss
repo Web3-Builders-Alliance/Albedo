@@ -1,0 +1,8 @@
+// Mixins for Reusable Styles
+@mixin button-styles($bg-color, $text-color) {
+  background-color: $bg-color;
+  border-radius: $button-border-radius;
+  color: $text-color;
+  padding: $button-padding;
+  text-align: center;
+}
