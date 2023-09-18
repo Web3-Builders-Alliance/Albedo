@@ -1,0 +1,9 @@
+@import '../../../styles/variables';
+
+.signup-form {
+  .btn-primary {
+    &:hover {
+      background-color: $secondary;
+    }
+  }
+}

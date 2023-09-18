@@ -1,11 +1,21 @@
 import React, { FC } from 'react';
 import './Header.scss';
 
-export const Header: FC = () => {
+interface HeaderProps {
+  variant: 'signup' | 'landing';
+}
+
+export const Header: FC<HeaderProps> = ({ variant }) => {
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
       <div className="container-fluid">
-        <a className="navbar-brand fw-bold" href="/">Built on Solana</a>
+        {/* Conditional content based on the 'variant' prop */}
+        {variant === 'landing' && (
+          <a className="navbar-brand fw-bold" href="/">Built on Solana</a>
+        )}
+        {variant === 'signup' && (
+          <a className="navbar-brand fw-bold" href="/">Albedo</a>
+        )}
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
         </button>

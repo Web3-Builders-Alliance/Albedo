@@ -4,7 +4,11 @@ import twitterIcon from '../../assets/images/landingPage/twitter_icon.png';
 import discordIcon from '../../assets/images/landingPage/discord_icon.png';
 import linkedIcon from '../../assets/images/landingPage/linkedin_icon.png';
 
-export const Footer: FC = () => {
+interface FooterProps {
+  variant: 'signup' | 'landing';
+}
+
+export const Footer: FC<FooterProps> = ({ variant }) => {
   return (
     <footer className="footer py-2">
       <div className='container'>

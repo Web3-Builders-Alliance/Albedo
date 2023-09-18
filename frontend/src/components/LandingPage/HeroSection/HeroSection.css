@@ -1,15 +1,13 @@
 body {
   font-size: 1rem;
   font-family: "Inter", sans-serif; }
-
-body a {
-  text-decoration: none; }
-
-body img {
-  display: block;
-  max-width: 100%;
-  height: auto;
-  margin: auto; }
+  body a {
+    text-decoration: none; }
+  body img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: auto; }
 
 .half {
   width: 50%; }
@@ -61,6 +59,5 @@ body img {
 .hero-container {
   background-image: linear-gradient(to right, #000000, #82a8b1);
   color: #FFFFFF; }
-
-.hero-container a:hover {
-  background-color: #393D3F; }
+  .hero-container a:hover {
+    background-color: #393D3F; }
