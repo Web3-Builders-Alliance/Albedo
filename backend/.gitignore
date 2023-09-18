@@ -1,0 +1,10 @@
+# .gitignore for backend
+
+# Ignore environment variables
+.env
+
+# Ignore node modules
+node_modules/
+
+# Ignore the temporary database
+users.json
