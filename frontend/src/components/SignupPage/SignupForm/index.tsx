@@ -4,6 +4,7 @@ import './SignupForm.scss';
 export const SignupForm: FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [message, setMessage] = useState('');
   
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -19,12 +20,27 @@ export const SignupForm: FC = () => {
     }),
   })
   .then(response => response.json())
-  .then(data => console.log(data))
-  .catch(error => console.log('Error:', error));
+  .then(data => {
+    if (data.message === 'User created') {
+      setMessage('Signup successful!');
+      // Clear the form
+      setEmail('');
+      setPassword('');
+    } else {
+      setMessage('Signup failed. ' + data.message);
+    }
+  })
+  .catch(error => {
+    setMessage('An error occurred: ' + error);
+  });
 };
 
 return (
   <form className="signup-form needs-validation" noValidate onSubmit={handleSubmit}>
+  {/* Show Message */}
+  {message && <div className='alert alert-info'>{message}</div>} 
+
+
   {/* Email Field */}
   <div className="mb-3">
   <label htmlFor="email" className="form-label">Email address</label>
