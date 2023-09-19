@@ -3,11 +3,25 @@
     "module": "ESNext",
     "moduleResolution": "Node",
     "target": "ES2020",
-    "jsx": "react",
+    "jsx": "react-jsx",
     "strictNullChecks": true,
     "strictFunctionTypes": true,
     "sourceMap": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true
   },
   "include": [
     "src/**/*"
