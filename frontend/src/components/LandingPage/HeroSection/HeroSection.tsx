@@ -6,7 +6,7 @@ export const HeroSection: FC = () => {
     <div className="hero-container text-center p-5">
       <h1 className="display-1 fw-bold mb-3">Albedo</h1>
       <p className="fs-3 fw-normal mb-4">Unlocking the Future of Decentralized Sensor Data</p>
-      <a href="/login-signup" className="btn btn-primary btn-lg">Get Started</a>
+      <a href="/signup" className="btn btn-primary btn-lg">Get Started</a>
     </div>
   );
 };

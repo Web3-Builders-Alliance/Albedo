@@ -1,4 +1,4 @@
-.feature-card {
+.features-panel .feature-card {
   height: 100%;
   border: 1px solid #e0e0e0;
   /* Light grey border */
@@ -6,8 +6,9 @@
   /* Subtle shadow */
   transition: all 0.3s ease;
   /* Smooth transition for hover state */ }
-  .feature-card:hover {
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
-    /* Slightly more pronounced shadow on hover */
-    transform: scale(1.05);
-    /* Scales the card size by 5% */ }
+
+.features-panel .feature-card:hover {
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+  /* Slightly more pronounced shadow on hover */
+  transform: scale(1.05);
+  /* Scales the card size by 5% */ }

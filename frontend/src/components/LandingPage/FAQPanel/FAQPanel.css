@@ -1,17 +1,21 @@
 .accordion {
   background-image: linear-gradient(to right, #000000, #82a8b1);
   color: #FFFFFF; }
-  .accordion-item {
-    border: none;
-    border-bottom: 1px solid #333333;
-    background-color: transparent; }
-    .accordion-item:last-child {
-      border-bottom: none; }
-    .accordion-item-header button:not(.collapsed) {
-      background-color: #1a1a1a; }
-    .accordion-item-body {
-      background-color: #0d0d0d;
-      font-weight: 400; }
+
+.accordion-item {
+  border: none;
+  border-bottom: 1px solid #333333;
+  background-color: transparent; }
+
+.accordion-item:last-child {
+  border-bottom: none; }
+
+.accordion-item-header button:not(.collapsed) {
+  background-color: #1a1a1a; }
+
+.accordion-item-body {
+  background-color: #0d0d0d;
+  font-weight: 400; }
 
 .hidden,
 .visible {

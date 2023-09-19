@@ -27,9 +27,11 @@ export const Header: FC<HeaderProps> = ({ variant }) => {
             <li className="nav-item">
               <a className="nav-link active" href="#features">Features</a>
             </li>
+            {variant === 'landing' && (
             <li className="nav-item">
-              <a className="nav-link btn-secondary login-signup" href="#login">Login/Sign-Up</a>
+              <a className="nav-link btn-secondary login-signup" href="/signup">Sign-Up</a>
             </li>
+            )}
           </ul>
         </div>
       </div>

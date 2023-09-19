@@ -32,7 +32,7 @@ body img {
 .alt-bg {
   background-color: #62929E; }
 
-.btn-primary, .hero-container a {
+.btn-primary {
   background-color: #000000;
   border-radius: 0.3125rem;
   color: #FFFFFF;
@@ -57,10 +57,3 @@ body img {
 .visible {
   opacity: 1;
   transform: translateY(0); }
-
-.hero-container {
-  background-image: linear-gradient(to right, #000000, #82a8b1);
-  color: #FFFFFF; }
-
-.hero-container a:hover {
-  background-color: #62929E; }
