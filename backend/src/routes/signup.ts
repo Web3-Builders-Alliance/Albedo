@@ -23,14 +23,18 @@ export const signupRoute = (req: Request, res: Response) => {
   // Add new user
   users.push({ email, password });
   fs.writeFileSync(usersPath, JSON.stringify(users));
+
+  const wbaLogoUrl = 'https://avatars.githubusercontent.com/u/109991700?s=200&v=4';
   
-  // Send a welcome email
+  
   sendEmail(
     email, 
     'Welcome to Albedo', 
-    'Thank you for signing up!', 
-    '<strong>Thank you for signing up!</strong>'
-    );
+    
+    `Welcome to Albedo, ${email}!\n\nWe're excited to have you join our community. You can now start exploring all the features and benefits that Albedo has to offer.\n\nShould you have any questions, feel free to reach out. We're here to help!\n\nBest regards,\nThe Albedo Team\n\n--------------------------------------\nIn Partnership with the Web3 Builders Alliance (WBA)`,
+    
+    `<h1>Welcome to Albedo, ${email}!</h1><p>We're excited to have you join our community. You can now start exploring some of the features and benefits that Albedo has to offer.</p><p>Should you have any questions, feel free to reach out. We're here to help!</p><br><p>Best regards,</p><p>The Albedo Team</p><hr><p><strong>In Partnership with the Web3 Builders Alliance (WBA)</strong></p><img src="${wbaLogoUrl}" alt="Web3 Builders Alliance Logo" width="150">`
+  );
     
     res.status(201).json({ message: 'User created', email });
   };
