@@ -1,6 +1,11 @@
 import express from 'express';
 import cors from 'cors';
 import { signupRoute } from './routes/signup';
+import { sendEmail } from './sendEmail';
+
+// Load environment variables for SendGrid
+import dotenv from 'dotenv';
+dotenv.config();
 
 // Initialize express
 const app = express();
