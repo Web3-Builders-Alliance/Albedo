@@ -12,15 +12,13 @@ export const App: FC = () => {
   return (
     <Router>
       <div className="main-container">
-        {/* <Header variant='landing' /> */}
         
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/signup" element={<SignupPage />} />
           {/* Add other routes here */}
         </Routes>
-        
-        {/* <Footer variant='landing' /> */}
+          
       </div>
     </Router>
   );
