@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { LandingPage } from './components/LandingPage/LandingPage';
 import { SignupPage } from './components/SignupPage/SignupPage';
+import { PhantomInitPage } from './components/PhantomInitPage/PhantomInitPage';
 
 // Import your global styles
 import '../src/styles/GlobalStyles.scss';
@@ -16,6 +17,7 @@ export const App: FC = () => {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/signup" element={<SignupPage />} />
+          <Route path="/initialize-phantom" element={<PhantomInitPage />} />
           {/* Add other routes here */}
         </Routes>
           
