@@ -1,15 +1,13 @@
 body * {
   font-size: 1rem;
   font-family: "Inter", sans-serif; }
-
-body * a {
-  text-decoration: none; }
-
-body * img {
-  display: block;
-  max-width: 100%;
-  height: auto;
-  margin: auto; }
+  body * a {
+    text-decoration: none; }
+  body * img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: auto; }
 
 .half {
   width: 50%; }
@@ -68,6 +66,5 @@ body * img {
   border-radius: 0.25rem;
   cursor: pointer;
   transition: background-color 0.3s ease; }
-
-.get-started .btn-primary:hover {
-  background-color: #62929E; }
+  .get-started .btn-primary:hover {
+    background-color: #62929E; }

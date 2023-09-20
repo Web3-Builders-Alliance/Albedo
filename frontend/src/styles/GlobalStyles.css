@@ -1,15 +1,13 @@
 body * {
   font-size: 1rem;
   font-family: "Inter", sans-serif; }
-
-body * a {
-  text-decoration: none; }
-
-body * img {
-  display: block;
-  max-width: 100%;
-  height: auto;
-  margin: auto; }
+  body * a {
+    text-decoration: none; }
+  body * img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: auto; }
 
 .half {
   width: 50%; }

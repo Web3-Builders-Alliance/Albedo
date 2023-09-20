@@ -1,9 +1,12 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { Header } from '../common/Header';
+import { Footer } from '../common/Footer';
 
 export const EmailVerificationPage: FC = () => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);  // Add this state
   
   useEffect(() => {
     // Extract token from URL
@@ -12,6 +15,7 @@ export const EmailVerificationPage: FC = () => {
     
     if (!token) {
       console.error("Token is missing from URL");
+      setIsLoading(false);  // Hide spinner
       // Redirect to an error page or display an error message
       return;
     }
@@ -19,6 +23,7 @@ export const EmailVerificationPage: FC = () => {
     // Make an API call to verify the token
     axios.post('http://localhost:3001/api/verify-token', { token })
       .then(response => {
+        setIsLoading(false);  // Hide spinner
         if (response.data.valid) {
           console.log("Email verified successfully!");
           // Redirect to the PhantomInitPage
@@ -29,17 +34,24 @@ export const EmailVerificationPage: FC = () => {
         }
       })
       .catch(error => {
+        setIsLoading(false);  // Hide spinner
         console.error("An error occurred while verifying the token", error);
         // Redirect to an error page or display an error message
       });
   }, [navigate]);
   
   return (
-    <div className='d-flex justify-content-center align-items-center vh-100'>
-      <div className='text-center'>
+    <div>
+      <Header variant='signup' />
+      <div className='d-flex justify-content-center align-items-center'>
         <h1>Verifying your email...</h1>
-        {/* You can add a spinner here */}
+        {isLoading && (  // Show spinner only if isLoading is true
+          <div className="spinner-border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        )}
       </div>
+      <Footer variant='signup' />
     </div>
   );
 };

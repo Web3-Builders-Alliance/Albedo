@@ -1,9 +1,9 @@
-body {
+body * {
   font-size: 1rem;
   font-family: "Inter", sans-serif; }
-  body a {
+  body * a {
     text-decoration: none; }
-  body img {
+  body * img {
     display: block;
     max-width: 100%;
     height: auto;
