@@ -21,7 +21,8 @@ export const signupRoute = (req: Request, res: Response) => {
     return res.status(400).json({ message: 'Email already exists' });
   }
 
-  
+  // Generate a unique token for email verification
+  const verificationToken = uuidv4();
 
   // Add new user
   users.push({ email, password, token: verificationToken });
@@ -30,8 +31,6 @@ export const signupRoute = (req: Request, res: Response) => {
   // WBA logo for email signature
   const wbaLogoUrl = 'https://avatars.githubusercontent.com/u/109991700?s=200&v=4';
 
-  // Generate a unique token for email verification
-  const verificationToken = uuidv4();
   
   // Send a verification email with the token
   const verificationLink = `http://localhost:3000/verify-email?token=${verificationToken}`;
