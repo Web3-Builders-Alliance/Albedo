@@ -4,16 +4,16 @@ import path from 'path';
 
 export const verifyEmailRoute = (req: Request, res: Response) => {
   // Read token from query params
-  const { token } = req.query;
+  const { token } = req.body;
 
   if (!token) {
     return res.status(400).json({ message: 'Token is required' });
   }
 
   // Simulate database
-  const usersPath = path.join(__dirname, '../users.json');
+  const usersPath = path.join(__dirname, '../../users.json');
   const users = JSON.parse(fs.readFileSync(usersPath, 'utf-8'));
-
+  
   // Check if token is valid
   const user = users.find((user: { token: string }) => user.token === token);
 
@@ -22,8 +22,8 @@ export const verifyEmailRoute = (req: Request, res: Response) => {
     user.emailVerified = true;
     fs.writeFileSync(usersPath, JSON.stringify(users));
 
-    return res.status(200).json({ message: 'Email verified successfully' });
+    return res.status(200).json({ valid: true, message: 'Email verified successfully' });
   } else {
-    return res.status(400).json({ message: 'Invalid or expired token' });
+    return res.status(400).json({ valid: false, message: 'Invalid or expired token' });
   }
 };

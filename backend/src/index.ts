@@ -19,7 +19,7 @@ app.use(express.json());
 app.post('/signup', signupRoute);
 
 // Add verifyEmailRoute
-app.get('/verify-email', verifyEmailRoute);
+app.post('/api/verify-token', verifyEmailRoute);
 
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);

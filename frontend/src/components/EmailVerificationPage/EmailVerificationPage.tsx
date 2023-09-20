@@ -17,7 +17,7 @@ export const EmailVerificationPage: FC = () => {
     }
     
     // Make an API call to verify the token
-    axios.post('/api/verify-token', { token })
+    axios.post('http://localhost:3001/api/verify-token', { token })
       .then(response => {
         if (response.data.valid) {
           console.log("Email verified successfully!");
