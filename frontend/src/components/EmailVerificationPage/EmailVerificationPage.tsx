@@ -22,7 +22,7 @@ export const EmailVerificationPage: FC = () => {
         if (response.data.valid) {
           console.log("Email verified successfully!");
           // Redirect to the PhantomInitPage
-          navigate('/phantom-init');
+          navigate('/initialize-phantom');
         } else {
           console.error("Invalid token");
           // Redirect to an error page or display an error message
@@ -35,9 +35,11 @@ export const EmailVerificationPage: FC = () => {
   }, [navigate]);
   
   return (
-    <div>
-      <h1>Verifying your email...</h1>
-      {/* You can add a spinner here */}
+    <div className='d-flex justify-content-center align-items-center vh-100'>
+      <div className='text-center'>
+        <h1>Verifying your email...</h1>
+        {/* You can add a spinner here */}
+      </div>
     </div>
   );
 };

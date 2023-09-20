@@ -20,34 +20,45 @@ export const SolanaWallet: FC = () => {
     const endpoint = useMemo(() => clusterApiUrl(network), [network]);
 
     const wallets = useMemo(
-        () => [
-            /**
-             * Wallets that implement either of these standards will be available automatically.
-             *
-             *   - Solana Mobile Stack Mobile Wallet Adapter Protocol
-             *     (https://github.com/solana-mobile/mobile-wallet-adapter)
-             *   - Solana Wallet Standard
-             *     (https://github.com/solana-labs/wallet-standard)
-             *
-             * If you wish to support a wallet that supports neither of those standards,
-             * instantiate its legacy wallet adapter here. Common legacy adapters can be found
-             * in the npm package `@solana/wallet-adapter-wallets`.
-             */
-            new UnsafeBurnerWalletAdapter(),
-        ],
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [network]
-    );
+      () => [
+          /**
+           * Wallets that implement either of these standards will be available automatically.
+           *
+           *   - Solana Mobile Stack Mobile Wallet Adapter Protocol
+           *     (https://github.com/solana-mobile/mobile-wallet-adapter)
+           *   - Solana Wallet Standard
+           *     (https://github.com/solana-labs/wallet-standard)
+           *
+           * If you wish to support a wallet that supports neither of those standards,
+           * instantiate its legacy wallet adapter here. Common legacy adapters can be found
+           * in the npm package `@solana/wallet-adapter-wallets`.
+           */
+          new UnsafeBurnerWalletAdapter(),
+      ],
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [network]
+  );
 
-    return (
+  return (
+    <div className="d-flex flex-column align-items-center p-4">
+      <div className="text-center">
+        <h1>Initialize Your Phantom Wallet</h1>
         <ConnectionProvider endpoint={endpoint}>
+          <div className='d-flex justify-content-center gap-4'>
             <WalletProvider wallets={wallets} autoConnect>
-                <WalletModalProvider>
-                    <WalletMultiButton />
-                    <WalletDisconnectButton />
-                    { /* Your app's components go here, nested within the context providers. */ }
-                </WalletModalProvider>
+              <WalletModalProvider>
+                <div className="my-3">
+                  <WalletMultiButton />
+                </div>
+                <div className="my-3">
+                  <WalletDisconnectButton />
+                </div>
+                {/* Your app's components go here, nested within the context providers. */}
+              </WalletModalProvider>
             </WalletProvider>
+          </div>
         </ConnectionProvider>
-    );
-};
+      </div>
+    </div>
+  );
+}

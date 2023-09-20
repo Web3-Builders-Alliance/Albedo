@@ -3,7 +3,7 @@
 @import 'mixins';
 
 // === Global Styles ===
-body {
+body * {
   font-size: 1rem; // Equivalent to the root size
   font-family: $font-family;
 

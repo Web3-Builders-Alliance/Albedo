@@ -32,8 +32,10 @@ export const SendSOLToRandomAddress: FC = () => {
     }, [publicKey, sendTransaction, connection]);
 
     return (
-        <button onClick={onClick} disabled={!publicKey}>
-            Send SOL to a random address!
-        </button>
+        <div className='d-flex justify-content-center p-4'>
+          <button onClick={onClick} disabled={!publicKey}>
+              Send SOL to a random address!
+          </button>
+        </div>
     );
 };
