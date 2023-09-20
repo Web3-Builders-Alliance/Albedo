@@ -1,13 +1,21 @@
-body * {
+body {
   font-size: 1rem;
-  font-family: "Inter", sans-serif; }
-  body * a {
-    text-decoration: none; }
-  body * img {
-    display: block;
-    max-width: 100%;
-    height: auto;
-    margin: auto; }
+  font-family: "Inter", sans-serif !important;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column; }
+
+body footer {
+  margin-top: auto; }
+
+body a {
+  text-decoration: none; }
+
+body img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: auto; }
 
 .half {
   width: 50%; }

@@ -3,9 +3,16 @@
 @import 'mixins';
 
 // === Global Styles ===
-body * {
+body {
   font-size: 1rem; // Equivalent to the root size
-  font-family: $font-family;
+  font-family: $font-family !important;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  footer {
+    margin-top: auto;
+  }
 
   a {
     text-decoration: none;
