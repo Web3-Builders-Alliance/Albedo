@@ -74,24 +74,28 @@ export const SolanaWallet: FC = () => {
     
     return (
       <div className="d-flex flex-column align-items-center p-4">
-      <div className="text-center">
-      <h1>Initialize Your Phantom Wallet</h1>
-      <ConnectionProvider endpoint={endpoint}>
-      <div className='d-flex justify-content-center gap-4'>
-      <WalletProvider wallets={wallets} onError={onError} autoConnect={autoSignIn}>
-      <WalletModalProvider>
-      <div className="my-3">
-      <WalletMultiButton />
+        <div className="text-center">
+          <h1>Initialize Your Phantom Wallet</h1>
+          <ConnectionProvider endpoint={endpoint}>
+            <div className="d-flex justify-content-center gap-4">
+              <WalletProvider
+                wallets={wallets}
+                onError={onError}
+                autoConnect={autoSignIn}
+              >
+                <WalletModalProvider>
+                  <div className="my-3">
+                    <WalletMultiButton />
+                  </div>
+                  <div className="my-3">
+                    <WalletDisconnectButton />
+                  </div>
+                  {/* Your app's components go here, nested within the context providers. */}
+                </WalletModalProvider>
+              </WalletProvider>
+            </div>
+          </ConnectionProvider>
+        </div>
       </div>
-      <div className="my-3">
-      <WalletDisconnectButton />
-      </div>
-      {/* Your app's components go here, nested within the context providers. */}
-      </WalletModalProvider>
-      </WalletProvider>
-      </div>
-      </ConnectionProvider>
-      </div>
-      </div>
-      );
+    );
     }
