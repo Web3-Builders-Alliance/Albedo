@@ -12,7 +12,7 @@ export const SignupPage: FC = () => {
 
       <main className="container py-5">
         {/* Main Title and Subtitle */}
-        <TitleAndSubtitle title='Sign Up' subtitle='Join us and explore the world of DePIN data on Solana.' />
+        <TitleAndSubtitle title='Sign Up' subtitle='Connect your Solana Wallet to Sign Up.' />
 
         {/* Signup Form */}
         <div className="row justify-content-center">
