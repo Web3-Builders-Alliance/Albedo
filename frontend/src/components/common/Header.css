@@ -1,9 +1,14 @@
-body * {
+body {
   font-size: 1rem;
-  font-family: "Inter", sans-serif; }
-  body * a {
+  font-family: "Inter", sans-serif !important;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column; }
+  body footer {
+    margin-top: auto; }
+  body a {
     text-decoration: none; }
-  body * img {
+  body img {
     display: block;
     max-width: 100%;
     height: auto;

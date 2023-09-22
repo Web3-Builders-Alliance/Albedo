@@ -4,18 +4,15 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column; }
-
-body footer {
-  margin-top: auto; }
-
-body a {
-  text-decoration: none; }
-
-body img {
-  display: block;
-  max-width: 100%;
-  height: auto;
-  margin: auto; }
+  body footer {
+    margin-top: auto; }
+  body a {
+    text-decoration: none; }
+  body img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: auto; }
 
 .half {
   width: 50%; }
@@ -67,6 +64,5 @@ body img {
 .hero-container {
   background-image: linear-gradient(to right, #000000, #82a8b1);
   color: #FFFFFF; }
-
-.hero-container a:hover {
-  background-color: #62929E; }
+  .hero-container a:hover {
+    background-color: #62929E; }
