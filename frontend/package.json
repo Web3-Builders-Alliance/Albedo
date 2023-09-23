@@ -41,6 +41,7 @@
   },
   "scripts": {
     "start": "npm run sass && react-app-rewired start",
+    "build": "npm run sass && react-app-rewired build",
     "sass": "node-sass src/ -o src/",
     "watch-sass": "npm run sass && node-sass src/ -o src/ --watch",
     "dev": "npm-run-all -p watch-sass start"
