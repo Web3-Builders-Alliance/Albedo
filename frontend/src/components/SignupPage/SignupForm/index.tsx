@@ -75,15 +75,15 @@ export const SignupForm: FC = () => {
   }, [publicKey, sendTransaction, connection, signIn, connected]);
 
   return (
-    <div className="signup-form text-center">
+    <div className="signup-form d-flex flex-column align-items-center">
       {message && <div className="alert alert-info">{message}</div>}
   
       {connected ? (
         <>
-          <div className="mb-3">
+          <div className="mb-3 alert alert-info">
             Connected with Public Key: {publicKey?.toBase58() || ""}
           </div>
-          <WalletDisconnectButton className="btn btn-primary w-100" />
+          <WalletDisconnectButton className="btn btn-primary w-100 mb-3" />
         </>
       ) : (
         <WalletMultiButton className="btn btn-primary w-100" />
@@ -92,7 +92,7 @@ export const SignupForm: FC = () => {
       <button
         type="button"
         disabled={!connected}
-        className="btn btn-secondary w-100 mt-3"
+        className="btn btn-secondary mt-3"
         onClick={signInSolana}
       >
         Sign Up with Solana
