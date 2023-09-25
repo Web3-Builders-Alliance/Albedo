@@ -15,7 +15,7 @@ pub mod sol_vault {
 
     pub fn deposit_premium(ctx: Context<DepositPremium>, amount: u64) -> Result<()> {
         let ctx_accounts = Transfer {
-            from: ctx.accounts.owner.to_account_info(),
+            from: ctx.accounts.user.to_account_info(),
             to: ctx.accounts.vault.to_account_info(),
         };
         let cpi = CpiContext::new(ctx.accounts.system_program.to_account_info(), ctx_accounts);
@@ -46,7 +46,9 @@ pub struct Initialize<'info> {
 #[derive(Accounts)]
 pub struct DepositPremium<'info> {
     #[account(mut)]
-    owner: Signer<'info>,
+    user: Signer<'info>,
+    /// CHECK: qsdaxz
+    owner: UncheckedAccount<'info>,
     #[account(
         seeds = [b"state", owner.key().as_ref()],
         bump = state.state_bump,
