@@ -18,21 +18,24 @@ router.get('/signInInput', async (req, res) => {
 // Verify sign-in output
 router.post('/verifyOutput', (req, res) => {
   try {
-    console.log("Inside verifyOutput route");  // Logging for debug
-    
+    console.log("Debug: Full request body:", req.body);  // Log the full request body
     const { input, output } = req.body;  // Destructure incoming payload
-    
+    console.log("Debug: Received at Backend - input:", input, "output:", output);
+
     // Validate payload
     if (!input || !output) {
+      console.error("Debug: Missing input or output."); // More specific logging
       return res.status(400).json({ message: "Missing required parameters 'input' and/or 'output'." });
     }
 
+    console.log("Debug: Before verification - input:", input, "output:", output);
     const isValid = verifySIWS(input, output);  // Your custom SIWS verification logic
 
     // Sending back validation result
     if (isValid) {
       return res.json({ success: true });
     } else {
+      console.error("Debug: Invalid sign-in data."); // More specific logging
       return res.status(400).json({ success: false, message: "Invalid sign-in data" });
     }
   } catch (error) {
