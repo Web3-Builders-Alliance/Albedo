@@ -35,8 +35,10 @@ router.post('/verifyOutput', (req, res) => {
     return res.status(400).json({ message: "Missing required parameter 'output'." });
   }
 
-    console.log("Debug: Before verification - input:", input, "output:", output);
-    const isValid = verifySIWS(input, output);  // Your custom SIWS verification logic
+  console.log("Debug: Input Contents:", JSON.stringify(input));
+  console.log("Debug: Output Contents:", JSON.stringify(output));
+
+  const isValid = verifySIWS(input, output);  // Your custom SIWS verification logic
 
     // Sending back validation result
     if (isValid) {

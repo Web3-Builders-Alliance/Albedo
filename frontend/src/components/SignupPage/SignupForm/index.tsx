@@ -62,10 +62,13 @@ export const SignupForm: FC = () => {
         signedMessage: new Uint8Array(new TextEncoder().encode(nonce)),
       };
 
+      console.log("Debug: Type of input:", typeof fetchSignInData);
+      console.log("Debug: Type of output:", typeof outputData);
+
       const verifyRes = await fetch('http://localhost:3001/api/verifyOutput', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ input: fetchSignInData, output: outputData }),
+        body: JSON.stringify({ input: signInData, output: outputData }),
       });
     
       const { success } = await verifyRes.json();
