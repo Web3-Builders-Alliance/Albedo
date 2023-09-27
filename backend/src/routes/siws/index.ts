@@ -35,8 +35,11 @@ router.post('/verifyOutput', (req, res) => {
     return res.status(400).json({ message: "Missing required parameter 'output'." });
   }
 
-  console.log("Debug: Input Contents:", JSON.stringify(input));
-  console.log("Debug: Output Contents:", JSON.stringify(output));
+  console.log("Type of output.signature: ", typeof output.signature);
+  console.log("Value of output.signature: ", output.signature);
+
+  console.log("Is output.signature an instance of ArrayBuffer: ", output.signature instanceof ArrayBuffer);
+  console.log("Is output.signature an instance of ArrayBufferView: ", ArrayBuffer.isView(output.signature));
 
   const isValid = verifySIWS(input, output);  // Your custom SIWS verification logic
 

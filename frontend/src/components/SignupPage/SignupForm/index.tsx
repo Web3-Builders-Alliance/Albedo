@@ -49,7 +49,14 @@ export const SignupForm: FC = () => {
       if (!signedMessage) {
         throw new Error("Failed to sign the nonce");
       }
-      
+
+      console.log("Debug: Type of publicKey", JSON.stringify(publicKey));
+      console.log("Debug: Type of output.signature", JSON.stringify(signedMessage));
+      console.log("Debug: Type of output.signature", JSON.stringify(nonce));
+
+      // Create SolanaSignInOutput
+      const signatureArray = signedMessage instanceof Uint8Array ? signedMessage : new Uint8Array(signedMessage);
+
       // Create SolanaSignInOutput
       const outputData: SolanaSignInOutput = {
         account: {
@@ -58,13 +65,10 @@ export const SignupForm: FC = () => {
           chains: ["solana:devnet"],
           features: [],
         },
-        signature: signedMessage,
+        signature: signatureArray,
         signedMessage: new Uint8Array(new TextEncoder().encode(nonce)),
       };
-
-      console.log("Debug: Type of input:", typeof fetchSignInData);
-      console.log("Debug: Type of output:", typeof outputData);
-
+      
       const verifyRes = await fetch('http://localhost:3001/api/verifyOutput', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -73,6 +77,7 @@ export const SignupForm: FC = () => {
     
       const { success } = await verifyRes.json();
       setMessage(success ? 'Successfully signed in with Solana' : 'Failed to verify Solana sign-in');
+    
     } catch (err: any) {
       setMessage(`Error: ${err.message}`);
     }
