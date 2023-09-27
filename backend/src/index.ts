@@ -10,7 +10,6 @@ import siwsRoutes from '../src/routes/siws/index';
 // Initialize express
 const app = express();
 const port = 3001; // You can choose another port if you like
-const crypto = require('crypto');
 
 // Enable CORS from frontend
 app.use(cors({
@@ -35,7 +34,10 @@ app.post('/api/verify-token', verifyEmailRoute);
 app.use('/api', siwsRoutes);
 
 // Endpoint to send the nonce to the frontend
-
+app.get('/api/getSignInData', async (req, res) => {
+  const signInData = await createSignInData();
+  res.json(signInData);
+})
 
 // Global error handler
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {

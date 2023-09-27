@@ -1,34 +1,13 @@
-import React, { FC, useState, useCallback, useMemo, useEffect } from 'react';
+import React, { FC, useState, useCallback, useMemo } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Connection } from '@solana/web3.js';
 import { WalletNotConnectedError } from '@solana/wallet-adapter-base';
 import { WalletMultiButton, WalletDisconnectButton } from '@solana/wallet-adapter-react-ui';
 import { SolanaSignInInput, SolanaSignInOutput } from '@solana/wallet-standard-features';
 
-
 export const SignupForm: FC = () => {
   const { publicKey, connected, signMessage, signIn } = useWallet();
   const [message, setMessage] = useState('');
-  const [nonce, setNonce] = useState<Uint8Array | null>(null);
-
-  useEffect(() => {
-    // Fetch the nonce from the backend API
-    const fetchNonce = async () => {
-      try {
-        const res = await fetch('http://localhost:3001/api/getNonce');
-        if (res.ok) {
-          const { nonce } = await res.json();
-          setNonce(Uint8Array.from(nonce));
-        } else {
-          throw new Error('Failed to fetch nonce');
-        }
-      } catch (error) {
-        console.error(`Error fetching nonce: ${error}`);
-      }
-    };
-
-    fetchNonce();
-  }, []);
   
   const connection = useMemo(() => new Connection('https://api.devnet.solana.com/'), []);
 
@@ -59,7 +38,17 @@ export const SignupForm: FC = () => {
 
       // Use the fetched data for the signing process
       const signInData = await fetchSignInData();
-      const nonce = signInData.nonce;
+      const nonce = signInData.nonce; // gets the nonce from the backend
+      
+      // Sign the nonce with the wallet's secret key
+      let signedMessage: Uint8Array | undefined;
+      if (typeof signMessage === 'function') {
+        signedMessage = await signMessage(new TextEncoder().encode(nonce));
+      }
+
+      if (!signedMessage) {
+        throw new Error("Failed to sign the nonce");
+      }
       
       // Create SolanaSignInOutput
       const outputData: SolanaSignInOutput = {
@@ -69,14 +58,14 @@ export const SignupForm: FC = () => {
           chains: ["solana:devnet"],
           features: [],
         },
-        signature: new Uint8Array(signedNonce),
-        signedMessage: nonce,
+        signature: signedMessage,
+        signedMessage: new Uint8Array(new TextEncoder().encode(nonce)),
       };
 
       const verifyRes = await fetch('http://localhost:3001/api/verifyOutput', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ input: createFrontendSignInData, output: outputData }),
+        body: JSON.stringify({ input: fetchSignInData, output: outputData }),
       });
     
       const { success } = await verifyRes.json();
@@ -84,7 +73,7 @@ export const SignupForm: FC = () => {
     } catch (err: any) {
       setMessage(`Error: ${err.message}`);
     }
-  }, [publicKey, connection, signIn, connected, nonce, signMessage]);
+  }, [publicKey, connection, signIn, connected, signMessage]);
 
   return (
     <div className="signup-form d-flex flex-column align-items-center">
@@ -101,7 +90,7 @@ export const SignupForm: FC = () => {
       )}
       <button
         type="button"
-        disabled={!connected || !nonce}
+        disabled={!connected}
         className="btn btn-secondary mt-3"
         onClick={signInSolana}
       >
