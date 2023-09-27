@@ -41,41 +41,26 @@ export const SignupForm: FC = () => {
       if (!publicKey || !connection || !signMessage) {
         throw new WalletNotConnectedError();
       }
-  
-      // Make sure nonce is fetched
-      if (!nonce) {
-        throw new Error('Nonce not fetched');
-      }
-  
+      
       // Check that signMessage is not undefined
       if (typeof signMessage !== 'function') {
         throw new Error('signMessage function is not available');
       }
-  
-      // Sign the nonce
-      const signedNonce = await signMessage(nonce);
-
+      
       // Convert publicKey to a JSON-serializable format
       const serializablePublicKey = Array.from(new Uint8Array(publicKey.toBuffer()));
 
-      const createFrontendSignInData = async (): Promise<SolanaSignInInput> => {
-        const now = new Date();
-        const currentDateTime = now.toISOString();
-        const nonce = crypto.getRandomValues(new Uint8Array(16)).join('');
-      
-        const signInData: SolanaSignInInput = {
-          domain: "https://650f3566e678fa5c1fa8b6fb--splendorous-lolly-4434bd.netlify.app",
-          statement: "Authentication statement.",
-          version: "1",
-          nonce,
-          chainId: "devnet",
-          issuedAt: currentDateTime,
-          resources: ["https://example.com", "https://phantom.app/"]
-        };
-      
+      // Fetch the SolanaSignInInput data from backend
+      const fetchSignInData = async () => {
+        const res = await fetch('http://localhost:3001/api/getSignInData');
+        const signInData: SolanaSignInInput = await res.json();
         return signInData;
-      };
+      }
 
+      // Use the fetched data for the signing process
+      const signInData = await fetchSignInData();
+      const nonce = signInData.nonce;
+      
       // Create SolanaSignInOutput
       const outputData: SolanaSignInOutput = {
         account: {

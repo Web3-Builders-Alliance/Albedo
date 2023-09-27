@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import { signupRoute } from './routes/signup';
 import { verifyEmailRoute } from './routes/emailVerification';
+import { createSignInData } from './routes/siws/signInInput';
 
 import siwsRoutes from '../src/routes/siws/index';
 
@@ -30,14 +31,11 @@ app.post('/signup', signupRoute);
 // Add verifyEmailRoute
 app.post('/api/verify-token', verifyEmailRoute);
 
-app.get('/api/getNonce', (req, res) => {
-  const nonce = crypto.randomBytes(16).toString('hex');
-  // Store this nonce in a database or in-memory data structure, tied to this user session.
-  res.json({ nonce });
-});
-
 // Sign in With Solana routes
 app.use('/api', siwsRoutes);
+
+// Endpoint to send the nonce to the frontend
+
 
 // Global error handler
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
