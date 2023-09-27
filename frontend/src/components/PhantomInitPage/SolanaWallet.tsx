@@ -1,4 +1,4 @@
-import React, { FC, useMemo, useCallback, PropsWithChildren } from 'react';
+import React, { FC, useMemo, PropsWithChildren } from 'react';
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 import { UnsafeBurnerWalletAdapter } from '@solana/wallet-adapter-wallets';
@@ -6,49 +6,17 @@ import {
   WalletModalProvider,
 } from '@solana/wallet-adapter-react-ui';
 import { clusterApiUrl } from '@solana/web3.js';
-import { SolanaSignInInput } from "@solana/wallet-standard-features";
 
 // Default styles that can be overridden by your app
 require('@solana/wallet-adapter-react-ui/styles.css');
 
 export const SolanaWallet: FC<PropsWithChildren> = ( {children} ) => {
-  // Define the onError function
-  const onError = useCallback((error: Error) => {
-    console.error(error);
-    alert(`An error occurred: ${error.message}`);
-  }, []);
-  
+
   // The network can be set to 'devnet', 'testnet', or 'mainnet-beta'.
   const network = WalletAdapterNetwork.Devnet;
   
   // You can also provide a custom RPC endpoint.
   const endpoint = useMemo(() => clusterApiUrl(network), [network]);
-  
-  const autoSignIn = useCallback(async (adapter: any) => {
-    // If the signIn feature is not available, return true
-    if (!("signIn" in adapter)) return true;
-    
-    // Fetch the signInInput from the backend
-    const createResponse = await fetch("http://localhost:3001/api/signInInput");
-
-    const input: SolanaSignInInput = await createResponse.json();
-    
-    // Send the signInInput to the wallet and trigger a sign-in request
-    const output = await adapter.signIn(input);
-    
-    // Verify the sign-in output against the generated input server-side
-    let strPayload = JSON.stringify({ input, output });
-    const verifyResponse = await fetch("http://localhost:3001/api/verifyOutput", {
-      method: "POST",
-      body: strPayload,
-    });
-    const success = await verifyResponse.json();
-    
-    // If verification fails, throw an error
-    if (!success) throw new Error("Sign In verification failed!");
-    
-    return false;
-  }, []);
   
   const wallets = useMemo(
     () => [
@@ -72,7 +40,7 @@ export const SolanaWallet: FC<PropsWithChildren> = ( {children} ) => {
 
     return (
       <ConnectionProvider endpoint={endpoint}>
-          <WalletProvider wallets={wallets} autoConnect={autoSignIn} onError={onError}>
+          <WalletProvider wallets={wallets} autoConnect>
               <WalletModalProvider>
                   {/* <WalletMultiButton />
                   <WalletDisconnectButton /> */}

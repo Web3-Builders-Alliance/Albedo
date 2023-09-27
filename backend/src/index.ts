@@ -9,6 +9,7 @@ import siwsRoutes from '../src/routes/siws/index';
 // Initialize express
 const app = express();
 const port = 3001; // You can choose another port if you like
+const crypto = require('crypto');
 
 // Enable CORS from frontend
 app.use(cors({
@@ -28,6 +29,12 @@ app.post('/signup', signupRoute);
 
 // Add verifyEmailRoute
 app.post('/api/verify-token', verifyEmailRoute);
+
+app.get('/api/getNonce', (req, res) => {
+  const nonce = crypto.randomBytes(16).toString('hex');
+  // Store this nonce in a database or in-memory data structure, tied to this user session.
+  res.json({ nonce });
+});
 
 // Sign in With Solana routes
 app.use('/api', siwsRoutes);

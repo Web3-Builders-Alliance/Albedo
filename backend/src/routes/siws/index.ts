@@ -1,13 +1,15 @@
 import express from 'express';
-import { createSignInData } from './signInInput'; 
+import { createSignInData } from './signInInput';
 import { verifySIWS } from './verifyOutput';
 
 const router = express.Router();
 
-// Create sign-in input
+// Endpoint for generating sign-in input
 router.get('/signInInput', async (req, res) => {
   try {
     const signInInput = await createSignInData();
+    console.log("Debug: Generated signInInput ->", signInInput);
+    console.log("Debug: Serialized signInInput ->", JSON.stringify(signInInput));
     res.json(signInInput);
   } catch (error) {
     console.error(error);
@@ -22,11 +24,16 @@ router.post('/verifyOutput', (req, res) => {
     const { input, output } = req.body;  // Destructure incoming payload
     console.log("Debug: Received at Backend - input:", input, "output:", output);
 
-    // Validate payload
-    if (!input || !output) {
-      console.error("Debug: Missing input or output."); // More specific logging
-      return res.status(400).json({ message: "Missing required parameters 'input' and/or 'output'." });
-    }
+  // Validate payload
+  if (!input) {
+    console.error("Debug: Missing input."); // More specific logging
+    return res.status(400).json({ message: "Missing required parameter 'input'." });
+  }
+
+  if (!output) {
+    console.error("Debug: Missing output."); // More specific logging
+    return res.status(400).json({ message: "Missing required parameter 'output'." });
+  }
 
     console.log("Debug: Before verification - input:", input, "output:", output);
     const isValid = verifySIWS(input, output);  // Your custom SIWS verification logic

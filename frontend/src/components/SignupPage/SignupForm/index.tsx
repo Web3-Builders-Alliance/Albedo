@@ -1,83 +1,109 @@
-import React, { FC, useState, useCallback, useMemo } from 'react';
+import React, { FC, useState, useCallback, useMemo, useEffect } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { SystemProgram, Transaction, Connection } from '@solana/web3.js';
+import { Connection } from '@solana/web3.js';
 import { WalletNotConnectedError } from '@solana/wallet-adapter-base';
 import { WalletMultiButton, WalletDisconnectButton } from '@solana/wallet-adapter-react-ui';
 import { SolanaSignInInput, SolanaSignInOutput } from '@solana/wallet-standard-features';
 
+
 export const SignupForm: FC = () => {
-  const { publicKey, sendTransaction, connected, signIn } = useWallet();
+  const { publicKey, connected, signMessage, signIn } = useWallet();
   const [message, setMessage] = useState('');
+  const [nonce, setNonce] = useState<Uint8Array | null>(null);
+
+  useEffect(() => {
+    // Fetch the nonce from the backend API
+    const fetchNonce = async () => {
+      try {
+        const res = await fetch('http://localhost:3001/api/getNonce');
+        if (res.ok) {
+          const { nonce } = await res.json();
+          setNonce(Uint8Array.from(nonce));
+        } else {
+          throw new Error('Failed to fetch nonce');
+        }
+      } catch (error) {
+        console.error(`Error fetching nonce: ${error}`);
+      }
+    };
+
+    fetchNonce();
+  }, []);
   
-  // Initialize connection to Solana testnet
   const connection = useMemo(() => new Connection('https://api.devnet.solana.com/'), []);
-  
+
   const signInSolana = useCallback(async () => {
     try {
-      // Attempt to sign in if not connected
       if (!connected && typeof signIn === 'function') {
         await signIn();
       }
-
-      // Validate wallet connection and other dependencies
-      if (!publicKey || typeof sendTransaction !== 'function' || !connection) {
+  
+      if (!publicKey || !connection || !signMessage) {
         throw new WalletNotConnectedError();
       }
+  
+      // Make sure nonce is fetched
+      if (!nonce) {
+        throw new Error('Nonce not fetched');
+      }
+  
+      // Check that signMessage is not undefined
+      if (typeof signMessage !== 'function') {
+        throw new Error('signMessage function is not available');
+      }
+  
+      // Sign the nonce
+      const signedNonce = await signMessage(nonce);
 
-      // Fetch the sign-in input data from backend
-      const res = await fetch(process.env.REACT_APP_SIGNIN_ENDPOINT || 'http://localhost:3001/api/signInInput');
-      if (!res.ok) throw new Error('Failed to fetch sign-in input');
+      // Convert publicKey to a JSON-serializable format
+      const serializablePublicKey = Array.from(new Uint8Array(publicKey.toBuffer()));
+
+      const createFrontendSignInData = async (): Promise<SolanaSignInInput> => {
+        const now = new Date();
+        const currentDateTime = now.toISOString();
+        const nonce = crypto.getRandomValues(new Uint8Array(16)).join('');
       
-      const signInInput: SolanaSignInInput = await res.json();
-
-      // Generate a dummy transaction to get a signature
-      const instruction = SystemProgram.transfer({
-        fromPubkey: publicKey,
-        toPubkey: publicKey,
-        lamports: 0,
-      });
+        const signInData: SolanaSignInInput = {
+          domain: "https://650f3566e678fa5c1fa8b6fb--splendorous-lolly-4434bd.netlify.app",
+          statement: "Authentication statement.",
+          version: "1",
+          nonce,
+          chainId: "devnet",
+          issuedAt: currentDateTime,
+          resources: ["https://example.com", "https://phantom.app/"]
+        };
       
-      // Create and send the transaction
-      const transaction = new Transaction().add(instruction);
-      const signature = await sendTransaction(transaction, connection);
+        return signInData;
+      };
 
-      // Convert the `signature` to a `Unit8Array`
-      const buffer = Buffer.from(signature, 'hex');
-      const unit8Array = new Uint8Array(buffer);
-
-      // Create output data for backend verification
+      // Create SolanaSignInOutput
       const outputData: SolanaSignInOutput = {
         account: {
-          publicKey: new Uint8Array(),
-          address: "",
-          chains: [],
-          features: []
+          publicKey: new Uint8Array(serializablePublicKey),
+          address: publicKey.toBase58(),
+          chains: ["solana:devnet"],
+          features: [],
         },
-        signature: unit8Array,
-        signedMessage: new Uint8Array()
+        signature: new Uint8Array(signedNonce),
+        signedMessage: nonce,
       };
-      
-      // Send input and output data to backend for verification
+
       const verifyRes = await fetch('http://localhost:3001/api/verifyOutput', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ signInInput, outputData }),
+        body: JSON.stringify({ input: createFrontendSignInData, output: outputData }),
       });
     
       const { success } = await verifyRes.json();
-    
-      // Update UI based on verification result
       setMessage(success ? 'Successfully signed in with Solana' : 'Failed to verify Solana sign-in');
-    
     } catch (err: any) {
       setMessage(`Error: ${err.message}`);
     }
-  }, [publicKey, sendTransaction, connection, signIn, connected]);
+  }, [publicKey, connection, signIn, connected, nonce, signMessage]);
 
   return (
     <div className="signup-form d-flex flex-column align-items-center">
       {message && <div className="alert alert-info">{message}</div>}
-  
       {connected ? (
         <>
           <div className="mb-3 alert alert-info">
@@ -88,10 +114,9 @@ export const SignupForm: FC = () => {
       ) : (
         <WalletMultiButton className="btn btn-primary w-100" />
       )}
-  
       <button
         type="button"
-        disabled={!connected}
+        disabled={!connected || !nonce}
         className="btn btn-secondary mt-3"
         onClick={signInSolana}
       >
