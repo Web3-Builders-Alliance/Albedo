@@ -21,6 +21,7 @@ router.get('/signInInput', async (req, res) => {
 router.post('/verifyOutput', (req, res) => {
   try {
     // Logging the entire request body for debugging purposes
+    console.log("Debug: Entered try block");
     console.log("Debug: Full request body:", req.body);
 
     // Destructure incoming payload
@@ -28,6 +29,9 @@ router.post('/verifyOutput', (req, res) => {
 
     // Log the received data for debugging
     console.log("Debug: Received at Backend - input:", input, "output:", output);
+
+    // Log types of input and output
+    console.log(`Debug: Type of input: ${typeof input}, Type of output: ${typeof output}`);
 
     // Before verifySIWS function call
     console.log("Before verifySIWS - Output signature content:", output.signature);
