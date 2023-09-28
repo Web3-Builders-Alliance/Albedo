@@ -20,28 +20,23 @@ router.get('/signInInput', async (req, res) => {
 // Verify sign-in output
 router.post('/verifyOutput', (req, res) => {
   try {
-    console.log("Debug: Full request body:", req.body);  // Log the full request body
-    const { input, output } = req.body;  // Destructure incoming payload
+    // Logging the entire request body for debugging purposes
+    console.log("Debug: Full request body:", req.body);
+
+    // Destructure incoming payload
+    const { input, output } = req.body;
+
+    // Log the received data for debugging
     console.log("Debug: Received at Backend - input:", input, "output:", output);
 
-  // Validate payload
-  if (!input) {
-    console.error("Debug: Missing input."); // More specific logging
-    return res.status(400).json({ message: "Missing required parameter 'input'." });
-  }
+    // Before verifySIWS function call
+    console.log("Before verifySIWS - Output signature content:", output.signature);
 
-  if (!output) {
-    console.error("Debug: Missing output."); // More specific logging
-    return res.status(400).json({ message: "Missing required parameter 'output'." });
-  }
+    // Your custom SIWS verification logic
+    const isValid = verifySIWS(input, output);
 
-  console.log("Type of output.signature: ", typeof output.signature);
-  console.log("Value of output.signature: ", output.signature);
-
-  console.log("Is output.signature an instance of ArrayBuffer: ", output.signature instanceof ArrayBuffer);
-  console.log("Is output.signature an instance of ArrayBufferView: ", ArrayBuffer.isView(output.signature));
-
-  const isValid = verifySIWS(input, output);  // Your custom SIWS verification logic
+    // After verifySIWS function call
+    console.log("After verifySIWS - Output signature content:", output.signature);
 
     // Sending back validation result
     if (isValid) {
