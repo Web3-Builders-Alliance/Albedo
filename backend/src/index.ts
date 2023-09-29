@@ -12,17 +12,16 @@ const app = express();
 const port = 3001; // You can choose another port if you like
 
 // Enable CORS from frontend
-app.use(cors({
-  origin: 'http://localhost:3000', // replace with your application's URL
-  methods: 'GET,POST,DELETE',
-  credentials: true,
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  exposedHeaders: ['x-auth-token'],
-  optionsSuccessStatus: 204,
-}));
+app.use(cors({ origin: 'http://localhost:3000' }));
 
 // Middleware for parsing JSON
-app.use(express.json()); 
+app.use(express.json());
+
+// Global logging middleware (Moved up)
+app.use((req: Request, res: Response, next: NextFunction) => {
+  console.log(req.method, req.path, req.body);
+  next();
+});
 
 // Register the signup route
 app.post('/signup', signupRoute);
@@ -38,12 +37,6 @@ app.get('/api/getSignInData', async (req, res) => {
   const signInData = await createSignInData();
   res.json(signInData);
 })
-
-// Global error handler
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  console.error('Global Error:', err.stack);
-  res.status(500).send('Something broke!');
-});
 
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);

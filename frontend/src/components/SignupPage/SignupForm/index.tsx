@@ -4,6 +4,7 @@ import { Connection } from '@solana/web3.js';
 import { WalletNotConnectedError } from '@solana/wallet-adapter-base';
 import { WalletMultiButton, WalletDisconnectButton } from '@solana/wallet-adapter-react-ui';
 import { SolanaSignInInput, SolanaSignInOutput } from '@solana/wallet-standard-features';
+import { createSignInMessageText } from "@solana/wallet-standard-util";
 
 export const SignupForm: FC = () => {
   const { publicKey, connected, signMessage, signIn } = useWallet();
@@ -39,9 +40,20 @@ export const SignupForm: FC = () => {
       // Use the fetched data for the signing process
       const signInData = await fetchSignInData();
       const nonce = signInData.nonce; // gets the nonce from the backend
+
+      // Sign the entire Message, nonce, domain, details, etc.
+      const messageToBeSigned = createSignInMessageText({
+        ...(signInData as any),
+        address: publicKey.toBase58()
+      });
+    
+      console.log("Frontend - Entire Message to be signed:", messageToBeSigned);
       
       // Sign the nonce with the wallet's secret key
       let signedMessage: Uint8Array | undefined;
+      //! restore after if (typeof signMessage === 'function') {
+      //   signedMessage = await signMessage(new TextEncoder().encode(nonce));
+      // }
       if (typeof signMessage === 'function') {
         signedMessage = await signMessage(new TextEncoder().encode(nonce));
       }
@@ -52,6 +64,9 @@ export const SignupForm: FC = () => {
 
       // Create SolanaSignInOutput
       const signatureArray = signedMessage instanceof Uint8Array ? signedMessage : new Uint8Array(signedMessage);
+
+      // Logging the signature
+      console.log("Frontend - Signature:", signatureArray);
       
       // Create SolanaSignInOutput
       const outputData: SolanaSignInOutput = {
@@ -61,18 +76,23 @@ export const SignupForm: FC = () => {
           chains: ["solana:devnet"],
           features: [],
         },
-        signature: signatureArray,
-        signedMessage: new Uint8Array(new TextEncoder().encode(nonce)),
+        signature: signatureArray, //! Signature is empty on the backend
+        signedMessage: new Uint8Array(new TextEncoder().encode(messageToBeSigned)),
       };
 
-      console.log("Debug: About to send - input:", signInData, "output:", outputData);
+      // Does this produce the correct address every time.
+      console.log("Address:", outputData.account.address);
 
+      // Log the output
+      console.log("Output payload being sent: ", outputData);
       const verifyRes = await fetch('http://localhost:3001/api/verifyOutput', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({ input: signInData, output: outputData }),
       });
-    
+
+      console.log('Debug: Full Response:', verifyRes);
+      
       const { success } = await verifyRes.json();
       setMessage(success ? 'Successfully signed in with Solana' : 'Failed to verify Solana sign-in');
     

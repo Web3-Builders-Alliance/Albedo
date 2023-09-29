@@ -1,6 +1,30 @@
 import express from 'express';
 import { createSignInData } from './signInInput';
 import { verifySIWS } from './verifyOutput';
+import { deriveSignInMessage, createSignInMessageText } from "@solana/wallet-standard-util";
+import { ed25519 } from '@noble/curves/ed25519';
+
+function mockVerifyMessageSignature({
+  message,
+  signedMessage,
+  signature,
+  publicKey,
+}: {
+  message: Uint8Array;
+  signedMessage: Uint8Array;
+  signature: Uint8Array;
+  publicKey: Uint8Array;
+}): boolean {
+  console.log("Checking if message equals signedMessage:", bytesEqual(message, signedMessage));
+  console.log("Verifying signature against signedMessage and publicKey:", ed25519.verify(signature, signedMessage, publicKey));
+  
+  return bytesEqual(message, signedMessage) && ed25519.verify(signature, signedMessage, publicKey);
+}
+
+// Helper function to check if two Uint8Arrays are equal
+function bytesEqual(a: Uint8Array, b: Uint8Array): boolean {
+  return a.length === b.length && a.every((val, index) => val === b[index]);
+}
 
 const router = express.Router();
 
@@ -17,41 +41,69 @@ router.get('/signInInput', async (req, res) => {
   }
 });
 
-// Verify sign-in output
-router.post('/verifyOutput', (req, res) => {
+router.post('/verifyOutput', async (req, res) => {
   try {
-    // Logging the entire request body for debugging purposes
-    console.log("Debug: Entered try block");
-    console.log("Debug: Full request body:", req.body);
-
     // Destructure incoming payload
     const { input, output } = req.body;
+    console.log("Received address:", output.account.address);  // <-- Log this
 
-    // Log the received data for debugging
-    console.log("Debug: Received at Backend - input:", input, "output:", output);
+    // Validate the essential parts of the payload
+    if (!input || !output) {
+      return res.status(400).json({ error: 'Invalid payload' });
+    }
 
-    // Log types of input and output
-    console.log(`Debug: Type of input: ${typeof input}, Type of output: ${typeof output}`);
+    // Recreate the message
+    const reconstructedMessage = createSignInMessageText({
+      ...(input as any),
+      address: output.account.address
+    });
+    console.log("Backend - Reconstructed Message:", reconstructedMessage);
 
-    // Before verifySIWS function call
-    console.log("Before verifySIWS - Output signature content:", output.signature);
+    // Ensure types are correct for the verification process
+    if (Array.isArray(output.signature)) {
+        output.signature = new Uint8Array(output.signature);
+    }
+    if (Array.isArray(output.signedMessage)) {
+        output.signedMessage = new Uint8Array(output.signedMessage);
+    }
+    if (Array.isArray(output.account.publicKey)) {
+        output.account.publicKey = new Uint8Array(output.account.publicKey);
+    }
 
-    // Your custom SIWS verification logic
-    const isValid = verifySIWS(input, output);
+    // Logging Signature and Public Key
+    console.log("Backend - Signature received:", output.signature);
+    console.log("Backend - Public Key for verification:", output.account.publicKey);
 
-    // After verifySIWS function call
-    console.log("After verifySIWS - Output signature content:", output.signature);
+    const derivedMessage = deriveSignInMessage(input, output);
+    
+    if (!derivedMessage) {
+        console.log("Error: deriveSignInMessage returned null.");
+        res.status(400).send("Verification failed: Unable to derive message.");
+        return;
+    }
 
-    // Sending back validation result
+    // Temporary: Using mock verification for testing
+    const isValid = mockVerifyMessageSignature({
+        message: derivedMessage,
+        signedMessage: output.signedMessage,
+        signature: output.signature,
+        publicKey: output.account.publicKey // <-- It's already a Uint8Array
+    });
+
+    // Respond based on verification result
     if (isValid) {
       return res.json({ success: true });
     } else {
-      console.error("Debug: Invalid sign-in data."); // More specific logging
-      return res.status(400).json({ success: false, message: "Invalid sign-in data" });
+      throw new Error("Invalid sign-in data");
     }
   } catch (error) {
-    console.error("Error in verifyOutput:", error);
-    return res.status(500).json({ message: 'Failed to verify sign-in output.' });
+    if (error instanceof Error) {
+      console.error(`Error in verifyOutput: ${error.message}`);
+      res.status(error.message === 'Invalid sign-in data' ? 400 : 500).json({ message: error.message });
+    } else {
+      console.error("An unknown error occurred in verifyOutput.");
+      res.status(500).json({ message: 'An unknown error occurred.' });
+    }
   }
 });
 
