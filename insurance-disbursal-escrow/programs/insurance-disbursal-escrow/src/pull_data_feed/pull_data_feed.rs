@@ -26,11 +26,11 @@ pub mod anchor_feed_parser {
     }
 }
 
-#[account(zero_copy)]
-pub struct MyMarket {
-    pub bump: u8,
-    pub switchboard_aggregator: Pubkey,
-}
+// #[account(zero_copy)]
+// pub struct MyMarket {
+//     pub bump: u8,
+//     pub switchboard_aggregator: Pubkey,
+// }
 
 #[derive(Accounts)]
 pub struct ReadResult<'info> {

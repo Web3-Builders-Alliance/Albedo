@@ -18,4 +18,4 @@ default = []
 [dependencies]
 anchor-lang = "0.28.0"
 switchboard-solana = "0.9"
-sol_vault = { path = "../../../sol-vault/programs/insurance-pool-vault/src/lib.rs" }
+insurance-pool-vault = { path = "../sol-vault", features = ["cpi"] }

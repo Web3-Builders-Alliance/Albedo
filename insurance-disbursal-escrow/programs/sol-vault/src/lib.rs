@@ -43,7 +43,6 @@ pub mod sol_vault {
 #[derive(Accounts)]
 pub struct Initialize<'info> {
     #[account(mut)]
-    /// CHECK: qsdaxz
     owner: Signer<'info>,
     #[account(
         init,
