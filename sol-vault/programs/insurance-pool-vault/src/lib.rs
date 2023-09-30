@@ -22,14 +22,28 @@ pub mod sol_vault {
         transfer(cpi, amount)
     }
 
-    // pub fn disburse_claim(ctx: DisburseClaim, claim_amount: u64) -> Result<()> {
-    //     Ok(())
-    // }
+    pub fn disburse_claim(ctx: Context<DisburseClaim>, claim_amount: u64) -> Result<()> {
+        // if !ctx.accounts.state.approve_claim {
+        //     return Err(Error::Custom(0)); // 0 is an error code for "ClaimNotApproved"
+        // }
+
+        let transfer_cpi_accounts = Transfer {
+            from: ctx.accounts.vault.to_account_info(),
+            to: ctx.accounts.user.to_account_info(),
+        };
+
+        let cpi = CpiContext::new(
+            ctx.accounts.system_program.to_account_info(),
+            transfer_cpi_accounts,
+        );
+        transfer(cpi, claim_amount)
+    }
 }
 
 #[derive(Accounts)]
 pub struct Initialize<'info> {
     #[account(mut)]
+    /// CHECK: qsdaxz
     owner: Signer<'info>,
     #[account(
         init,
@@ -51,7 +65,27 @@ pub struct Initialize<'info> {
 pub struct DepositPremium<'info> {
     #[account(mut)]
     user: Signer<'info>,
-    /// CHECK: qsdaxz
+    ///CHECK: qsdaxz
+    owner: UncheckedAccount<'info>,
+    #[account(
+        seeds = [b"state", owner.key().as_ref()],
+        bump = state.state_bump,
+    )]
+    state: Account<'info, VaultState>,
+    #[account(
+        mut,
+        seeds = [b"vault", state.key().as_ref()],
+        bump = state.vault_bump,
+    )]
+    vault: SystemAccount<'info>,
+    system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
+pub struct DisburseClaim<'info> {
+    #[account(mut)]
+    user: Signer<'info>,
+    ///CHECK: it's safe
     owner: UncheckedAccount<'info>,
     #[account(
         seeds = [b"state", owner.key().as_ref()],
@@ -71,11 +105,9 @@ pub struct DepositPremium<'info> {
 pub struct VaultState {
     state_bump: u8,
     vault_bump: u8,
+    approve_claim: bool, // Adding the field to track claim approval
 }
 
 impl VaultState {
-    const LEN: usize = 8 + 1 * 2;
+    const LEN: usize = 8 + 1 * 3; // Increased the length due to the added boolean
 }
-
-// #[derive(Accounts)]
-// pub struct DisburseClaim<'info> {}
