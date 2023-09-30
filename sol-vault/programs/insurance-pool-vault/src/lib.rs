@@ -21,6 +21,10 @@ pub mod sol_vault {
         let cpi = CpiContext::new(ctx.accounts.system_program.to_account_info(), ctx_accounts);
         transfer(cpi, amount)
     }
+
+    // pub fn disburse_claim(ctx: DisburseClaim, claim_amount: u64) -> Result<()> {
+    //     Ok(())
+    // }
 }
 
 #[derive(Accounts)]
@@ -72,3 +76,6 @@ pub struct VaultState {
 impl VaultState {
     const LEN: usize = 8 + 1 * 2;
 }
+
+// #[derive(Accounts)]
+// pub struct DisburseClaim<'info> {}
