@@ -1,5 +1,7 @@
 # Albedo
-By: Prakyath Reddy & Kellen James
+By: Prakyath Reddy & Kellen James  
+Twitter: https://x.com/albedo_sdk/status/1705452449534967969?s=20  
+Website: …-splendorous-lolly-4434bd.netlify.app
 
 ## A Decentralized Two-Sided Marketplace for Verified Sensor Data and Smart Contract-Based Escrow Services
 
@@ -22,7 +24,7 @@ Traditional escrow services are often costly, slow, and opaque, lacking real-tim
 
 - **Verified Sensor Data**: Deploy IoT sensors across various sectors, transmitting data via secure channels to trusted oracles.
   
-- **Smart Contract-based Escrow**: Utilize Solana's blockchain capabilities for automatic release of escrow funds based on verified real-time sensor data.
+- **Smart Contract-based Escrow**: Utilize Solana's blockchain capabilities for an automatic release of escrow funds based on verified real-time sensor data.
   
 - **Transparency and Security**: Events are recorded, verified, and made transparent via Non-Fungible Tokens (NFTs), each containing metadata linking to off-chain data storage.
 
@@ -50,8 +52,17 @@ Designed to be a robust, decentralized solution that is not confined to any sing
 
 ---
 
+### Program Architecture
+Context: Insurance  
+Industry: Agriculture  
+End-user: Farmers  
+
+![image](https://github.com/Web3-Builders-Alliance/Albedo/assets/40018628/93ced263-d72d-4690-80a9-13946f5eaa50)
+
+---
+
 ## Future Enhancements
 
 - Broaden sensor data types and capabilities.
 - Expand to other blockchain networks for enhanced interoperability.
-- Explore partnerships for more specialized use-cases.
+- Explore partnerships for more specialized use cases.
