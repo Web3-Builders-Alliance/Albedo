@@ -12,7 +12,7 @@ const validatePayload = (payload: Record<string, any>, fields: string[]): boolea
   return fields.every(field => {
     const keys = field.split('.');
     let obj: any = payload;
-
+    
     for (let key of keys) {
       obj = obj?.[key];
     }
@@ -22,9 +22,12 @@ const validatePayload = (payload: Record<string, any>, fields: string[]): boolea
 };
 
 // A utility function to convert a comma-separated string to Uint8Array
-const toUint8Array = (str: string): Uint8Array => {
+const toUint8Array = (str: unknown): Uint8Array | null => {
+  if (typeof str !== 'string') {
+    console.error('Expected string input for toUint8Array');
+    return null;
+  }
   const arr = str.split(',').map(Number);
-  console.log("Converted array:", arr);
   return new Uint8Array(arr);
 };
 
@@ -52,28 +55,47 @@ router.post('/verifyOutput', async (req: Request, res: Response) => {
     // Log the raw API payload
     console.log("Raw API Payload:", req.body);
     console.log("signedMessage in output:", req.body.output.signedMessage);
-
-    // Assuming the payload comes in a field named 'payload', adjust as needed
-    const payload = req.body;
     
-    // Debug to check the integrity of the received payload
-    console.log("Debug: Full Payload:", JSON.stringify(payload, null, 2));
+    // Assuming the payload comes in a field named 'payload', adjust as needed
+    const {input, output } = req.body;
+    
+    if (!input || !output) {
+      return sendError(res, "Missing input or output fields in payload");
+    }
     
     // Debug to check individual suspicious fields
-    console.log("Debug: signedMessage:", payload.signedMessage);
-    console.log("Debug: signature:", payload.signature);
-    console.log("Debug: publicKey:", payload.account ? payload.account.publicKey : "account object is missing");
-
-    // Manually convert comma-separated strings to Uint8Array where needed
-    payload.output.signedMessage = toUint8Array(payload.output.signedMessage as string);
-    payload.output.signature = toUint8Array(payload.output.signature as string);
-    payload.output.publicKey = toUint8Array(payload.output.publicKey as string);
+    console.log("Debug: signedMessage:", output.signedMessage);
+    console.log("Debug: signature:", output.signature);
+    console.log("Debug: publicKey:", output.account ? output.account.publicKey : "account object is missing");
     
     // Log the modified payload
-    console.log("Modified Payload:", payload);
+    console.log("Modified Payload:", output);
+    const requiredFields = ['input', 'output', 'signature', 'account'];
+    if (!validatePayload(output, requiredFields)) {
+      return sendError(res, "Missing required fields in payload");
+    }
+    
+    // Manually convert comma-separated strings to Uint8Array where needed
+    if (typeof output.signedMessage === 'string') {
+      output.signedMessage = toUint8Array(output.signedMessage);
+    } else {
+      console.error('Unexpected type for signedMessage');
+    }
+
+    if (typeof output.signature === 'string') {
+      output.signature = toUint8Array(output.signature);
+    } else {
+      console.error('Unexpected type for signature');
+    }
+
+    if (typeof output.publicKey === 'string') {
+      output.signature = toUint8Array(output.publicKey);
+    } else {
+      console.error('Unexpected type for public key');
+    }
     
     // Call verifySIWS function (or however it's named in your setup)
-    const isVerified = await verifySIWS(payload.input, payload.output);
+    const isVerified = await verifySIWS(input, output);
     
     if (isVerified) {
       res.status(200).send("Verification successful");
