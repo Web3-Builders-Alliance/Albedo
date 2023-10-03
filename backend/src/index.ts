@@ -1,8 +1,8 @@
 import express from 'express';
 import { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
-import { signupRoute } from './routes/signup';
-import { verifyEmailRoute } from './routes/emailVerification';
+// import { signupRoute } from './routes/signup';
+// import { verifyEmailRoute } from './routes/emailVerification';
 import { createSignInData } from './routes/siws/signInInput';
 
 import siwsRoutes from '../src/routes/siws/index';
@@ -12,12 +12,12 @@ const app = express();
 const port = 3001; // You can choose another port if you like
 
 // Enable CORS from frontend
-app.use(cors({ origin: 'http://localhost:3000' }));
+app.use(cors());
 
 // Middleware for parsing JSON
 app.use(express.json());
 
-// Global logging middleware (Moved up)
+// Global logging middleware
 app.use((req: Request, res: Response, next: NextFunction) => {
   console.log(req.method, req.path, req.body);
   next();
