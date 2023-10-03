@@ -8,13 +8,17 @@ const sendError = (res: Response, message: string, status: number = 400): void =
   res.status(status).json({ message });
 };
 
-const validatePayload = (payload: Record<string, unknown>, fields: string[]): boolean => {
-  const isValid = fields.every(field => payload.hasOwnProperty(field));
-  if (!isValid) {
-    console.log("Invalid Payload:", payload);
-    console.log("Missing Fields:", fields.filter(field => !payload.hasOwnProperty(field)));
-  }
-  return isValid;
+const validatePayload = (payload: Record<string, any>, fields: string[]): boolean => {
+  return fields.every(field => {
+    const keys = field.split('.');
+    let obj: any = payload;
+
+    for (let key of keys) {
+      obj = obj?.[key];
+    }
+    
+    return obj !== undefined;
+  });
 };
 
 // A utility function to convert a comma-separated string to Uint8Array
@@ -39,7 +43,7 @@ router.get('/signInInput', async (req: Request, res: Response) => {
 
 router.post('/verifyOutput', async (req: Request, res: Response) => {
   // Validate payload
-  const requiredFields = ['input', 'output', 'signature', 'account'];
+  const requiredFields = ['input', 'output.account', 'output.signature'];
   if (!validatePayload(req.body, requiredFields)) {
     return sendError(res, "Missing required fields in payload");
   }
