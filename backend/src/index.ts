@@ -23,11 +23,11 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
-// Register the signup route
-app.post('/signup', signupRoute);
+//! Archive: Register the signup route
+// app.post('/signup', signupRoute);
 
-// Add verifyEmailRoute
-app.post('/api/verify-token', verifyEmailRoute);
+//! Archve: Add verifyEmailRoute
+// app.post('/api/verify-token', verifyEmailRoute);
 
 // Sign in With Solana routes
 app.use('/api', siwsRoutes);

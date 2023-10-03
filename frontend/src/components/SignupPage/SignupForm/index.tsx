@@ -53,9 +53,6 @@ export const SignupForm: FC = () => {
       // Create SolanaSignInOutput
       const signatureArray = signedMessage instanceof Uint8Array ? signedMessage : new Uint8Array(signedMessage);
 
-      // Logging the signature
-      console.log("Frontend - Signature length (before sending to server):", signatureArray.length);
-
       // Create SolanaSignInOutput
       const outputData: SolanaSignInOutput = {
         account: {
@@ -68,14 +65,28 @@ export const SignupForm: FC = () => {
         signedMessage: new Uint8Array(new TextEncoder().encode(nonce)),
       };
 
-      // Log the output
-      console.log("Output payload being sent: ", outputData);
+      // Serialize the signedMessage Uint8Array to a comma-separated string
+      const serializedSignedMessage = Array.from(outputData.signedMessage).join(',');
+
+      // Create a new SolanaSignInOutput object with the serialized signedMessage
+      const newOutputData = {
+        ...outputData,
+        signedMessage: serializedSignedMessage
+      };
+
+      // Log the payload right before sending it to ensure signedMessage is serialized.
+      const payloadToSend = { input: signInData, output: newOutputData };
+      console.log("Payload to send:", JSON.stringify(payloadToSend));
       const verifyRes = await fetch('http://localhost:3001/api/verifyOutput', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ input: signInData, output: outputData }),
+        body: JSON.stringify(payloadToSend),
       });
 
+      // Check the Network
+      console.log("Debug: Response URL and Status:", verifyRes.url, verifyRes.status);
+
+      // Log the Payload
       console.log('Debug: Full Response:', verifyRes);
       
       const { success } = await verifyRes.json();
