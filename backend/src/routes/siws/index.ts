@@ -30,6 +30,11 @@ router.post('/verifyOutput', async (req: Request, res: Response) => {
     return sendError(res, "Missing required fields in payload");
   }
 
+  // Log the Data right after it has been received
+  console.log('Backend signedMessage:', req.body.output.signedMessage);
+  console.log('Backend signature:', req.body.output.signature);
+  console.log('Backend publicKey:', req.body.output.account ? req.body.output.account.publicKey : "Missing");
+
   try {
     const {input, output } = req.body;
     

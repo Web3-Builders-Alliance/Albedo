@@ -74,9 +74,13 @@ export const SignupForm: FC = () => {
         signedMessage: serializedSignedMessage
       };
       
-      // Log the payload right before sending it to ensure signedMessage is serialized.
       const payloadToSend = { input: signInData, output: newOutputData };
-      console.log("Payload to send:", JSON.stringify(payloadToSend));
+      
+      // Log the payload right before sending it to ensure signedMessage is serialized.
+      console.log('Frontend signedMessage:', payloadToSend.output.signedMessage);
+      console.log('Frontend signature:', payloadToSend.output.signature);
+      console.log('Frontend publicKey:', payloadToSend.output.account.publicKey);
+
       const verifyRes = await fetch('http://localhost:3001/api/verifyOutput', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
