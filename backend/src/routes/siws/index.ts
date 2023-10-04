@@ -24,6 +24,10 @@ router.get('/signInInput', async (req: Request, res: Response) => {
 });
 
 router.post('/verifyOutput', async (req: Request, res: Response) => {
+  console.log("=== BEGIN INCOMING PAYLOAD ===");
+  console.log(JSON.stringify(req.body, null, 2));  // Pretty print the incoming payload for better clarity
+  console.log("=== END INCOMING PAYLOAD ===");
+  
   // Validate payload
   const requiredFields = ['input', 'output.account', 'output.signature'];
   if (!validatePayload(req.body, requiredFields)) {
@@ -31,7 +35,6 @@ router.post('/verifyOutput', async (req: Request, res: Response) => {
   }
   
   const { input, output } = req.body;
-  console.log("Incoming Payload:", req.body);
   
   try {
     if (!input || !output) {
@@ -40,14 +43,20 @@ router.post('/verifyOutput', async (req: Request, res: Response) => {
     
     // Convert objects back to Uint8Array
     output.account.publicKey = new Uint8Array(Object.values(output.account.publicKey));
-    output.signature = new Uint8Array(Object.values(output.signature));
+    
+    if (output.signature && output.signature.type === "Buffer" && Array.isArray(output.signature.data)) {
+      output.signature = new Uint8Array(output.signature.data);
+    } else {
+      return sendError(res, "Invalid signature format in payload");
+    }
+    
     output.signedMessage = new Uint8Array(Object.values(output.signedMessage));
-
-    // Log before verifying
+    
+    // Log before verification process starts
     console.log("Backend: publicKey is Uint8Array", typeof output.account.publicKey, output.account.publicKey);
     console.log("Backend: signature is Uint8Array", typeof output.signature, output.signature);
     console.log("Backend: signedMessage is Uint8Array", typeof output.signedMessage, output.signedMessage);
-        
+
     // Call verifySIWS function
     const isVerified = await verifySIWS(input, output);
     
