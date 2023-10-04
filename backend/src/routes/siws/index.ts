@@ -29,21 +29,25 @@ router.post('/verifyOutput', async (req: Request, res: Response) => {
   if (!validatePayload(req.body, requiredFields)) {
     return sendError(res, "Missing required fields in payload");
   }
-
-  // Log the Data right after it has been received
-  console.log('Backend signedMessage:', req.body.output.signedMessage);
-  console.log('Backend signature:', req.body.output.signature);
-  console.log('Backend publicKey:', req.body.output.account ? req.body.output.account.publicKey : "Missing");
-
+  
+  const { input, output } = req.body;
+  console.log("Incoming Payload:", req.body);
+  
   try {
-    const {input, output } = req.body;
-    
     if (!input || !output) {
       return sendError(res, "Missing input or output fields in payload");
     }
-
+    
+    // Verify this with logs
+    console.log('Backend signedMessage:', typeof output.signedMessage);
+    console.log('Backend signature:', typeof output.signature);
+    console.log('Backend publicKey:', typeof output.account.publicKey);
+    
     // Call verifySIWS function
     const isVerified = await verifySIWS(input, output);
+    
+    // Additional logging for troubleshooting
+    console.log('Debug: Verification Result:', isVerified);
     
     if (isVerified) {
       res.status(200).json({ message: 'Verification successful', success: true });

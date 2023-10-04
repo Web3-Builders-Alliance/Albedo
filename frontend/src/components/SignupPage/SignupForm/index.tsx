@@ -5,6 +5,12 @@ import { WalletNotConnectedError } from '@solana/wallet-adapter-base';
 import { WalletMultiButton, WalletDisconnectButton } from '@solana/wallet-adapter-react-ui';
 import { SolanaSignInInput, SolanaSignInOutput } from '@solana/wallet-standard-features';
 
+// Utility function to convert to `Unit8Array`
+function convertToUint8Array(signedMessage: string): Uint8Array {
+  const numArray = signedMessage.split(',').map(Number);
+  return new Uint8Array(numArray);
+}
+
 export const SignupForm: FC = () => {
   const { publicKey, connected, signMessage, signIn } = useWallet();
   const [message, setMessage] = useState('');
@@ -75,11 +81,20 @@ export const SignupForm: FC = () => {
       };
       
       const payloadToSend = { input: signInData, output: newOutputData };
-      
+
+      (newOutputData as any).signedMessage = convertToUint8Array(newOutputData.signedMessage as string);
+
       // Log the payload right before sending it to ensure signedMessage is serialized.
-      console.log('Frontend signedMessage:', payloadToSend.output.signedMessage);
-      console.log('Frontend signature:', payloadToSend.output.signature);
-      console.log('Frontend publicKey:', payloadToSend.output.account.publicKey);
+      console.log("Is publicKey a Uint8Array?", newOutputData.account?.publicKey instanceof Uint8Array);
+
+      console.log("Is signature a Uint8Array?", newOutputData.signature instanceof Uint8Array);
+
+      if (newOutputData.signedMessage) {
+        console.log("Is signedMessage a Uint8Array?", 
+                    (newOutputData.signedMessage as any) instanceof Uint8Array);
+    } else {
+        console.log("signedMessage is not defined or null.");
+    }
 
       const verifyRes = await fetch('http://localhost:3001/api/verifyOutput', {
       method: 'POST',
