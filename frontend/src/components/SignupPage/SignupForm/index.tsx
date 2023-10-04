@@ -5,12 +5,6 @@ import { WalletNotConnectedError } from '@solana/wallet-adapter-base';
 import { WalletMultiButton, WalletDisconnectButton } from '@solana/wallet-adapter-react-ui';
 import { SolanaSignInInput, SolanaSignInOutput } from '@solana/wallet-standard-features';
 
-// Utility function to convert to `Unit8Array`
-function convertToUint8Array(signedMessage: string): Uint8Array {
-  const numArray = signedMessage.split(',').map(Number);
-  return new Uint8Array(numArray);
-}
-
 export const SignupForm: FC = () => {
   const { publicKey, connected, signMessage, signIn } = useWallet();
   const [message, setMessage] = useState('');
@@ -73,6 +67,11 @@ export const SignupForm: FC = () => {
         signature: signatureArray, 
         signedMessage: nonceUint8Array
       };
+
+      // Before sending the request
+      console.log("Frontend: publicKey Type and Value", typeof outputData.account.publicKey, outputData.account.publicKey);
+      console.log("Frontend: signature Type and Value", typeof outputData.signature, outputData.signature);
+      console.log("Frontend: signedMessage Type and Value", typeof outputData.signedMessage, outputData.signedMessage);
       
       const payloadToSend = { input: signInData, output: outputData };
 

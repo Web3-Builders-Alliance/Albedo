@@ -44,12 +44,10 @@ router.post('/verifyOutput', async (req: Request, res: Response) => {
     output.signedMessage = new Uint8Array(Object.values(output.signedMessage));
 
     // Log before verifying
-    console.log("Backend: publicKey is Uint8Array", output.account.publicKey instanceof Uint8Array);
-    console.log("Backend: signature is Uint8Array", output.signature instanceof Uint8Array);
-    console.log("Backend: signedMessage is Uint8Array", output.signedMessage instanceof Uint8Array);
-    
-    console.log("Debug: Value of signedMessage", output.signedMessage);
-    
+    console.log("Backend: publicKey is Uint8Array", typeof output.account.publicKey, output.account.publicKey);
+    console.log("Backend: signature is Uint8Array", typeof output.signature, output.signature);
+    console.log("Backend: signedMessage is Uint8Array", typeof output.signedMessage, output.signedMessage);
+        
     // Call verifySIWS function
     const isVerified = await verifySIWS(input, output);
     
