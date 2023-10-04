@@ -38,10 +38,10 @@ router.post('/verifyOutput', async (req: Request, res: Response) => {
       return sendError(res, "Missing input or output fields in payload");
     }
     
-    // Verify this with logs
-    console.log('Backend signedMessage:', typeof output.signedMessage);
-    console.log('Backend signature:', typeof output.signature);
-    console.log('Backend publicKey:', typeof output.account.publicKey);
+    // Convert objects back to Uint8Array
+    output.account.publicKey = new Uint8Array(Object.values(output.account.publicKey));
+    output.signature = new Uint8Array(Object.values(output.signature));
+    output.signedMessage = new Uint8Array(output.signedMessage.split(',').map(Number));
     
     // Call verifySIWS function
     const isVerified = await verifySIWS(input, output);
