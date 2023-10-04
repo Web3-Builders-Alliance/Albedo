@@ -45,6 +45,9 @@ export const SignupForm: FC = () => {
       // Use the fetched data for the signing process
       const signInData = await fetchSignInData();
       const nonce = signInData.nonce; // gets the nonce from the backend
+
+      // Convert the string nonce to Uint8Array
+      const nonceUint8Array = new TextEncoder().encode(nonce);
       
       // Sign the nonce with the wallet's secret key
       let signedMessage: Uint8Array | undefined;
@@ -68,33 +71,10 @@ export const SignupForm: FC = () => {
           features: [],
         },
         signature: signatureArray, 
-        signedMessage: new Uint8Array(new TextEncoder().encode(nonce)),
+        signedMessage: nonceUint8Array
       };
       
-      // Serialize the signedMessage Uint8Array to a comma-separated string
-      const serializedSignedMessage = Array.from(outputData.signedMessage).join(',');
-      
-      // Create a new SolanaSignInOutput object with the serialized signedMessage
-      const newOutputData = {
-        ...outputData,
-        signedMessage: serializedSignedMessage
-      };
-      
-      const payloadToSend = { input: signInData, output: newOutputData };
-
-      (newOutputData as any).signedMessage = convertToUint8Array(newOutputData.signedMessage as string);
-
-      // Log the payload right before sending it to ensure signedMessage is serialized.
-      console.log("Is publicKey a Uint8Array?", newOutputData.account?.publicKey instanceof Uint8Array);
-
-      console.log("Is signature a Uint8Array?", newOutputData.signature instanceof Uint8Array);
-
-      if (newOutputData.signedMessage) {
-        console.log("Is signedMessage a Uint8Array?", 
-                    (newOutputData.signedMessage as any) instanceof Uint8Array);
-    } else {
-        console.log("signedMessage is not defined or null.");
-    }
+      const payloadToSend = { input: signInData, output: outputData };
 
       const verifyRes = await fetch('http://localhost:3001/api/verifyOutput', {
       method: 'POST',
