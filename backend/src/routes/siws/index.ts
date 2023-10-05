@@ -1,6 +1,7 @@
 import express, { Response, Request } from 'express';
 import { createSignInData } from './signInInput';
-import { verifySignIn } from './solanaDebug';  // Importing our debug functions
+import { deriveSignInMessage, verifySignIn, bytesEqual } from './solanaDebug';  // Importing our debug functions
+// import { verifySignIn } from '@solana/wallet-standard-util';
 
 const router = express.Router();
 
@@ -51,12 +52,29 @@ router.post('/verifyOutput', async (req: Request, res: Response) => {
     }
     
     output.signedMessage = new Uint8Array(Object.values(output.signedMessage));
+    const text = new TextDecoder().decode(output.signedMessage);
+    console.log("Raw message to parse:", text);
     
     // Log before verification process starts
     console.log("Backend: publicKey is Uint8Array", typeof output.account.publicKey, output.account.publicKey);
     console.log("Backend: signature is Uint8Array", typeof output.signature, output.signature);
     console.log("Backend: signedMessage is Uint8Array", typeof output.signedMessage, output.signedMessage);
 
+    //* Debug: Step 1: Message Derivation & Comparison
+    const derivedMessage = deriveSignInMessage(input, output);
+    
+    if (derivedMessage) {  // Ensure derivedMessage is not null before comparing
+      if (!bytesEqual(derivedMessage, output.signedMessage)) {
+        console.error("Derived message does not match signed message!");
+        console.log("Derived Message:", new TextDecoder().decode(derivedMessage));
+        console.log("Received signedMessage:", new TextDecoder().decode(output.signedMessage));
+      } else {
+        console.log("Derived message matches the signed message.");
+      }
+    } else {
+      console.error("Derived message is null. Cannot compare.");
+    }
+    
     // Call verifySIWS function
     const isVerified = await verifySignIn(input, output);
     

@@ -29,6 +29,11 @@ export const SignupForm: FC = () => {
       // Convert publicKey to a JSON-serializable format
       const serializablePublicKey = Array.from(new Uint8Array(publicKey.toBuffer()));
       
+      // This function formats the nonce into a structured message
+      const generateStructuredMessage = (nonce: string, publicKeyStr: string, domain: string, statement: string, version: string, chainId: string) => {
+        return `${domain} wants you to sign in with your Solana account:\n${publicKeyStr}\n${statement}\nVersion: ${version}\nChain ID: ${chainId}\nNonce: ${nonce}`;
+      };
+      
       // Fetch the SolanaSignInInput data from backend
       const fetchSignInData = async () => {
         const res = await fetch('http://localhost:3001/api/getSignInData');
@@ -41,21 +46,33 @@ export const SignupForm: FC = () => {
       const signInData = await fetchSignInData();
       const nonce = signInData.nonce; // gets the nonce from the backend
       
-      // Convert the string nonce to Uint8Array
-      const nonceUint8Array = new TextEncoder().encode(nonce);
-      console.log("Encoded nonce (Uint8Array):", nonceUint8Array);
+      if (!nonce) {
+        throw new Error("Nonce is missing from the server response");
+      }
+      
+      // Convert publicKey to a string representation
+      const publicKeyStr = publicKey.toString();
+      
+      // Create a structured message using the nonce
+      const structuredMessage = generateStructuredMessage(nonce, publicKeyStr, "http://localhost:3000", "Authentication statement.", "1", "devnet");
+
+      console.log("Structured Message:", structuredMessage);
+      
+      // Convert the structured message string to Uint8Array
+      const signedMessageArray = new TextEncoder().encode(structuredMessage);
+      console.log("Encoded structured message (Uint8Array):", signedMessageArray);
       
       // Sign the nonce with the wallet's secret key
       let signedMessage: Uint8Array | undefined;
       if (typeof signMessage === 'function') {
-        signedMessage = await signMessage(new TextEncoder().encode(nonce));
+        signedMessage = await signMessage(signedMessageArray);
       }
       console.log("Signed message (Uint8Array):", signedMessage);
       
       if (!signedMessage) {
         throw new Error("Failed to sign the nonce");
       }
-
+      
       // Create SolanaSignInOutput
       const signatureArray = signedMessage instanceof Uint8Array ? signedMessage : new Uint8Array(signedMessage);
       
@@ -67,12 +84,13 @@ export const SignupForm: FC = () => {
           chains: ["solana:devnet"],
           features: [],
         },
-        signature: signatureArray, 
-        signedMessage: nonceUint8Array,
+        signature: signatureArray,
+        signedMessage: signedMessageArray,
       };
       
       const payloadToSend = { input: signInData, output: outputData };
-
+      console.log("Frontend, payload to send to server", payloadToSend);
+      
       const verifyRes = await fetch('http://localhost:3001/api/verifyOutput', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
@@ -128,4 +146,4 @@ return (
       </button>
       </div>
       );
-};
+    };
