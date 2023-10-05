@@ -33,26 +33,29 @@ export const SignupForm: FC = () => {
       const fetchSignInData = async () => {
         const res = await fetch('http://localhost:3001/api/getSignInData');
         const signInData: SolanaSignInInput = await res.json();
+        console.log("Frontend received nonce:", signInData.nonce);
         return signInData;
       }
       
       // Use the fetched data for the signing process
       const signInData = await fetchSignInData();
       const nonce = signInData.nonce; // gets the nonce from the backend
-
+      
       // Convert the string nonce to Uint8Array
       const nonceUint8Array = new TextEncoder().encode(nonce);
+      console.log("Encoded nonce (Uint8Array):", nonceUint8Array);
       
       // Sign the nonce with the wallet's secret key
       let signedMessage: Uint8Array | undefined;
       if (typeof signMessage === 'function') {
         signedMessage = await signMessage(new TextEncoder().encode(nonce));
       }
+      console.log("Signed message (Uint8Array):", signedMessage);
       
       if (!signedMessage) {
         throw new Error("Failed to sign the nonce");
       }
-      
+
       // Create SolanaSignInOutput
       const signatureArray = signedMessage instanceof Uint8Array ? signedMessage : new Uint8Array(signedMessage);
       
@@ -65,13 +68,8 @@ export const SignupForm: FC = () => {
           features: [],
         },
         signature: signatureArray, 
-        signedMessage: nonceUint8Array
+        signedMessage: nonceUint8Array,
       };
-
-      // Before sending the request
-      console.log("Frontend: publicKey Type and Value", typeof outputData.account.publicKey, outputData.account.publicKey);
-      console.log("Frontend: signature Type and Value", typeof outputData.signature, outputData.signature);
-      console.log("Frontend: signedMessage Type and Value", typeof outputData.signedMessage, outputData.signedMessage);
       
       const payloadToSend = { input: signInData, output: outputData };
 

@@ -1,6 +1,6 @@
 import express, { Response, Request } from 'express';
 import { createSignInData } from './signInInput';
-import { verifySIWS } from './verifyOutput';
+import { verifySignIn } from './solanaDebug';  // Importing our debug functions
 
 const router = express.Router();
 
@@ -58,7 +58,7 @@ router.post('/verifyOutput', async (req: Request, res: Response) => {
     console.log("Backend: signedMessage is Uint8Array", typeof output.signedMessage, output.signedMessage);
 
     // Call verifySIWS function
-    const isVerified = await verifySIWS(input, output);
+    const isVerified = await verifySignIn(input, output);
     
     // Additional logging for troubleshooting
     console.log('Debug: Verification Result:', isVerified);
