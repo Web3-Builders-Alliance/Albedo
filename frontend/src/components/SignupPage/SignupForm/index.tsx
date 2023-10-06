@@ -112,6 +112,9 @@ export const SignupForm: FC = () => {
         // Convert the structured message string to Uint8Array
         const signedMessageArray = new TextEncoder().encode(structuredMessage);
         console.log("Encoded structured message (Uint8Array):", signedMessageArray);
+
+         //* Debug: Log before signing
+        console.log("Constructed message (before signing):", new TextDecoder().decode(signedMessageArray));
         
         // Sign the nonce with the wallet's secret key
         let signedMessage: Uint8Array | undefined;
@@ -138,6 +141,19 @@ export const SignupForm: FC = () => {
           signature: signatureArray,
           signedMessage: signedMessageArray,
         };
+        
+        //! Error: Compare lengths of both arrays
+        const messageLength = outputData.signature.length;
+        const signedMessageLength = outputData.signedMessage.length;
+        
+        console.log(`Message Length: ${messageLength}`);
+        console.log(`Signed Message Length: ${signedMessageLength}`);
+        
+        if (messageLength !== signedMessageLength) {
+          console.warn("Lengths of the two arrays are not equal!");
+        } else {
+          console.log("Lengths of the two arrays are equal.");
+        }
         
         const payloadToSend = { input: signInData, output: outputData };
         console.log("Frontend, payload to send to server", payloadToSend);
