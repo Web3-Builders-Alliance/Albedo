@@ -30,120 +30,171 @@ export const SignupForm: FC = () => {
       const serializablePublicKey = Array.from(new Uint8Array(publicKey.toBuffer()));
       
       // This function formats the nonce into a structured message
-      const generateStructuredMessage = (nonce: string, publicKeyStr: string, domain: string, statement: string, version: string, chainId: string) => {
-        return `${domain} wants you to sign in with your Solana account:\n${publicKeyStr}\n${statement}\nVersion: ${version}\nChain ID: ${chainId}\nNonce: ${nonce}`;
-      };
+      const generateStructuredMessage = (
+        domain: string, 
+        publicKeyStr: string, 
+        statement?: string, 
+        uri?: string,
+        version?: string, 
+        chainId?: string, 
+        nonce?: string, 
+        issuedAt?: string,
+        expirationTime?: string,
+        notBefore?: string,
+        requestId?: string,
+        resources?: string[]
+        ) => {
+          let messageParts = [
+            `${domain} wants you to sign in with your Solana account:`,
+            publicKeyStr
+          ];
+          
+          if (statement) messageParts.push(statement);
+          if (uri) messageParts.push(`URI: ${uri}`);
+          if (version) messageParts.push(`Version: ${version}`);
+          if (chainId) messageParts.push(`Chain ID: ${chainId}`);
+          if (nonce) messageParts.push(`Nonce: ${nonce}`);
+          if (issuedAt) messageParts.push(`Issued At: ${issuedAt}`);
+          if (expirationTime) messageParts.push(`Expiration Time: ${expirationTime}`);
+          if (notBefore) messageParts.push(`Not Before: ${notBefore}`);
+          if (requestId) messageParts.push(`Request ID: ${requestId}`);
+          if (resources && resources.length > 0) {
+            messageParts.push(`Resources:`, ...resources.map(resource => `- ${resource}`));
+          }
+          
+          // Join all parts with a newline to create the final structured message
+          return messageParts.join('\n');
+        };
+        
+        // Fetch the SolanaSignInInput data from backend
+        const fetchSignInData = async () => {
+          const res = await fetch('http://localhost:3001/api/getSignInData');
+          const signInData: SolanaSignInInput = await res.json();
+          console.log("Frontend received nonce:", signInData.nonce);
+          return signInData;
+        }
+        
+        // Use the fetched data for the signing process
+        const signInData = await fetchSignInData();
+        const nonce = signInData.nonce; // gets the nonce from the backend
+        
+        if (!nonce) {
+          throw new Error("Nonce is missing from the server response");
+        }
+        
+        // Convert publicKey to a string representation
+        const publicKeyStr = publicKey.toString();
+        
+        // Current date and time in ISO string format
+        const currentIssuedAt = new Date().toISOString();
+        
+        // Create a structured message using the nonce
+        const structuredMessage = generateStructuredMessage(
+          "http://localhost:3000",        // domain
+          publicKeyStr,                   // publicKeyStr
+          "Authentication statement.",   // statement
+          undefined,                      // uri - assuming you don't have it right now
+          "1",                            // version
+          "devnet",                       // chainId
+          nonce,                          // nonce
+          currentIssuedAt,                // issuedAt
+          undefined,                      // expirationTime - assuming you don't have it right now
+          undefined,                      // notBefore - assuming you don't have it right now
+          undefined,                      // requestId - assuming you don't have it right now
+          [                              // resources - you can add more URIs here if needed
+          "https://github.com/solana-labs/wallet-standard",
+          "https://phantom.app/learn/developers/sign-in-with-solana"
+        ]
+        );
+        
+        console.log("Structured Message:", structuredMessage);
+        
+        // Convert the structured message string to Uint8Array
+        const signedMessageArray = new TextEncoder().encode(structuredMessage);
+        console.log("Encoded structured message (Uint8Array):", signedMessageArray);
+        
+        // Sign the nonce with the wallet's secret key
+        let signedMessage: Uint8Array | undefined;
+        if (typeof signMessage === 'function') {
+          signedMessage = await signMessage(signedMessageArray);
+        }
+        console.log("Signed message (Uint8Array):", signedMessage);
+        
+        if (!signedMessage) {
+          throw new Error("Failed to sign the nonce");
+        }
+        
+        // Create SolanaSignInOutput
+        const signatureArray = signedMessage instanceof Uint8Array ? signedMessage : new Uint8Array(signedMessage);
+        
+        // Create SolanaSignInOutput
+        const outputData: SolanaSignInOutput = {
+          account: {
+            publicKey: new Uint8Array(serializablePublicKey),
+            address: publicKey.toBase58(),
+            chains: ["solana:devnet"],
+            features: [],
+          },
+          signature: signatureArray,
+          signedMessage: signedMessageArray,
+        };
+        
+        const payloadToSend = { input: signInData, output: outputData };
+        console.log("Frontend, payload to send to server", payloadToSend);
+        
+        const verifyRes = await fetch('http://localhost:3001/api/verifyOutput', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(payloadToSend),
+      });
       
-      // Fetch the SolanaSignInInput data from backend
-      const fetchSignInData = async () => {
-        const res = await fetch('http://localhost:3001/api/getSignInData');
-        const signInData: SolanaSignInInput = await res.json();
-        console.log("Frontend received nonce:", signInData.nonce);
-        return signInData;
+      // Check the Network
+      console.log("Debug: Response URL and Status:", verifyRes.url, verifyRes.status);
+      
+      // Log the Payload
+      console.log('Debug: Full Response:', verifyRes);
+      
+      let success;
+      
+      try {
+        const text = await verifyRes.text();
+        console.log("Raw response:", text);
+        
+        const data = JSON.parse(text);
+        console.log("Parsed data:", data);
+        success = data.success;
+      } catch (error) {
+        console.log('Error during fetch:', error);
       }
       
-      // Use the fetched data for the signing process
-      const signInData = await fetchSignInData();
-      const nonce = signInData.nonce; // gets the nonce from the backend
+      setMessage(success ? 'Successfully signed in with Solana' : 'Failed to verify Solana sign-in');
       
-      if (!nonce) {
-        throw new Error("Nonce is missing from the server response");
-      }
-      
-      // Convert publicKey to a string representation
-      const publicKeyStr = publicKey.toString();
-      
-      // Create a structured message using the nonce
-      const structuredMessage = generateStructuredMessage(nonce, publicKeyStr, "http://localhost:3000", "Authentication statement.", "1", "devnet");
-
-      console.log("Structured Message:", structuredMessage);
-      
-      // Convert the structured message string to Uint8Array
-      const signedMessageArray = new TextEncoder().encode(structuredMessage);
-      console.log("Encoded structured message (Uint8Array):", signedMessageArray);
-      
-      // Sign the nonce with the wallet's secret key
-      let signedMessage: Uint8Array | undefined;
-      if (typeof signMessage === 'function') {
-        signedMessage = await signMessage(signedMessageArray);
-      }
-      console.log("Signed message (Uint8Array):", signedMessage);
-      
-      if (!signedMessage) {
-        throw new Error("Failed to sign the nonce");
-      }
-      
-      // Create SolanaSignInOutput
-      const signatureArray = signedMessage instanceof Uint8Array ? signedMessage : new Uint8Array(signedMessage);
-      
-      // Create SolanaSignInOutput
-      const outputData: SolanaSignInOutput = {
-        account: {
-          publicKey: new Uint8Array(serializablePublicKey),
-          address: publicKey.toBase58(),
-          chains: ["solana:devnet"],
-          features: [],
-        },
-        signature: signatureArray,
-        signedMessage: signedMessageArray,
-      };
-      
-      const payloadToSend = { input: signInData, output: outputData };
-      console.log("Frontend, payload to send to server", payloadToSend);
-      
-      const verifyRes = await fetch('http://localhost:3001/api/verifyOutput', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(payloadToSend),
-    });
-    
-    // Check the Network
-    console.log("Debug: Response URL and Status:", verifyRes.url, verifyRes.status);
-    
-    // Log the Payload
-    console.log('Debug: Full Response:', verifyRes);
-    
-    let success;
-    
-    try {
-      const text = await verifyRes.text();
-      console.log("Raw response:", text);
-      
-      const data = JSON.parse(text);
-      console.log("Parsed data:", data);
-      success = data.success;
-    } catch (error) {
-      console.log('Error during fetch:', error);
+    } catch (err: any) {
+      setMessage(`Error: ${err.message}`);
     }
-    
-    setMessage(success ? 'Successfully signed in with Solana' : 'Failed to verify Solana sign-in');
-    
-  } catch (err: any) {
-    setMessage(`Error: ${err.message}`);
-  }
-}, [publicKey, connection, signIn, connected, signMessage]);
-
-return (
-  <div className="signup-form d-flex flex-column align-items-center">
-  {message && <div className="alert alert-info">{message}</div>}
-  {connected ? (
-    <>
-    <div className="mb-3 alert alert-info">
-    Connected with Public Key: {publicKey?.toBase58() || ""}
-    </div>
-    <WalletDisconnectButton className="btn btn-primary w-100 mb-3" />
-    </>
-    ) : (
-      <WalletMultiButton className="btn btn-primary w-100" />
-      )}
-      <button
-      type="button"
-      disabled={!connected}
-      className="btn btn-secondary mt-3"
-      onClick={signInSolana}
-      >
-      Sign Up with Solana
-      </button>
+  }, [publicKey, connection, signIn, connected, signMessage]);
+  
+  return (
+    <div className="signup-form d-flex flex-column align-items-center">
+    {message && <div className="alert alert-info">{message}</div>}
+    {connected ? (
+      <>
+      <div className="mb-3 alert alert-info">
+      Connected with Public Key: {publicKey?.toBase58() || ""}
       </div>
-      );
-    };
+      <WalletDisconnectButton className="btn btn-primary w-100 mb-3" />
+      </>
+      ) : (
+        <WalletMultiButton className="btn btn-primary w-100" />
+        )}
+        <button
+        type="button"
+        disabled={!connected}
+        className="btn btn-secondary mt-3"
+        onClick={signInSolana}
+        >
+        Sign Up with Solana
+        </button>
+        </div>
+        );
+      };
