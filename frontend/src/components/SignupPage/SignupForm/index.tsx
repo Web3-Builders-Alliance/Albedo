@@ -70,14 +70,17 @@ export const SignupForm: FC = () => {
         const fetchSignInData = async () => {
           const res = await fetch('http://localhost:3001/api/getSignInData');
           const signInData: SolanaSignInInput = await res.json();
-          console.log("Frontend received nonce and issuedAt:", signInData.nonce, signInData.issuedAt);
+          console.log("signInData before sending:", signInData);
           return signInData;
         }
-        
+
         // Use the fetched data for the signing process
         const signInData = await fetchSignInData();
         const nonce = signInData.nonce; // gets the nonce from the backend
-        
+
+        const { issuedAt, resources } = signInData;
+        console.log("Frontend sending resources:", resources);
+
         if (!nonce) {
           throw new Error("Nonce is missing from the server response");
         }
@@ -87,21 +90,18 @@ export const SignupForm: FC = () => {
         
         // Create a structured message using the nonce and the fetched issuedAt timestamp
         const structuredMessage = generateStructuredMessage(
-          "http://localhost:3000",      // domain
-          publicKeyStr,                 // publicKeyStr
-          "Authentication statement.", // statement
-          undefined,                    // uri - assuming you don't have it right now
-          "1",                          // version
-          "devnet",                     // chainId
-          nonce,                        // nonce
-          signInData.issuedAt,          // issuedAt from backend
-          undefined,                    // expirationTime - assuming you don't have it right now
-          undefined,                    // notBefore - assuming you don't have it right now
-          undefined,                    // requestId - assuming you don't have it right now
-          [                            // resources - you can add more URIs here if needed
-          "https://github.com/solana-labs/wallet-standard",
-          "https://phantom.app/learn/developers/sign-in-with-solana"
-        ]
+          "http://localhost:3000", // domain
+          publicKeyStr,            // publicKeyStr
+          "Authentication statement.",   // statement
+          undefined,               // uri
+          "1",                     // version
+          "devnet",                // chainId
+          nonce,                   // nonce
+          issuedAt,     // issuedAt
+          undefined,               // expirationTime
+          undefined,               // notBefore
+          undefined,               // requestId
+          resources as string[]               // resources fetched from backend
         );
         
         console.log("Structured Message:", structuredMessage);

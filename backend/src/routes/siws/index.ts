@@ -37,6 +37,8 @@ router.post('/verifyOutput', async (req: Request, res: Response) => {
   
   const { input, output } = req.body;
   
+  console.log("Raw resources received on backend:", input.resources);
+  
   try {
     if (!input || !output) {
       return sendError(res, "Missing input or output fields in payload");
@@ -53,12 +55,12 @@ router.post('/verifyOutput', async (req: Request, res: Response) => {
     
     output.signedMessage = new Uint8Array(Object.values(output.signedMessage));
     const text = new TextDecoder().decode(output.signedMessage);
-    console.log("Backend, received signedMessage:", new TextDecoder().decode(output.signedMessage));
+    console.log("Backend, received signedMessage:", text);
     
     //* Critical Logs
     const decodedSignedMessage = new TextDecoder().decode(output.signedMessage);
     console.log("=== Decoded signedMessage: ===");
-    console.log(decodedSignedMessage);
+    console.log("Received Message for Verification:", decodedSignedMessage);
     
     // Log before verification process starts
     console.log("Backend: publicKey is Uint8Array", typeof output.account.publicKey, output.account.publicKey);

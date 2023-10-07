@@ -11,6 +11,29 @@ export function verifySignIn(input: SolanaSignInInput, output: SolanaSignInOutpu
     account: { publicKey },
   } = output;
   
+  // Log the raw signedMessage
+  console.log("Inside verifySignIn - Raw signedMessage (Uint8Array):", signedMessage);
+  
+  // Decode and log the signedMessage
+  const interpretedMessage = new TextDecoder().decode(signedMessage);
+  console.log("Inside verifySignIn - Interpreted Message (decoded):", interpretedMessage);
+  
+  // Reconstruct the original message using the input object
+  const resourcesString = input.resources ? input.resources.map(res => `- ${res}`).join('\n') : '';
+  const reconstructedMessage = `${input.domain} wants you to sign in with your Solana account:\n${input.address}\n${input.statement}\nVersion: ${input.version}\nChain ID: ${input.chainId}\nNonce: ${input.nonce}\nIssued At: ${input.issuedAt}\nResources:\n${resourcesString}`;
+  
+  // Compare the reconstructed message with the interpreted message
+  if (interpretedMessage !== reconstructedMessage) {
+    console.error("Mismatch detected!");
+    console.log("Interpreted Message:", interpretedMessage);
+    console.log("Reconstructed Message:", reconstructedMessage);
+  } else {
+    console.log("Messages match!");
+  }
+  
+  //* Debug: Verify the Address in the Input Data
+  console.log("Debug: Address in input:", input.address);
+  
   const message = deriveSignInMessage(input, output);
   if (message) {
     console.log("Derived message (from SDK):", new TextDecoder().decode(message));
@@ -20,6 +43,7 @@ export function verifySignIn(input: SolanaSignInInput, output: SolanaSignInOutpu
   
   return !!message && verifyMessageSignature({ message, signedMessage, signature, publicKey });
 }
+
 
 /**
 * TODO: docs
@@ -140,69 +164,93 @@ export function parseSignInMessageText(text: string): SolanaSignInInputWithRequi
   const SIMPLE_MESSAGE = /^(?<domain>[^\n]+?) wants you to sign in with your Solana account:\n(?<address>[^\n]+)/;
   const simpleMatch = SIMPLE_MESSAGE.exec(text);
   
-  if (!simpleMatch) {
-      console.log("Debug: Simple regex match failed for domain and address!");
-      return null;
-  } else {
-      console.log("Debug: Simple regex matched. Domain:", simpleMatch.groups?.domain, "Address:", simpleMatch.groups?.address);
+  // After the simple match:
+  if (simpleMatch && !simpleMatch.groups?.address) {
+    console.log("Debug: Address not found in simple match!");
   }
-
+  
+  if (!simpleMatch) {
+    console.log("Debug: Simple regex match failed for domain and address!");
+    return null;
+  } else {
+    console.log("Debug: Simple regex matched. Domain:", simpleMatch.groups?.domain, "Address:", simpleMatch.groups?.address);
+  }
+  
   // 2. Advanced match: Domain, address, statement, version, chainId, nonce, issuedAt
-  const DOMAIN_ADDRESS_STATEMENT = /^(?<domain>[^\n]+?) wants you to sign in with your Solana account:\n(?<address>[^\n]+)\n(?<statement>[\S\s]*?)\nVersion: (?<version>\d+)\nChain ID: (?<chainId>[^\n]+)\nNonce: (?<nonce>[^\n]+)\nIssued At: (?<issuedAt>[^\n]+)/;
+  const DOMAIN_ADDRESS_STATEMENT = /^(?<domain>[^\n]+?) wants you to sign in with your Solana account:\n(?<address>[^\n]+)\n(?<statement>[\S\s]*?)\nVersion: (?<version>\d+)\nChain ID: (?<chainId>[^\n]+)\nNonce: (?<nonce>[^\n]+)\nIssued At: (?<issuedAt>[^\n]+)\nResources:\n(?<resources>[\S\s]+)$/;
+  
   const match = DOMAIN_ADDRESS_STATEMENT.exec(text);
   
   if (match) {
-      console.log("Debug: DOMAIN_ADDRESS_STATEMENT matched. Domain:", match.groups?.domain, "Address:", match.groups?.address, "Statement:", match.groups?.statement);
+    console.log("Debug: DOMAIN_ADDRESS_STATEMENT matched. Domain:", match.groups?.domain, "Address:", match.groups?.address, "Statement:", match.groups?.statement);
   } else {
-      console.log("Debug: DOMAIN_ADDRESS_STATEMENT did not match.");
+    console.log("Debug: DOMAIN_ADDRESS_STATEMENT did not match.");
   }
-
+  
   // 3. Check for the existence of the "Authentication statement."
   if (/Authentication statement\./.test(text)) {
-      console.log("Debug: Basic 'Authentication statement.' match found!");
+    console.log("Debug: Basic 'Authentication statement.' match found!");
   } else {
-      console.log("Debug: Basic 'Authentication statement.' match NOT found!");
+    console.log("Debug: Basic 'Authentication statement.' match NOT found!");
   }
-
+  
   // 4. If advanced match doesn't capture the statement, let's try a specific regex for it
   if (!match?.groups?.statement) {
-      const STATEMENT_ONLY_REGEX = /(?:\n(?<statement>[a-zA-Z\s\.]+?)(?:\n|$))/;
-      const statementMatch = STATEMENT_ONLY_REGEX.exec(text);
-      
-      if (statementMatch && statementMatch.groups?.statement) {
-          console.log("Debug: Extracted Statement using STATEMENT_ONLY_REGEX:", statementMatch.groups.statement);
-      } else {
-          console.log("Debug: Failed to extract the statement using STATEMENT_ONLY_REGEX.");
-      }
+    const STATEMENT_ONLY_REGEX = /(?:\n(?<statement>[a-zA-Z\s\.]+?)(?:\n|$))/;
+    const statementMatch = STATEMENT_ONLY_REGEX.exec(text);
+    
+    if (statementMatch && statementMatch.groups?.statement) {
+      console.log("Debug: Extracted Statement using STATEMENT_ONLY_REGEX:", statementMatch.groups.statement);
+    } else {
+      console.log("Debug: Failed to extract the statement using STATEMENT_ONLY_REGEX.");
+    }
   }
-
+  
+  // After the advanced match:
+  if (match && !match.groups?.address) {
+    console.log("Debug: Address not found in advanced match!");
+  }
+  
   // 5. Main verification: If there's no match for the main regex, exit
   if (!match) {
-      console.log("No regex match found.");
-      return null;
+    console.log("No regex match found.");
+    return null;
   }
-
+  
   // 6. Construct and return the result
   const groups = match.groups;
   if (!groups || !groups.domain || !groups.address) {
-      console.log("Critical groups (domain or address) not found.");
-      return null;
+    console.log("Critical groups (domain or address) not found.");
+    return null;
   }
   
-  return {
-      domain: groups.domain,
-      address: groups.address,
-      statement: groups.statement,
-      uri: groups.uri,
-      version: groups.version,
-      nonce: groups.nonce,
-      chainId: groups.chainId,
-      issuedAt: groups.issuedAt,
-      expirationTime: groups.expirationTime,
-      notBefore: groups.notBefore,
-      requestId: groups.requestId,
-      resources: groups.resources?.split('\n- ').slice(1),
+  // 7. Verification of resources
+  let resourcesList: string[] = [];
+  if (match && match.groups && match.groups.resources) {
+    resourcesList = match.groups.resources.split('\n').map(res => res.replace('- ', '')).filter(Boolean);
+    console.log("Debug: Received Resources:", resourcesList);
+  }
+  
+  const result = {
+    domain: groups.domain,
+    address: groups.address,
+    statement: groups.statement,
+    uri: groups.uri,
+    version: groups.version,
+    nonce: groups.nonce,
+    chainId: groups.chainId,
+    issuedAt: groups.issuedAt,
+    expirationTime: groups.expirationTime,
+    notBefore: groups.notBefore,
+    requestId: groups.requestId,
+    resources: resourcesList
   };
+  
+  if (!result.address) {
+    console.log("Debug: Address is missing in the final result object!");
+  }
+  
+  return result;
 }
 
 /**

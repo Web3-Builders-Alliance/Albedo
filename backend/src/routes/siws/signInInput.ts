@@ -14,9 +14,12 @@ export const createSignInData = async (): Promise<SolanaSignInInput> => {
     statement: "Authentication statement.",
     version: "1",
     nonce,
-    chainId: "devnet", 
+    chainId: "devnet",
     issuedAt: currentDateTime,
-    resources: ["https://github.com/solana-labs/wallet-standard", "https://phantom.app/learn/developers/sign-in-with-solana"],  // Add your resources here
+    resources: [
+      "https://github.com/solana-labs/wallet-standard",
+      "https://phantom.app/learn/developers/sign-in-with-solana"
+    ]
   };
   
   return signInData;
