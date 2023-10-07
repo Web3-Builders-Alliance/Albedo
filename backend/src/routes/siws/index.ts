@@ -61,11 +61,14 @@ router.post('/verifyOutput', async (req: Request, res: Response) => {
     const decodedSignedMessage = new TextDecoder().decode(output.signedMessage);
     console.log("=== Decoded signedMessage: ===");
     console.log("Received Message for Verification:", decodedSignedMessage);
-    
+
     // Log before verification process starts
     console.log("Backend: publicKey is Uint8Array", typeof output.account.publicKey, output.account.publicKey);
     console.log("Backend: signature is Uint8Array", typeof output.signature, output.signature);
     console.log("Backend: signedMessage is Uint8Array", typeof output.signedMessage, output.signedMessage);
+
+    //* Debug: Address
+    console.log("Debug: Address received in payload:", input.address);
     
     // Call verifySIWS function
     const isVerified = await verifySignIn(input, output);
