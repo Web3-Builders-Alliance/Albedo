@@ -66,11 +66,11 @@ export const SignupForm: FC = () => {
           return messageParts.join('\n');
         };
         
-        // Fetch the SolanaSignInInput data from backend
+        // Fetch the SolanaSignInInput data and issuedAt from backend
         const fetchSignInData = async () => {
           const res = await fetch('http://localhost:3001/api/getSignInData');
           const signInData: SolanaSignInInput = await res.json();
-          console.log("Frontend received nonce:", signInData.nonce);
+          console.log("Frontend received nonce and issuedAt:", signInData.nonce, signInData.issuedAt);
           return signInData;
         }
         
@@ -85,23 +85,20 @@ export const SignupForm: FC = () => {
         // Convert publicKey to a string representation
         const publicKeyStr = publicKey.toString();
         
-        // Current date and time in ISO string format
-        const currentIssuedAt = new Date().toISOString();
-        
-        // Create a structured message using the nonce
+        // Create a structured message using the nonce and the fetched issuedAt timestamp
         const structuredMessage = generateStructuredMessage(
-          "http://localhost:3000",        // domain
-          publicKeyStr,                   // publicKeyStr
-          "Authentication statement.",   // statement
-          undefined,                      // uri - assuming you don't have it right now
-          "1",                            // version
-          "devnet",                       // chainId
-          nonce,                          // nonce
-          currentIssuedAt,                // issuedAt
-          undefined,                      // expirationTime - assuming you don't have it right now
-          undefined,                      // notBefore - assuming you don't have it right now
-          undefined,                      // requestId - assuming you don't have it right now
-          [                              // resources - you can add more URIs here if needed
+          "http://localhost:3000",      // domain
+          publicKeyStr,                 // publicKeyStr
+          "Authentication statement.", // statement
+          undefined,                    // uri - assuming you don't have it right now
+          "1",                          // version
+          "devnet",                     // chainId
+          nonce,                        // nonce
+          signInData.issuedAt,          // issuedAt from backend
+          undefined,                    // expirationTime - assuming you don't have it right now
+          undefined,                    // notBefore - assuming you don't have it right now
+          undefined,                    // requestId - assuming you don't have it right now
+          [                            // resources - you can add more URIs here if needed
           "https://github.com/solana-labs/wallet-standard",
           "https://phantom.app/learn/developers/sign-in-with-solana"
         ]
@@ -112,8 +109,8 @@ export const SignupForm: FC = () => {
         // Convert the structured message string to Uint8Array
         const signedMessageArray = new TextEncoder().encode(structuredMessage);
         console.log("Encoded structured message (Uint8Array):", signedMessageArray);
-
-         //* Debug: Log before signing
+        
+        //* Debug: Log before signing
         console.log("Constructed message (before signing):", new TextDecoder().decode(signedMessageArray));
         
         // Sign the nonce with the wallet's secret key
@@ -121,7 +118,7 @@ export const SignupForm: FC = () => {
         if (typeof signMessage === 'function') {
           signedMessage = await signMessage(signedMessageArray);
         }
-        console.log("Signed message (Uint8Array):", signedMessage);
+        console.log("Signature from signMessage (Uint8Array):", signedMessage);
         
         if (!signedMessage) {
           throw new Error("Failed to sign the nonce");
@@ -129,6 +126,7 @@ export const SignupForm: FC = () => {
         
         // Create SolanaSignInOutput
         const signatureArray = signedMessage instanceof Uint8Array ? signedMessage : new Uint8Array(signedMessage);
+        
         
         // Create SolanaSignInOutput
         const outputData: SolanaSignInOutput = {
@@ -142,7 +140,6 @@ export const SignupForm: FC = () => {
           signedMessage: signedMessageArray,
         };
         
-        //! Error: Compare lengths of both arrays
         const messageLength = outputData.signature.length;
         const signedMessageLength = outputData.signedMessage.length;
         
@@ -157,6 +154,9 @@ export const SignupForm: FC = () => {
         
         const payloadToSend = { input: signInData, output: outputData };
         console.log("Frontend, payload to send to server", payloadToSend);
+        
+        //* Critical Log:
+        console.log("Frontend, signedMessage before sending to server:", new TextDecoder().decode(signedMessageArray));
         
         const verifyRes = await fetch('http://localhost:3001/api/verifyOutput', {
         method: 'POST',

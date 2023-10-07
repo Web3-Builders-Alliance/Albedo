@@ -112,6 +112,7 @@ Required<Pick<SolanaSignInInput, 'domain' | 'address'>>;
 */
 export function parseSignInMessage(message: Uint8Array): SolanaSignInInputWithRequiredFields | null {
   const text = new TextDecoder().decode(message);
+  console.log("Inside parseSignInMessage - decoded text:", text);
   return parseSignInMessageText(text);
 }
 
@@ -135,92 +136,72 @@ const MESSAGE = new RegExp(`^${DOMAIN}${ADDRESS}${STATEMENT}${FIELDS}\\n*$`);
 * TODO: docs
 */
 export function parseSignInMessageText(text: string): SolanaSignInInputWithRequiredFields | null {
-  console.log("Debug: Checking regex match - domain, address, and statement.");
-  
-  
-  //* 1st Step
+  // 1. Basic check: Match domain and address
   const SIMPLE_MESSAGE = /^(?<domain>[^\n]+?) wants you to sign in with your Solana account:\n(?<address>[^\n]+)/;
-  
   const simpleMatch = SIMPLE_MESSAGE.exec(text);
   
   if (!simpleMatch) {
-    console.log("Debug: Simple regex match failed!");
-    return null;
+      console.log("Debug: Simple regex match failed for domain and address!");
+      return null;
   } else {
-    console.log("Debug: Simple regex matched. Domain:", simpleMatch.groups?.domain, "Address:", simpleMatch.groups?.address);
+      console.log("Debug: Simple regex matched. Domain:", simpleMatch.groups?.domain, "Address:", simpleMatch.groups?.address);
   }
-  
-  //* 2nd Step
-  // This pattern tries to match the domain, address, and statement
+
+  // 2. Advanced match: Domain, address, statement, version, chainId, nonce, issuedAt
   const DOMAIN_ADDRESS_STATEMENT = /^(?<domain>[^\n]+?) wants you to sign in with your Solana account:\n(?<address>[^\n]+)\n(?<statement>[\S\s]*?)\nVersion: (?<version>\d+)\nChain ID: (?<chainId>[^\n]+)\nNonce: (?<nonce>[^\n]+)\nIssued At: (?<issuedAt>[^\n]+)/;
-  
-  // This pattern specifically targets the 'statement' section after an address
-  const STATEMENT_ONLY_REGEX = /(?:\n(?<statement>[a-zA-Z\s\.]+?)(?:\n|$))/;
-  
-  // Debugging: Log the exact message received from the frontend.
-  console.log("Debug: Received Message:", text);
-  
-  // Try to match using DOMAIN_ADDRESS_STATEMENT
   const match = DOMAIN_ADDRESS_STATEMENT.exec(text);
+  
   if (match) {
-    console.log("Debug: Regex matched. Domain:", match.groups?.domain, "Address:", match.groups?.address, "Statement:", match.groups?.statement);
+      console.log("Debug: DOMAIN_ADDRESS_STATEMENT matched. Domain:", match.groups?.domain, "Address:", match.groups?.address, "Statement:", match.groups?.statement);
   } else {
-    console.log("Debug: DOMAIN_ADDRESS_STATEMENT did not match.");
+      console.log("Debug: DOMAIN_ADDRESS_STATEMENT did not match.");
   }
-  
-  // Perform a simple match for the "Authentication statement." 
-  const simpleStatementRegex = /Authentication statement\./;
-  if (simpleStatementRegex.test(text)) {
-    console.log("Debug: Basic statement match found!");
+
+  // 3. Check for the existence of the "Authentication statement."
+  if (/Authentication statement\./.test(text)) {
+      console.log("Debug: Basic 'Authentication statement.' match found!");
   } else {
-    console.log("Debug: Basic statement match NOT found!");
+      console.log("Debug: Basic 'Authentication statement.' match NOT found!");
   }
-  
-  // If DOMAIN_ADDRESS_STATEMENT didn't capture the statement, let's try STATEMENT_ONLY_REGEX
+
+  // 4. If advanced match doesn't capture the statement, let's try a specific regex for it
   if (!match?.groups?.statement) {
-    const statementMatch = STATEMENT_ONLY_REGEX.exec(text);
-    
-    if (statementMatch && statementMatch.groups?.statement) {
-      console.log("Debug: Extracted Statement using STATEMENT_ONLY_REGEX:", statementMatch.groups.statement);
-    } else {
-      console.log("Debug: Failed to extract the statement using STATEMENT_ONLY_REGEX.");
-    }
+      const STATEMENT_ONLY_REGEX = /(?:\n(?<statement>[a-zA-Z\s\.]+?)(?:\n|$))/;
+      const statementMatch = STATEMENT_ONLY_REGEX.exec(text);
+      
+      if (statementMatch && statementMatch.groups?.statement) {
+          console.log("Debug: Extracted Statement using STATEMENT_ONLY_REGEX:", statementMatch.groups.statement);
+      } else {
+          console.log("Debug: Failed to extract the statement using STATEMENT_ONLY_REGEX.");
+      }
   }
-  
-  // MAIN: Continue with the original regex match
-  //  const match = MESSAGE.exec(text);
-  
+
+  // 5. Main verification: If there's no match for the main regex, exit
   if (!match) {
-    console.log("No regex match found.");
-    return null;
+      console.log("No regex match found.");
+      return null;
   }
-  
+
+  // 6. Construct and return the result
   const groups = match.groups;
-  if (!groups) {
-    console.log("No groups found in regex match.");
-    return null;
+  if (!groups || !groups.domain || !groups.address) {
+      console.log("Critical groups (domain or address) not found.");
+      return null;
   }
   
-  // 4. Check critical groups (domain and address)
-  if (!groups.domain || !groups.address) {
-    console.log("Critical groups (domain or address) not found.");
-    return null;
-  }
-  
-  // Now, construct and return the result
   return {
-    domain: groups.domain,
-    address: groups.address,
-    statement: groups.statement,
-    uri: groups.uri,
-    version: groups.version,
-    nonce: groups.nonce,
-    chainId: groups.chainId,
-    issuedAt: groups.issuedAt,
-    expirationTime: groups.expirationTime,
-    notBefore: groups.notBefore,
-    requestId: groups.requestId,
-    resources: groups.resources?.split('\n- ').slice(1),
+      domain: groups.domain,
+      address: groups.address,
+      statement: groups.statement,
+      uri: groups.uri,
+      version: groups.version,
+      nonce: groups.nonce,
+      chainId: groups.chainId,
+      issuedAt: groups.issuedAt,
+      expirationTime: groups.expirationTime,
+      notBefore: groups.notBefore,
+      requestId: groups.requestId,
+      resources: groups.resources?.split('\n- ').slice(1),
   };
 }
 
