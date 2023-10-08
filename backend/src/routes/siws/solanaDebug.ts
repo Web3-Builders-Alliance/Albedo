@@ -34,6 +34,7 @@ export function verifySignIn(input: SolanaSignInInput, output: SolanaSignInOutpu
   //* Debug: Verify the Address in the Input Data
   console.log("Debug: Address in input:", input.address);
   
+  //! Critical part that is failing is input vs parsed output
   const message = deriveSignInMessage(input, output);
   if (message) {
     console.log("Derived message (from SDK):", new TextDecoder().decode(message));
@@ -43,7 +44,6 @@ export function verifySignIn(input: SolanaSignInInput, output: SolanaSignInOutpu
   
   return !!message && verifyMessageSignature({ message, signedMessage, signature, publicKey });
 }
-
 
 /**
 * TODO: docs
@@ -57,7 +57,8 @@ export function deriveSignInMessage(input: SolanaSignInInput, output: SolanaSign
 /**
 * TODO: docs
 */
-export function deriveSignInMessageText(input: SolanaSignInInput, output: SolanaSignInOutput): string | null {
+export function deriveSignInMessageText(input: SolanaSignInInput, output: SolanaSignInOutput):
+string | null {
   const parsed = parseSignInMessage(output.signedMessage);
   if (!parsed) {
     console.log("Debug: Failed at parsing signInMessage.");
@@ -73,7 +74,7 @@ export function deriveSignInMessageText(input: SolanaSignInInput, output: Solana
     return null;
   }
   if (input.statement !== parsed.statement) {
-    console.log("Debug: Mismatch in statement. Expected:", input.statement, "Got:", parsed.statement);
+    console.log("Debug: Mismatch in statement length. Expected length:", input.statement, "Got", parsed.statement);
     return null;
   }
   if (input.uri !== parsed.uri) {
@@ -122,7 +123,6 @@ export function deriveSignInMessageText(input: SolanaSignInInput, output: Solana
     return null;
   }
   
-  console.log("Debug: Verify the output of createSignInMessageText(parsed)", createSignInMessageText(parsed));
   return createSignInMessageText(parsed);
 }
 
@@ -136,6 +136,7 @@ Required<Pick<SolanaSignInInput, 'domain' | 'address'>>;
 * TODO: docs
 */
 export function parseSignInMessage(message: Uint8Array): SolanaSignInInputWithRequiredFields | null {
+  console.log("Provided message to parseSignInMessage:", message);
   const text = new TextDecoder().decode(message);
   console.log("Inside parseSignInMessage - decoded text:", text);
   return parseSignInMessageText(text);
@@ -161,6 +162,7 @@ const MESSAGE = new RegExp(`^${DOMAIN}${ADDRESS}${STATEMENT}${FIELDS}\\n*$`);
 * TODO: docs
 */
 export function parseSignInMessageText(text: string): SolanaSignInInputWithRequiredFields | null {
+  console.log("Parsing text in parseSignInMessageText:", text);
   // 1. Basic check: Match domain and address
   const SIMPLE_MESSAGE = /^(?<domain>[^\n]+?) wants you to sign in with your Solana account:\n(?<address>[^\n]+)/;
   const simpleMatch = SIMPLE_MESSAGE.exec(text);
@@ -168,6 +170,8 @@ export function parseSignInMessageText(text: string): SolanaSignInInputWithRequi
   // After the simple match:
   if (simpleMatch && !simpleMatch.groups?.address) {
     console.log("Debug: Address not found in simple match!");
+  } else {
+    console.log("Debug: Failed to extract the statement using STATEMENT_ONLY_REGEX.");
   }
   
   if (!simpleMatch) {
@@ -178,7 +182,7 @@ export function parseSignInMessageText(text: string): SolanaSignInInputWithRequi
   }
   
   // 2. Advanced match: Domain, address, statement, version, chainId, nonce, issuedAt
-  const DOMAIN_ADDRESS_STATEMENT = /^(?<domain>[^\n]+?) wants you to sign in with your Solana account:\n(?<address>[^\n]+)\n(?<statement>[\S\s]*?)\nVersion: (?<version>\d+)\nChain ID: (?<chainId>[^\n]+)\nNonce: (?<nonce>[^\n]+)\nIssued At: (?<issuedAt>[^\n]+)\nResources:\n(?<resources>[\S\s]+)$/;
+  const DOMAIN_ADDRESS_STATEMENT = /^(?<domain>[^\n]+?) wants you to sign in with your Solana account:\n(?<address>[^\n]+)\n(?<statement>[^\n]+)\nVersion: (?<version>\d+)\nChain ID: (?<chainId>[^\n]+)\nNonce: (?<nonce>[^\n]+)\nIssued At: (?<issuedAt>[^\n]+)\nResources:\n(?<resources>[\S\s]+)$/;
   
   const match = DOMAIN_ADDRESS_STATEMENT.exec(text);
   
@@ -235,7 +239,7 @@ export function parseSignInMessageText(text: string): SolanaSignInInputWithRequi
   const result = {
     domain: groups.domain,
     address: groups.address,
-    statement: groups.statement,
+    statement: groups.statement.trim(),
     uri: groups.uri,
     version: groups.version,
     nonce: groups.nonce,
@@ -342,6 +346,17 @@ export function verifyMessageSignature({
   publicKey: Uint8Array;
 }): boolean {
   // TODO: implement https://github.com/solana-labs/solana/blob/master/docs/src/proposals/off-chain-message-signing.md
+  
+  // Confirm function execution
+  console.log("verifyMessageSignature called!");
+  
+  //* Debug: Validate `bytesEqual` function
+  console.log("Decoded Message:", new TextDecoder().decode(message));
+  console.log("Message bytes:", [...message]);
+  
+  console.log("Decoded SignedMessage:", new TextDecoder().decode(signedMessage));
+  console.log("SignedMessage bytes:", [...signedMessage]);
+  
   return bytesEqual(message, signedMessage) && ed25519.verify(signature, signedMessage, publicKey);
 }
 

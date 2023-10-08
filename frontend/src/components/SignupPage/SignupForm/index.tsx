@@ -40,37 +40,43 @@ export const SignupForm: FC = () => {
         new Uint8Array(publicKey.toBuffer())
       );
 
-      // This function formats the nonce into a structured message
-      function generateStructuredMessage(
+      // New version of the generateStructuredMessage function
+      const generateStructuredMessage = (
         domain: string,
         address: string,
         statement: string,
-        uri: string | undefined,
         version: string,
         chainId: string,
         nonce: string,
-        issuedAt: string | undefined,
-        expirationTime: string | undefined,
-        notBefore: string | undefined,
-        requestId: string | undefined,
-        resources: string[]
-      ): string {
-        // Start constructing the message string
-        let message = `${domain} wants you to sign in with your Solana account:\n${address}\n\n${statement}\n\nVersion: ${version}\nChain ID: ${chainId}\nNonce: ${nonce}\n`;
+        issuedAt: string,
+        expirationTime?: string,
+        notBefore?: string,
+        requestId?: string,
+        resources?: string[]
+      ) => {
+        let message = `${domain} wants you to sign in with your Solana account:\n${address}\n${statement}.\nURI: controlled://URI\nVersion: ${version}\nChain ID: ${chainId}\nNonce: ${nonce}\nIssued At: ${issuedAt}\n`;
 
-        if (issuedAt) {
-          message += `Issued At: ${issuedAt}\n`;
+        if (expirationTime) {
+          message += `Expiration Time: ${expirationTime}\n`;
         }
 
-        message += "Resources:\n";
-
-        // Append resources
-        for (const resource of resources) {
-          message += `- ${resource}\n`;
+        if (notBefore) {
+          message += `Not Before: ${notBefore}\n`;
         }
 
-        return message;
-      }
+        if (requestId) {
+          message += `Request ID: ${requestId}\n`;
+        }
+
+        if (resources && resources.length > 0) {
+          message += "Resources:\n";
+          resources.forEach((resource) => {
+            message += `- ${resource}\n`;
+          });
+        }
+
+        return message.trim(); // Remove any trailing newline
+      };
 
       // Fetch the SolanaSignInInput data and issuedAt from backend
       const fetchSignInData = async () => {
@@ -92,10 +98,20 @@ export const SignupForm: FC = () => {
 
       // Use the fetched data for the signing process
       const signInData = await fetchSignInData();
-      const nonce = signInData.nonce; // gets the nonce from the backend
 
-      const { issuedAt, resources } = signInData;
-      console.log("Frontend sending resources:", resources);
+      const {
+        domain,
+        address,
+        statement,
+        version,
+        chainId,
+        nonce,
+        issuedAt,
+        expirationTime,
+        notBefore,
+        requestId,
+        resources,
+      } = signInData;
 
       if (!nonce) {
         throw new Error("Nonce is missing from the server response");
@@ -103,20 +119,20 @@ export const SignupForm: FC = () => {
 
       // Create a structured message using the nonce and the fetched issuedAt timestamp
       const structuredMessage = generateStructuredMessage(
-        "http://localhost:3000", // domain
-        signInData.address, // Address from the modified signInData
-        "Authentication statement.", // statement
-        undefined, // uri
-        "1", // version
-        "devnet", // chainId
-        nonce, // nonce
-        issuedAt, // issuedAt
-        undefined, // expirationTime
-        undefined, // notBefore
-        undefined, // requestId
-        resources as string[] // resources fetched from backend
+        domain as string,
+        address,
+        statement as string,
+        version as string,
+        chainId as string,
+        nonce,
+        issuedAt as string,
+        expirationTime,
+        notBefore,
+        requestId,
+        resources as string[]
       );
 
+      // Validation
       console.log("Structured Message:", structuredMessage);
 
       // Convert the structured message string to Uint8Array
@@ -126,7 +142,7 @@ export const SignupForm: FC = () => {
         signedMessageArray
       );
 
-      //* Debug: Log before signing
+      // Debug: Log before signing
       console.log(
         "Constructed message (before signing):",
         new TextDecoder().decode(signedMessageArray)
@@ -175,9 +191,6 @@ export const SignupForm: FC = () => {
 
       const payloadToSend = { input: signInData, output: outputData };
       console.log("Frontend, payload to send to server", payloadToSend);
-
-      //* Critical Log: Frontend, signedMessage before sending to server:
-      console.log(new TextDecoder().decode(signedMessageArray));
 
       const verifyRes = await fetch("http://localhost:3001/api/verifyOutput", {
         method: "POST",

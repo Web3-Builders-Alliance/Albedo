@@ -1,6 +1,6 @@
 import express, { Response, Request } from 'express';
 import { createSignInData } from './signInInput';
-// import { verifySignIn, deriveSignInMessage } from '@solana/wallet-standard-util';
+// import { verifySignIn } from '@solana/wallet-standard-util';
 import { verifySignIn } from './solanaDebug';
 
 const router = express.Router();
@@ -67,9 +67,6 @@ router.post('/verifyOutput', async (req: Request, res: Response) => {
     console.log("Backend: signature is Uint8Array", typeof output.signature, output.signature);
     console.log("Backend: signedMessage is Uint8Array", typeof output.signedMessage, output.signedMessage);
 
-    //* Debug: Address
-    console.log("Debug: Address received in payload:", input.address);
-    
     // Call verifySIWS function
     const isVerified = await verifySignIn(input, output);
     
