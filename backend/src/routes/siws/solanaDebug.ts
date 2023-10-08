@@ -122,6 +122,7 @@ export function deriveSignInMessageText(input: SolanaSignInInput, output: Solana
     return null;
   }
   
+  console.log("Debug: Verify the output of createSignInMessageText(parsed)", createSignInMessageText(parsed));
   return createSignInMessageText(parsed);
 }
 

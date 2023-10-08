@@ -1,7 +1,7 @@
 import express, { Response, Request } from 'express';
 import { createSignInData } from './signInInput';
 // import { verifySignIn, deriveSignInMessage } from '@solana/wallet-standard-util';
-import { verifySignIn, deriveSignInMessage } from './solanaDebug';
+import { verifySignIn } from './solanaDebug';
 
 const router = express.Router();
 
