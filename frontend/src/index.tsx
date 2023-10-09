@@ -1,6 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {App } from './App';
+import { App } from './App';
+import { Buffer } from 'buffer';
+
+// Make Buffer globally available for the entire application
+window.Buffer = Buffer;
 
 const rootElement = document.getElementById('root');
 
