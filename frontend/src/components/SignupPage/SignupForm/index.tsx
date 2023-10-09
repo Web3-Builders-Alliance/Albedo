@@ -39,43 +39,12 @@ export const SignupForm: FC = () => {
       const serializablePublicKey = Array.from(
         new Uint8Array(publicKey.toBuffer())
       );
-
-      // New version of the generateStructuredMessage function
+      
       const generateStructuredMessage = (
         domain: string,
-        address: string,
-        statement: string,
-        version: string,
-        chainId: string,
-        nonce: string,
-        issuedAt: string,
-        expirationTime?: string,
-        notBefore?: string,
-        requestId?: string,
-        resources?: string[]
+        address: string
       ) => {
-        let message = `${domain} wants you to sign in with your Solana account:\n${address}\n${statement}.\nURI: controlled://URI\nVersion: ${version}\nChain ID: ${chainId}\nNonce: ${nonce}\nIssued At: ${issuedAt}\n`;
-
-        if (expirationTime) {
-          message += `Expiration Time: ${expirationTime}\n`;
-        }
-
-        if (notBefore) {
-          message += `Not Before: ${notBefore}\n`;
-        }
-
-        if (requestId) {
-          message += `Request ID: ${requestId}\n`;
-        }
-
-        if (resources && resources.length > 0) {
-          message += "Resources:\n";
-          resources.forEach((resource) => {
-            message += `- ${resource}\n`;
-          });
-        }
-
-        return message.trim(); // Remove any trailing newline
+        return `${domain} wants you to sign in with your Solana account:\n${address}`;
       };
 
       // Fetch the SolanaSignInInput data and issuedAt from backend
@@ -102,38 +71,16 @@ export const SignupForm: FC = () => {
       const {
         domain,
         address,
-        statement,
-        version,
-        chainId,
-        nonce,
-        issuedAt,
-        expirationTime,
-        notBefore,
-        requestId,
-        resources,
       } = signInData;
-
-      if (!nonce) {
-        throw new Error("Nonce is missing from the server response");
-      }
 
       // Create a structured message using the nonce and the fetched issuedAt timestamp
       const structuredMessage = generateStructuredMessage(
         domain as string,
-        address,
-        statement as string,
-        version as string,
-        chainId as string,
-        nonce,
-        issuedAt as string,
-        expirationTime,
-        notBefore,
-        requestId,
-        resources as string[]
+        address
       );
 
       // Validation
-      console.log("Structured Message:", structuredMessage);
+      console.log(structuredMessage);
 
       // Convert the structured message string to Uint8Array
       const signedMessageArray = new TextEncoder().encode(structuredMessage);
@@ -177,18 +124,6 @@ export const SignupForm: FC = () => {
         signedMessage: signedMessageArray,
       };
 
-      const messageLength = outputData.signature.length;
-      const signedMessageLength = outputData.signedMessage.length;
-
-      console.log(`Message Length: ${messageLength}`);
-      console.log(`Signed Message Length: ${signedMessageLength}`);
-
-      if (messageLength !== signedMessageLength) {
-        console.warn("Lengths of the two arrays are not equal!");
-      } else {
-        console.log("Lengths of the two arrays are equal.");
-      }
-
       const payloadToSend = { input: signInData, output: outputData };
       console.log("Frontend, payload to send to server", payloadToSend);
 
@@ -209,7 +144,6 @@ export const SignupForm: FC = () => {
       console.log("Debug: Full Response:", verifyRes);
 
       let success;
-
       try {
         const text = await verifyRes.text();
         console.log("Raw response:", text);

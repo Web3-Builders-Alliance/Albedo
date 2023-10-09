@@ -1,7 +1,7 @@
 import express, { Response, Request } from 'express';
 import { createSignInData } from './signInInput';
 // import { verifySignIn } from '@solana/wallet-standard-util';
-import { verifySignIn } from './solanaDebug';
+import { verifySignIn } from './signInVerify';
 
 const router = express.Router();
 
@@ -57,16 +57,6 @@ router.post('/verifyOutput', async (req: Request, res: Response) => {
     const text = new TextDecoder().decode(output.signedMessage);
     console.log("Backend, received signedMessage:", text);
     
-    //* Critical Logs
-    const decodedSignedMessage = new TextDecoder().decode(output.signedMessage);
-    console.log("=== Decoded signedMessage: ===");
-    console.log("Received Message for Verification:", decodedSignedMessage);
-
-    // Log before verification process starts
-    console.log("Backend: publicKey is Uint8Array", typeof output.account.publicKey, output.account.publicKey);
-    console.log("Backend: signature is Uint8Array", typeof output.signature, output.signature);
-    console.log("Backend: signedMessage is Uint8Array", typeof output.signedMessage, output.signedMessage);
-
     // Call verifySIWS function
     const isVerified = await verifySignIn(input, output);
     
