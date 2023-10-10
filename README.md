@@ -10,6 +10,10 @@ Website: […-splendorous-lolly-4434bd.netlify.app](https://650f3566e678fa5c1fa8
 
 ---
 
+sol-vault Program Id: FCGW7MZ3EaMxk6uifKWe81WTNSDoEqsXiMauQUTm6nMP
+
+---
+
 ## Problem Statement
 ### Limitations of Centralized Data Marketplaces
 Centralized data storage and verification methods raise concerns about data integrity and security.
@@ -23,9 +27,15 @@ Traditional escrow services are often costly, slow, and opaque, lacking real-tim
 ### Albedo: A Flexible, Decentralized Platform
 
 - **Verified Sensor Data**: Deploy IoT sensors across various sectors, transmitting data via secure channels to trusted oracles.
+<<<<<<< HEAD
   
 - **Smart Contract-based Escrow**: Utilize Solana's blockchain capabilities for an automatic release of escrow funds based on verified real-time sensor data.
   
+=======
+
+- **Smart Contract-based Escrow**: Utilize Solana's blockchain capabilities for automatic release of escrow funds based on verified real-time sensor data.
+
+>>>>>>> pull-switchboard-data-feed
 - **Transparency and Security**: Events are recorded, verified, and made transparent via Non-Fungible Tokens (NFTs), each containing metadata linking to off-chain data storage.
 
 ### DePIN Tools
@@ -65,4 +75,8 @@ End-user: Farmers
 
 - Broaden sensor data types and capabilities.
 - Expand to other blockchain networks for enhanced interoperability.
+<<<<<<< HEAD
 - Explore partnerships for more specialized use cases.
+=======
+- Explore partnerships for more specialized use-cases.
+>>>>>>> pull-switchboard-data-feed
