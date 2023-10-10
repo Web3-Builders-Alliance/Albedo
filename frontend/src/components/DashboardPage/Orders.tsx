@@ -1,57 +1,64 @@
-import * as React from 'react';
-import Link from '@mui/material/Link';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Title from './Title';
+import * as React from "react";
+import Link from "@mui/material/Link";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Title from "./Title";
 
-// Generate Order Data
-function createData(
+// Generate Transaction Data
+function createTransactionData(
   id: number,
   date: string,
-  name: string,
-  shipTo: string,
-  paymentMethod: string,
-  amount: number,
+  transactionType: string,
+  txID: string,
+  fromAddress: string,
+  amount: number
 ) {
-  return { id, date, name, shipTo, paymentMethod, amount };
+  return { id, date, transactionType, txID, fromAddress, amount };
 }
 
-const rows = [
-  createData(
+const transactions = [
+  createTransactionData(
     0,
-    '16 Mar, 2019',
-    'Elvis Presley',
-    'Tupelo, MS',
-    'VISA ⠀•••• 3719',
-    312.44,
+    "16 Mar, 2023",
+    "Deposit",
+    "TXID123456789",
+    "SOL_abcdefghij1",
+    3.44
   ),
-  createData(
+  createTransactionData(
     1,
-    '16 Mar, 2019',
-    'Paul McCartney',
-    'London, UK',
-    'VISA ⠀•••• 2574',
-    866.99,
+    "17 Mar, 2023",
+    "Withdrawal",
+    "TXID123456788",
+    "SOL_abcdefghij2",
+    0.99
   ),
-  createData(2, '16 Mar, 2019', 'Tom Scholz', 'Boston, MA', 'MC ⠀•••• 1253', 100.81),
-  createData(
+  createTransactionData(
+    2,
+    "18 Mar, 2023",
+    "Deposit",
+    "TXID123456787",
+    "SOL_abcdefghij3",
+    4.81
+  ),
+  createTransactionData(
     3,
-    '16 Mar, 2019',
-    'Michael Jackson',
-    'Gary, IN',
-    'AMEX ⠀•••• 2000',
-    654.39,
+    "19 Mar, 2023",
+    "Withdrawal",
+    "TXID123456786",
+    "SOL_abcdefghij4",
+    1.39
   ),
-  createData(
+  createTransactionData(
     4,
-    '15 Mar, 2019',
-    'Bruce Springsteen',
-    'Long Branch, NJ',
-    'VISA ⠀•••• 5919',
-    212.79,
+    "20 Mar, 2023",
+    "Deposit",
+    "TXID123456785",
+    "SOL_abcdefghij5",
+    2.79
   ),
 ];
 
@@ -60,34 +67,34 @@ function preventDefault(event: React.MouseEvent) {
 }
 
 const Orders: React.FC = () => (
-    <React.Fragment>
-      <Title>Recent Transactions</Title>
-      <Table size="small">
-        <TableHead>
-          <TableRow>
-            <TableCell>Date</TableCell>
-            <TableCell>Name</TableCell>
-            <TableCell>Ship To</TableCell>
-            <TableCell>Payment Method</TableCell>
-            <TableCell align="right">Sale Amount</TableCell>
+  <React.Fragment>
+    <Title>Recent Transactions</Title>
+    <Table size="small">
+      <TableHead>
+        <TableRow>
+          <TableCell>Date</TableCell>
+          <TableCell>Transaction Type</TableCell>
+          <TableCell>TxID</TableCell>
+          <TableCell>From Address</TableCell>
+          <TableCell align="right">Amount (SOL)</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {transactions.map((transaction) => (
+          <TableRow key={transaction.id}>
+            <TableCell>{transaction.date}</TableCell>
+            <TableCell>{transaction.transactionType}</TableCell>
+            <TableCell>{transaction.txID}</TableCell>
+            <TableCell>{transaction.fromAddress}</TableCell>
+            <TableCell align="right">{`${transaction.amount} SOL`}</TableCell>
           </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.id}>
-              <TableCell>{row.date}</TableCell>
-              <TableCell>{row.name}</TableCell>
-              <TableCell>{row.shipTo}</TableCell>
-              <TableCell>{row.paymentMethod}</TableCell>
-              <TableCell align="right">{`$${row.amount}`}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>
-        See more orders
-      </Link>
-    </React.Fragment>
-  );
+        ))}
+      </TableBody>
+    </Table>
+    <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>
+      See more orders
+    </Link>
+  </React.Fragment>
+);
 
-  export default Orders;
+export default Orders;

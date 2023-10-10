@@ -22,7 +22,7 @@ body {
   margin: 0 auto;
   padding: 0 2rem; }
 
-.dark-bg, .navbar .nav-item a.login-signup {
+.dark-bg {
   background-color: #393D3F;
   color: #FFFFFF; }
 
@@ -60,30 +60,3 @@ body {
 .visible {
   opacity: 1;
   transform: translateY(0); }
-
-.navbar {
-  background-color: #000000;
-  color: #FFFFFF; }
-  .navbar-brand {
-    font-size: 1.5rem; }
-  .navbar .nav-item a {
-    color: #FFFFFF;
-    text-decoration: none;
-    font-weight: 400;
-    transition: color 0.3s ease; }
-    .navbar .nav-item a:hover {
-      color: #62929E; }
-    .navbar .nav-item a.login-signup {
-      transition: background-color 0.3s ease; }
-      .navbar .nav-item a.login-signup:hover {
-        background-color: #62929E;
-        color: #FFFFFF; }
-  .navbar .signed-in-indicator .phantom-icon {
-    /* Styles for the Phantom Wallet icon */
-    background: url("../../assets/images/landingPage/phantom_icon.png");
-    background-size: contain;
-    width: 24px;
-    height: 24px; }
-  .navbar .signed-in-indicator .public-key {
-    font-size: 0.9rem;
-    color: #000000; }
