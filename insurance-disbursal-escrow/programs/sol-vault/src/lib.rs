@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 use anchor_lang::system_program::{transfer, Transfer};
 
-declare_id!("CrSyuUEDMHudgQXNCTnA1y7GgPrUdqFYRQ7knP13kjWp");
+declare_id!("8S8mQYkYKfhHJyUQU75CDEFHHMMqydbY859dQQXNCME1");
 
 #[program]
 pub mod sol_vault {

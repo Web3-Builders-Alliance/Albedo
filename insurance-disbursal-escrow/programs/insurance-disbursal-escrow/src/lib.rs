@@ -4,12 +4,13 @@ use insurance_pool_vault::cpi::{accounts::DisburseClaim, disburse_claim};
 // use insurance_pool_vault::{self, RainfallData};
 // mod pull_data_feed;
 
+#[allow(non_snake_case)]
 pub mod VaultProgram {
     use super::*;
-    declare_id!("CrSyuUEDMHudgQXNCTnA1y7GgPrUdqFYRQ7knP13kjWp");
+    declare_id!("8S8mQYkYKfhHJyUQU75CDEFHHMMqydbY859dQQXNCME1");
 }
 
-declare_id!("PaYj25PZhw6ckeff1KbTBXweHqFh8dyBsdphZAG7rFF");
+declare_id!("Fsm3SohN5njuEjmppCvfQ9VyxSyG8bYQDQAwYRBHz2RH");
 
 #[program]
 pub mod insurance_disbursal_escrow {
@@ -99,7 +100,7 @@ pub struct InstructVaultToDisburseClaim<'info> {
 
 #[derive(Accounts)]
 pub struct CheckEligibility<'info> {
-    pub rainfall_data: Account<'info, RainfallDataAccount>,
+    pub rainfall_data: Box<Account<'info, RainfallDataAccount>>,
 }
 
 #[derive(AnchorSerialize, AnchorDeserialize, Copy, Clone, PartialEq, Eq)]

@@ -17,5 +17,5 @@ default = []
 
 [dependencies]
 anchor-lang = "0.28.0"
-switchboard-solana = "0.9"
+# switchboard-solana = "0.9"
 insurance-pool-vault = { path = "../sol-vault", features = ["cpi"] }

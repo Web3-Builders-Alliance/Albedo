@@ -2,11 +2,11 @@
 seeds = false
 skip-lint = false
 
-[programs.localnet]
-insurance_disbursal_escrow = "PaYj25PZhw6ckeff1KbTBXweHqFh8dyBsdphZAG7rFF"
+# [programs.localnet]
+# insurance_disbursal_escrow = "PaYj25PZhw6ckeff1KbTBXweHqFh8dyBsdphZAG7rFF"
 
 [programs.devnet]
-insurance_disbursal_escrow = "PaYj25PZhw6ckeff1KbTBXweHqFh8dyBsdphZAG7rFF"
+insurance_disbursal_escrow = "Fsm3SohN5njuEjmppCvfQ9VyxSyG8bYQDQAwYRBHz2RH"
 
 [registry]
 url = "https://api.apr.dev"
