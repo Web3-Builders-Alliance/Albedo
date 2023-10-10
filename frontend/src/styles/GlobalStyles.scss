@@ -56,7 +56,7 @@ body {
 }
 
 // === Button Classes ===
-.btn-primary {
+.btn-primary { 
   @include button-styles($primary-dark, $primary-light);
 }
 
