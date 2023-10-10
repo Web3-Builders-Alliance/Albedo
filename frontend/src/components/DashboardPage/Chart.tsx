@@ -3,21 +3,21 @@ import { useTheme } from '@mui/material/styles';
 import { LineChart, Line, XAxis, YAxis, Label, ResponsiveContainer } from 'recharts';
 import Title from './Title';
 
-// Generate Sales Data
+// Generate Rewards Data
 const createData = (time: string, amount?: number) => {
   return { time, amount };
 };
 
 const data = [
-  createData('00:00', 0),
-  createData('03:00', 300),
-  createData('06:00', 600),
-  createData('09:00', 800),
-  createData('12:00', 1500),
-  createData('15:00', 2000),
-  createData('18:00', 2400),
-  createData('21:00', 2400),
-  createData('24:00', undefined),
+  createData('00:00', 0.5),
+  createData('03:00', 2),
+  createData('06:00', 4),
+  createData('09:00', 7),
+  createData('12:00', 10),
+  createData('15:00', 14),
+  createData('18:00', 18),
+  createData('21:00', 22),
+  createData('24:00', 25),
 ];
 
 export const Chart: React.FC = () => {
@@ -25,7 +25,7 @@ export const Chart: React.FC = () => {
 
   return (
     <React.Fragment>
-      <Title>Today</Title>
+      <Title>Rewards Over Time</Title>
       <ResponsiveContainer>
         <LineChart
           data={data}
@@ -54,7 +54,7 @@ export const Chart: React.FC = () => {
                 ...theme.typography.body1,
               }}
             >
-              Rewards ($)
+              SOL Rewards
             </Label>
           </YAxis>
           <Line

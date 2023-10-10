@@ -92,7 +92,7 @@ const Orders: React.FC = () => (
       </TableBody>
     </Table>
     <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>
-      See more orders
+      See more transactions
     </Link>
   </React.Fragment>
 );
