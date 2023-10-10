@@ -24,9 +24,9 @@ export const Header: FC<HeaderProps> = ({ variant }) => {
           <>
             <a className="navbar-brand fw-bold" href="/">Albedo</a>
             {/* Add your public key address display and Phantom Wallet icon here */}
-            <div className="signed-in-indicator">
+            <div className="signed-in-indicator d-flex justify-content-center gap-1">
               <span className="phantom-icon"></span>
-              <span className="public-key">{publicKey ? `${publicKey.toBase58().slice(0, 6)}...${publicKey.toBase58().slice(-6)}` : 'Loading...'}</span>
+              <span className="public-key"><b>Wallet Connected:</b> {publicKey ? `${publicKey.toBase58().slice(0, 6)}...${publicKey.toBase58().slice(-6)}` : 'Loading...'}</span>
             </div>
           </>
         )}

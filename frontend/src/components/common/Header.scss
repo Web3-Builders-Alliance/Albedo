@@ -39,13 +39,11 @@
   }
   
   .signed-in-indicator {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
     
     .phantom-icon {
       /* Styles for the Phantom Wallet icon */
-      // background: url('/path-to-your-phantom-icon.svg') no-repeat center;
+      background: url('../../assets/images/landingPage/phantom_icon.png');
+      background-size: contain;
       width: 24px;
       height: 24px;
     }
