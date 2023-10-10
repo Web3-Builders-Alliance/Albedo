@@ -78,3 +78,12 @@ body {
       .navbar .nav-item a.login-signup:hover {
         background-color: #62929E;
         color: #FFFFFF; }
+  .navbar .signed-in-indicator .phantom-icon {
+    /* Styles for the Phantom Wallet icon */
+    background: url("../../assets/images/landingPage/phantom_icon.png");
+    background-size: contain;
+    width: 24px;
+    height: 24px; }
+  .navbar .signed-in-indicator .public-key {
+    font-size: 0.9rem;
+    color: #000000; }

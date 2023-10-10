@@ -1,4 +1,5 @@
 import React, { FC, useState, useCallback, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { Connection } from "@solana/web3.js";
 import { WalletNotConnectedError } from "@solana/wallet-adapter-base";
@@ -14,6 +15,7 @@ import {
 export const SignupForm: FC = () => {
   const { publicKey, connected, signMessage, signIn } = useWallet();
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   const connection = useMemo(
     () => new Connection("https://api.devnet.solana.com/"),
@@ -39,11 +41,8 @@ export const SignupForm: FC = () => {
       const serializablePublicKey = Array.from(
         new Uint8Array(publicKey.toBuffer())
       );
-      
-      const generateStructuredMessage = (
-        domain: string,
-        address: string
-      ) => {
+
+      const generateStructuredMessage = (domain: string, address: string) => {
         return `${domain} wants you to sign in with your Solana account:\n${address}`;
       };
 
@@ -68,10 +67,7 @@ export const SignupForm: FC = () => {
       // Use the fetched data for the signing process
       const signInData = await fetchSignInData();
 
-      const {
-        domain,
-        address,
-      } = signInData;
+      const { domain, address } = signInData;
 
       // Create a structured message using the nonce and the fetched issuedAt timestamp
       const structuredMessage = generateStructuredMessage(
@@ -155,15 +151,16 @@ export const SignupForm: FC = () => {
         console.log("Error during fetch:", error);
       }
 
-      setMessage(
-        success
-          ? "Successfully signed in with Solana"
-          : "Failed to verify Solana sign-in"
-      );
+      if (success) {
+        setMessage("Successfully signed in with Solana");
+        navigate("/dashboard");
+      } else {
+        setMessage("Failed to verify Solana sign-in");
+      }
     } catch (err: any) {
       setMessage(`Error: ${err.message}`);
     }
-  }, [publicKey, connection, signIn, connected, signMessage]);
+  }, [publicKey, connection, signIn, connected, navigate, signMessage]);
 
   return (
     <div className="signup-form d-flex flex-column align-items-center">
