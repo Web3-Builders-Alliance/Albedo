@@ -61,7 +61,7 @@ function preventDefault(event: React.MouseEvent) {
 
 const Orders: React.FC = () => (
     <React.Fragment>
-      <Title>Recent Orders</Title>
+      <Title>Recent Transactions</Title>
       <Table size="small">
         <TableHead>
           <TableRow>

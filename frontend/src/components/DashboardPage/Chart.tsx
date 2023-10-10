@@ -54,7 +54,7 @@ export const Chart: React.FC = () => {
                 ...theme.typography.body1,
               }}
             >
-              Sales ($)
+              Rewards ($)
             </Label>
           </YAxis>
           <Line

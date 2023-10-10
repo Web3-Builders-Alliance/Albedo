@@ -13,5 +13,5 @@ export const PhantomInitPage: FC = () => {
       </div>
       <Footer variant='signup' />
     </div>
-    );
-  }
+  );
+}
