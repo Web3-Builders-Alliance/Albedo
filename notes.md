@@ -11,9 +11,14 @@ anchor build
 
 anchor deploy
 
-Vault program shipped to devnet:
 Deploying cluster: https://api.devnet.solana.com
 Upgrade authority: /Users/praky/.config/solana/id.json
 Deploying program "insurance_pool_vault"...
-Program path: /Users/praky/Projects/albedo/sol-vault/target/deploy/insurance_pool_vault.so...
-Program Id: FCGW7MZ3EaMxk6uifKWe81WTNSDoEqsXiMauQUTm6nMP
+Program path: /Users/praky/Projects/albedo/insurance-disbursal-escrow/target/deploy/insurance_pool_vault.so...
+Program Id: 8S8mQYkYKfhHJyUQU75CDEFHHMMqydbY859dQQXNCME1
+
+Deploying program "insurance_disbursal_escrow"...
+Program path: /Users/praky/Projects/albedo/insurance-disbursal-escrow/target/deploy/insurance_disbursal_escrow.so...
+Program Id: Fsm3SohN5njuEjmppCvfQ9VyxSyG8bYQDQAwYRBHz2RH
+
+Deploy success
