@@ -2172,7 +2172,7 @@
   dependencies:
     "eslint-scope" "5.1.1"
 
-"@noble/curves@^1.0.0", "@noble/curves@^1.1.0":
+"@noble/curves@^1.1.0", "@noble/curves@^1.2.0":
   "integrity" "sha512-oYclrNgRaM9SsBUBVbb8M6DTV7ZHRTKugureoYEncY5c65HOmRzvSiTE3y5CYaPYJA/GVkrhXEoF0M3Ya9PMnw=="
   "resolved" "https://registry.npmjs.org/@noble/curves/-/curves-1.2.0.tgz"
   "version" "1.2.0"
@@ -3105,13 +3105,13 @@
     "@solana/wallet-standard-core" "^1.1.0"
     "@solana/wallet-standard-wallet-adapter" "^1.1.1"
 
-"@solana/web3.js@*", "@solana/web3.js@^1.36.0", "@solana/web3.js@^1.44.3", "@solana/web3.js@^1.5.0", "@solana/web3.js@^1.50.1", "@solana/web3.js@^1.58.0", "@solana/web3.js@^1.63.0", "@solana/web3.js@^1.63.1", "@solana/web3.js@^1.68.0", "@solana/web3.js@^1.77.3", "@solana/web3.js@^1.78.5":
-  "integrity" "sha512-2ZHsDNqkKdglJQrIvJ3p2DmgS3cGnary3VJyqt9C1SPrpAtLYzcElr3xyXJOznyQTU/8AMw+GoF11lFoKbicKg=="
-  "resolved" "https://registry.npmjs.org/@solana/web3.js/-/web3.js-1.78.5.tgz"
-  "version" "1.78.5"
+"@solana/web3.js@*", "@solana/web3.js@^1.36.0", "@solana/web3.js@^1.44.3", "@solana/web3.js@^1.5.0", "@solana/web3.js@^1.50.1", "@solana/web3.js@^1.58.0", "@solana/web3.js@^1.63.0", "@solana/web3.js@^1.63.1", "@solana/web3.js@^1.68.0", "@solana/web3.js@^1.77.3", "@solana/web3.js@^1.87.1":
+  "integrity" "sha512-E8Y9bNlZ8TQlhOvCx1b7jG+TjA4SJLVwufmIk1+tcQctUhK5HiB1Q8ljd4yQDkFlk6OOeAlAeqvW0YntWJU94Q=="
+  "resolved" "https://registry.npmjs.org/@solana/web3.js/-/web3.js-1.87.1.tgz"
+  "version" "1.87.1"
   dependencies:
     "@babel/runtime" "^7.22.6"
-    "@noble/curves" "^1.0.0"
+    "@noble/curves" "^1.2.0"
     "@noble/hashes" "^1.3.1"
     "@solana/buffer-layout" "^4.0.0"
     "agentkeepalive" "^4.3.0"
