@@ -38,3 +38,13 @@ Program path: /Users/praky/Projects/albedo/insurance-disbursal-escrow/target/dep
 Program Id: Fsm3SohN5njuEjmppCvfQ9VyxSyG8bYQDQAwYRBHz2RH
 
 Deploy success
+
+
+-- Backend-integration
+> solana-course-client@1.0.0 start
+> ts-node src/index.ts
+
+Generating new keypair... 🗝️
+Creating .env file
+Public key: HHUhApGqSz9D8pk1Z8WLPJ21uEjQZtmiWhqHU7NCW5Kr
+Finished successfully
