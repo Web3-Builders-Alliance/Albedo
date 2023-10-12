@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { useWallet } from "@solana/wallet-adapter-react";
+import { PricingTicker } from './PricingTicker';
 import './Header.scss';
 
 interface HeaderProps {
@@ -15,10 +16,16 @@ export const Header: FC<HeaderProps> = ({ variant }) => {
       <div className="container-fluid">
         {/* Conditional content based on the 'variant' prop */}
         {variant === 'landing' && (
-          <a className="navbar-brand fw-bold" href="/">Built on Solana</a>
+          <div className="d-flex align-items-center gap-3">
+            <a className="navbar-brand fw-bold" href="/">Built on Solana</a>
+            <PricingTicker />
+          </div>
         )}
         {variant === 'signup' && (
-          <a className="navbar-brand fw-bold" href="/">Albedo</a>
+          <div className="d-flex align-items-center gap-3">
+            <a className="navbar-brand fw-bold" href="/">Albedo</a>
+            <PricingTicker />
+          </div>
         )}
         {variant === 'dashboard' && (
           <>

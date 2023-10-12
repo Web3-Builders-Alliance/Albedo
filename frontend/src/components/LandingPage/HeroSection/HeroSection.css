@@ -4,15 +4,18 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column; }
-  body footer {
-    margin-top: auto; }
-  body a {
-    text-decoration: none; }
-  body img {
-    display: block;
-    max-width: 100%;
-    height: auto;
-    margin: auto; }
+
+body footer {
+  margin-top: auto; }
+
+body a {
+  text-decoration: none; }
+
+body img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: auto; }
 
 .half {
   width: 50%; }
@@ -62,7 +65,19 @@ body {
   transform: translateY(0); }
 
 .hero-container {
-  background-image: linear-gradient(to right, #000000, #82a8b1);
+  background-image: linear-gradient(to right, #000000, #4d626c, #82a8b1, #4d626c, #000000);
+  background-size: 500% 100%;
+  /* Enlarged to create a smooth animation loop */
+  animation: gradientAnimation 12s infinite;
   color: #FFFFFF; }
-  .hero-container a:hover {
-    background-color: #62929E; }
+
+.hero-container a:hover {
+  background-color: #62929E; }
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 100% 0; }
+  50% {
+    background-position: 0% 0; }
+  100% {
+    background-position: 100% 0; } }

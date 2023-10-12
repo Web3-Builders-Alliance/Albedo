@@ -2,7 +2,9 @@
 @import '../../../styles/variables';
 
 .hero-container {
-  background-image: linear-gradient(to right, #000000, #82a8b1);
+  background-image: linear-gradient(to right, #000000, #4d626c, #82a8b1, #4d626c, #000000);
+  background-size: 500% 100%; /* Enlarged to create a smooth animation loop */
+  animation: gradientAnimation 12s infinite;
   color: $primary-light;
   
   a {
@@ -10,5 +12,17 @@
     &:hover {
       background-color: $secondary;
     }
+  }
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 100% 0;
+  }
+  50% {
+    background-position: 0% 0;
+  }
+  100% {
+    background-position: 100% 0;
   }
 }
