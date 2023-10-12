@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import {
   PublicKey,
   Connection,
-  TransactionInstruction,
   Transaction,
+  SystemProgram,
 } from "@solana/web3.js";
 import { useWallet } from "@solana/wallet-adapter-react";
 import {
@@ -15,18 +15,41 @@ import {
 } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
 
-const PROGRAM_ID = "8S8mQYkYKfhHJyUQU75CDEFHHMMqydbY859dQQXNCME1";
-const programId = new PublicKey(PROGRAM_ID);
-
 export const DepositPanel: React.FC = () => {
   const [amount, setAmount] = useState<number | string>("");
   const [showSuccess, setShowSuccess] = useState(false);
   const [showError, setShowError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [txId, setTxId] = useState<string | null>(null);
+  const [solBalance, setSolBalance] = useState<number | null>(null);
 
   const { publicKey, signTransaction } = useWallet();
-  const connection = new Connection("https://api.devnet.solana.com");
+
+  const connection = useMemo(() => {
+    return new Connection("https://api.devnet.solana.com");
+  }, []); // Empty dependency array because the connection URL doesn't change
+
+  useEffect(() => {
+    const fetchSolBalance = async () => {
+      if (publicKey) {
+        const balanceInLamports = await connection.getBalance(publicKey);
+        const balanceInSol = balanceInLamports / 1e9; // Convert lamports to SOL
+        setSolBalance(balanceInSol);
+      }
+    };
+
+    fetchSolBalance();
+
+    // Optional: set up periodic fetching, e.g., every minute
+    const interval = setInterval(fetchSolBalance, 60000);
+
+    // Clear the interval when the component is unmounted
+    return () => clearInterval(interval);
+  }, [publicKey, connection]);
+
+  const VAULT_PUBLIC_KEY = "8h5zTF7KiQ1KGrjWpXMWj3VT5bbWDj5M9E3pEhmXd4dv";
+  const vaultPublicKey = new PublicKey(VAULT_PUBLIC_KEY);
 
   const handleDeposit = async () => {
     if (!publicKey) {
@@ -37,25 +60,16 @@ export const DepositPanel: React.FC = () => {
     setIsLoading(true);
 
     try {
-      const vaultPublicKey = new PublicKey(programId);
-      const dataBuffer = Buffer.from(
-        Uint8Array.of(...new Array(8).fill(amount))
-      );
-      const instruction = new TransactionInstruction({
-        keys: [
-          { pubkey: publicKey, isSigner: true, isWritable: true },
-          { pubkey: vaultPublicKey, isSigner: false, isWritable: true },
-        ],
-        programId: programId,
-        data: dataBuffer,
+      const transferInstruction = SystemProgram.transfer({
+        fromPubkey: publicKey,
+        toPubkey: vaultPublicKey,
+        lamports: Number(amount) * 1e9, // Convert SOL to lamports
       });
 
-      const transaction = new Transaction().add(instruction);
+      const transaction = new Transaction().add(transferInstruction);
 
       // Fetch the recent blockhash from the connection
       const { blockhash } = await connection.getLatestBlockhash();
-
-      // Set the blockhash to the transaction
       transaction.recentBlockhash = blockhash;
 
       if (publicKey && signTransaction) {
@@ -66,6 +80,7 @@ export const DepositPanel: React.FC = () => {
         );
         console.log("Transaction ID", txid);
         setShowSuccess(true);
+        setTxId(txid); // Store the transaction ID
       }
     } catch (error) {
       console.error("There was an error sending the transaction", error);
@@ -93,7 +108,11 @@ export const DepositPanel: React.FC = () => {
         InputProps={{
           endAdornment: (
             <InputAdornment position="end">
-              <Tooltip title="Your current SOL balance is [X] SOL.">
+              <Tooltip
+                title={`Your current SOL balance is ${
+                  solBalance ? solBalance.toFixed(2) : "[fetching...]"
+                } SOL.`}
+              >
                 <InfoIcon color="action" />
               </Tooltip>
             </InputAdornment>
@@ -119,8 +138,18 @@ export const DepositPanel: React.FC = () => {
 
       {showSuccess && (
         <div className="alert alert-success mt-3" role="alert">
-          Deposit successful! Please check the transaction in Solana explorer
-          for details.
+          Deposit successful!
+          {txId && (
+            <div>
+              <a
+                href={`https://explorer.solana.com/tx/${txId}?cluster=devnet`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                View transaction on Solana explorer
+              </a>
+            </div>
+          )}
         </div>
       )}
 
