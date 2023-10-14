@@ -46,9 +46,15 @@ export const SignupForm: FC = () => {
         return `${domain} wants you to sign in with your Solana account:\n${address}`;
       };
 
+      // Define the API URL based on environment
+      const apiUrl =
+        process.env.NODE_ENV === "development"
+          ? "http://localhost:3001"
+          : "https://albedo.digital/";
+
       // Fetch the SolanaSignInInput data and issuedAt from backend
       const fetchSignInData = async () => {
-        const res = await fetch("http://localhost:3001/api/getSignInData");
+        const res = await fetch(`${apiUrl}/api/getSignInData`);
         const originalSignInData: SolanaSignInInput = await res.json();
 
         // Convert publicKey to a string representation
@@ -123,7 +129,7 @@ export const SignupForm: FC = () => {
       const payloadToSend = { input: signInData, output: outputData };
       console.log("Frontend, payload to send to server", payloadToSend);
 
-      const verifyRes = await fetch("http://localhost:3001/api/verifyOutput", {
+      const verifyRes = await fetch(`${apiUrl}/api/verifyOutput`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payloadToSend),
