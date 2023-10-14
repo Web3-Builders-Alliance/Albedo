@@ -11,8 +11,18 @@ import siwsRoutes from '../src/routes/siws/index';
 const app = express();
 const port = 3001; // You can choose another port if you like
 
+const allowedOrigins = ['http://localhost:3000', 'http://localhost:3001', 'https://albedo.digital/'];
+
 // Enable CORS from frontend
-app.use(cors());
+app.use(cors({
+  origin: function(origin, callback) {
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+}));
 
 // Middleware for parsing JSON
 app.use(express.json());
