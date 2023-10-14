@@ -3,7 +3,10 @@ import crypto from 'crypto';
 
 export const createSignInData = async (): Promise<SolanaSignInInput> => {
   const now: Date = new Date();
-  const domain = "http://localhost:3000";
+  // Dynamic domain based on environment
+  const domain = process.env.NODE_ENV === 'development' 
+    ? 'http://localhost:3000'
+    : 'https://albedo.digital';
   
   const currentDateTime = now.toISOString();
 
