@@ -1,7 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FC } from 'react';
 import solanaLogo from "../../assets/images/landingPage/sol_logo.png";
 
-export const PricingTicker: React.FC = () => {
+interface PricingTickerProps {
+  className?: string;
+}
+
+export const PricingTicker: FC<PricingTickerProps> = ({ className }) => {
     const [solPrice, setSolPrice] = useState<number | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
@@ -37,7 +41,7 @@ export const PricingTicker: React.FC = () => {
     if (error) return <div>Error: {error}</div>;
 
     return (
-        <div className='sol-ticker d-flex align-items-center gap-2'>
+        <div className={`sol-ticker d-flex align-items-center gap-2 ${className}`}>
             <img src={solanaLogo} alt="Solana logo"/>
             Price: ${solPrice}
         </div>
