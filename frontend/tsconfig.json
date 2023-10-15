@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "ESNext",
+    "module": "CommonJS", // CommonJS is more universally suitable for Node.js projects
     "moduleResolution": "Node",
     "target": "ES2020",
     "jsx": "react-jsx",
@@ -21,7 +21,7 @@
     "noFallthroughCasesInSwitch": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true
+    "noEmit": false // Allow files to be emitted, important for deployment
   },
   "include": [
     "src/**/*"
