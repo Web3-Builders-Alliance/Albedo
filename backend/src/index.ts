@@ -11,7 +11,7 @@ const port = 3001;
 // List of allowed origins; added 'https://albedo.digital/' as an example
 const allowedOrigins = ['http://localhost:3000', 'http://localhost:3001', 'https://albedo.digital', 'https://albedo.digital/signup'];
 
-// Updated CORS middleware 
+// Updated CORS middleware  
 app.use(cors({
   origin: function(origin, callback) {
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
