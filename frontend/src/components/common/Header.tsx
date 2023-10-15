@@ -17,13 +17,13 @@ export const Header: FC<HeaderProps> = ({ variant }) => {
         {/* Conditional content based on the 'variant' prop */}
         {variant === 'landing' && (
           <div className="d-flex align-items-center gap-3">
-          <a className="navbar-brand fw-bold d-lg-block d-none" href="/">Built on Solana</a>
+          <a className="navbar-brand fw-bold" href="/">Built on Solana</a>
           <PricingTicker className="d-lg-flex d-none" />
         </div>
         )}
         {variant === 'signup' && (
           <div className="d-flex align-items-center gap-3">
-          <a className="navbar-brand fw-bold d-lg-block d-none" href="/">Built on Solana</a>
+          <a className="navbar-brand fw-bold" href="/">Built on Solana</a>
           <PricingTicker className="d-lg-flex d-none" />
         </div>
         )}
