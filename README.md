@@ -1,7 +1,7 @@
 # Albedo
 By: Prakyath Reddy & Kellen James  
 Twitter: https://x.com/albedo_sdk/status/1705452449534967969?s=20
-Website: […-splendorous-lolly-4434bd.netlify.app](https://650f3566e678fa5c1fa8b6fb--splendorous-lolly-4434bd.netlify.app/)
+Website: [albedo.digital](https://albedo.digital/)
 
 ## A Decentralized Two-Sided Marketplace for Verified Sensor Data and Smart Contract-Based Escrow Services
 
