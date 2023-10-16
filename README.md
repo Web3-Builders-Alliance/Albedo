@@ -1,5 +1,6 @@
 # Albedo
 By: Prakyath Reddy & Kellen James  
+Pitch deck and Demo: https://docs.google.com/presentation/d/1sq4bGMNVOcG6SDKFLn5THI8uRm07b_A_f3shw-sxkK0/edit#slide=id.p1  
 Twitter: https://x.com/albedo_sdk/status/1705452449534967969?s=20  
 Website: [albedo.digital](https://albedo.digital/)
 
